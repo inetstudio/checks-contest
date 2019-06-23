@@ -1,0 +1,40 @@
+<?php
+
+namespace InetStudio\ChecksContest\Checks\Transformers\Front;
+
+use League\Fractal\TransformerAbstract;
+use League\Fractal\Resource\Collection as FractalCollection;
+use InetStudio\ChecksContest\Checks\Contracts\Models\CheckModelContract;
+use InetStudio\ChecksContest\Checks\Contracts\Transformers\Front\SearchItemTransformerContract;
+
+/**
+ * Class SearchItemTransformer.
+ */
+class SearchItemTransformer extends TransformerAbstract implements SearchItemTransformerContract
+{
+    /**
+     * Трансформация данных.
+     *
+     * @param  CheckModelContract  $item
+     *
+     * @return array
+     */
+    public function transform(CheckModelContract $item): array
+    {
+        return [
+            'id' => $item['id'],
+        ];
+    }
+
+    /**
+     * Обработка коллекции объектов.
+     *
+     * @param $items
+     *
+     * @return FractalCollection
+     */
+    public function transformCollection($items): FractalCollection
+    {
+        return new FractalCollection($items, $this);
+    }
+}

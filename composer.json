@@ -1,0 +1,37 @@
+{
+  "name": "inetstudio/checks-contest",
+  "description": "Package for checks contest",
+  "homepage": "https://github.com/inetstudio/checks-contest",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Konstantin Bukin",
+      "email": "bukin@inetstudio.ru"
+    }
+  ],
+  "require": {
+    "inetstudio/classifiers": "1.8.*",
+    "inetstudio/fns": "1.8.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "InetStudio\\ChecksContest\\": "package/src",
+      "InetStudio\\ChecksContest\\Checks\\": "entities/checks/src",
+      "InetStudio\\ChecksContest\\Prizes\\": "entities/prizes/src",
+      "InetStudio\\ChecksContest\\Statuses\\": "entities/statuses/src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "InetStudio\\ChecksContest\\Providers\\ServiceProvider",
+        "InetStudio\\ChecksContest\\Checks\\Providers\\BindingsServiceProvider",
+        "InetStudio\\ChecksContest\\Checks\\Providers\\ServiceProvider",
+        "InetStudio\\ChecksContest\\Prizes\\Providers\\BindingsServiceProvider",
+        "InetStudio\\ChecksContest\\Prizes\\Providers\\ServiceProvider",
+        "InetStudio\\ChecksContest\\Statuses\\Providers\\BindingsServiceProvider",
+        "InetStudio\\ChecksContest\\Statuses\\Providers\\ServiceProvider"
+      ]
+    }
+  }
+}
