@@ -31,6 +31,16 @@ class SetupCommand extends BaseSetupCommand
         $this->calls = [
             [
                 'type' => 'artisan',
+                'description' => 'Classifiers setup',
+                'command' => 'inetstudio:classifiers:setup',
+            ],
+            [
+                'type' => 'artisan',
+                'description' => 'Fns setup',
+                'command' => 'inetstudio:fns:setup',
+            ],
+            [
+                'type' => 'artisan',
                 'description' => 'Checks contest checks setup',
                 'command' => 'inetstudio:checks-contest:checks:setup',
             ],
