@@ -78,11 +78,27 @@
 
         return prizes;
       },
+      initPrizesComponent() {
+        if (typeof window.Admin.vue.modulesComponents.$refs['checks_contest_PrizesListItemForm'] ==
+            'undefined') {
+          window.Admin.vue.modulesComponents.modules.prizes.components = _.union(
+              window.Admin.vue.modulesComponents.modules.prizes.components, [
+                {
+                  name: 'PrizesListItemForm',
+                  data: {},
+                },
+              ]);
+        }
+      },
       addPrize() {
+        this.initPrizesComponent();
+
         window.Admin.vue.stores['prizes'].commit('setMode', 'add_list_item');
         window.Admin.vue.stores['prizes'].commit('setPrize', {});
 
-        $('#prizes_list_item_form_modal').modal();
+        window.waitForElement('#prizes_list_item_form_modal', function() {
+          $('#prizes_list_item_form_modal').modal();
+        });
       },
       removePrize(payload) {
         let component = this;
