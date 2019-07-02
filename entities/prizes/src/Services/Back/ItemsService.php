@@ -81,7 +81,7 @@ class ItemsService extends BaseService implements ItemsServiceContract
                         'date_end' => ($item['date_end'] != $item['date_start'] && $item['date_end'] != null)
                             ? Carbon::createFromFormat('d.m.Y', $item['date_end'])->setTime(0, 0, 0)->format('Y-m-d H:i:s')
                             : null,
-                        'confirmed' => (int ) ($item['confirmed'] ?? 0),
+                        'confirmed' => (int) ($item['confirmed'] ?? 0),
                     ],
                 ];
             })->toArray();

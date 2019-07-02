@@ -21,7 +21,7 @@ Route::group(
                 'except' => [
                     'show',
                 ],
-                'as' => 'back.checks-contest'
+                'as' => 'back.checks-contest',
             ]
         );
     }

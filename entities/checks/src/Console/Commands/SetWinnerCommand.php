@@ -112,7 +112,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
 
         $prize = $prizesService->getModel()->where('alias', $prizeData['prize'])->first();
         $status = $statusesService->getModel()->where([
-            ['alias', '=', 'approved']
+            ['alias', '=', 'approved'],
         ])->first();
 
         if (! $prize || ! $status) {
@@ -124,7 +124,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
         $winnersEmails = [];
         $winnersPhones = [];
         $winnersChecks = $checksService->getModel()->with('prizes')
-            ->whereHas('prizes', function($query) use ($prizeId) {
+            ->whereHas('prizes', function ($query) use ($prizeId) {
                 $query->where('prize_id', '=', $prizeId);
             })->get();
 
@@ -139,7 +139,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
             ['status_id', '=', $status->id],
             ['created_at', '>=', Carbon::createFromFormat('d.m.y', $prizeData['start'])->setTime(0, 0, 0)],
             ['created_at', '<=', Carbon::createFromFormat('d.m.y', $prizeData['end'])->setTime(23, 59, 59)],
-        ])->where(function($query) use ($prizeId) {
+        ])->where(function ($query) use ($prizeId) {
             $query->doesntHave('prizes')
                 ->orWhereDoesntHave('prizes', function ($prizesQuery) use ($prizeId) {
                     $prizesQuery->where('prize_id', '=', $prizeId);
@@ -204,7 +204,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
                     ? Carbon::createFromFormat('d.m.y', $stageData['end'])->format('Y-m-d H:i:s')
                     : null,
                 'confirmed' => 0,
-            ]
+            ],
         ];
 
         $checks->each(function ($check) use ($prizeData) {
