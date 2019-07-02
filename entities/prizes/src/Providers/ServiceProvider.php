@@ -2,7 +2,6 @@
 
 namespace InetStudio\ChecksContest\Prizes\Providers;
 
-use Collective\Html\FormBuilder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 

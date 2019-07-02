@@ -22,7 +22,7 @@ class ItemsExport implements ItemsExportContract, FromQuery, WithMapping, WithHe
 
     /**
      * @return Builder
-     * 
+     *
      * @throws BindingResolutionException
      */
     public function query()
