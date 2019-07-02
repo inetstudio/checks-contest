@@ -15,7 +15,7 @@ $(document).ready(function() {
         $('.checks-content.ibox-content').toggleClass('sk-loading');
 
         if (data.success === true) {
-          button.closest('tr').find('td:first-child').html(data.status);
+          button.closest('tr').children('td').eq(1).html(data.status);
           button.closest('td').html(data.moderation);
 
           swal({
