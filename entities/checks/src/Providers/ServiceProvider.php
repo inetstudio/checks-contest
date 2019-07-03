@@ -34,6 +34,7 @@ class ServiceProvider extends BaseServiceProvider
             [
                 'InetStudio\ChecksContest\Checks\Console\Commands\AttachFnsReceiptsCommand',
                 'InetStudio\ChecksContest\Checks\Console\Commands\CreateFoldersCommand',
+                'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\ModerateChecksCommandContract',
                 'InetStudio\ChecksContest\Checks\Console\Commands\RecognizeCodesCommand',
                 'InetStudio\ChecksContest\Checks\Console\Commands\RemoveDuplicatesCommand',
                 'InetStudio\ChecksContest\Checks\Console\Commands\SetupCommand',

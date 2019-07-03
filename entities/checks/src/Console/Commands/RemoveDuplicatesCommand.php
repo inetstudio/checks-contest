@@ -84,35 +84,4 @@ class RemoveDuplicatesCommand extends Command
 
         $bar->finish();
     }
-
-    /**
-     * Получаем параметры для запроса в налоговую.
-     *
-     * @param  array  $code
-     *
-     * @return array
-     */
-    protected function getParamsFromCheckCode(array $code): array
-    {
-        if (! (isset($code[0]) && $code[0] == 'QR_CODE')) {
-            return [];
-        }
-
-        $queryString = $code[1] ?? '';
-
-        if (! $queryString) {
-            return [];
-        }
-
-        $params = [];
-        parse_str(trim($queryString), $params);
-
-        $params = Arr::only($params, ['t', 's', 'fn', 'i', 'fp', 'n']);
-
-        if (count($params) != 6) {
-            return [];
-        }
-
-        return $params;
-    }
 }
