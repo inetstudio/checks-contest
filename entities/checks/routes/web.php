@@ -24,7 +24,7 @@ Route::group(
                     'create',
                     'store',
                 ],
-                'as' => 'back.checks-contest'
+                'as' => 'back.checks-contest',
             ]
         );
     }

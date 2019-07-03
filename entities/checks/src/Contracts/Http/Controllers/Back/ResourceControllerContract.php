@@ -5,9 +5,9 @@ namespace InetStudio\ChecksContest\Checks\Contracts\Http\Controllers\Back;
 use InetStudio\ChecksContest\Checks\Contracts\Services\Back\ItemsServiceContract;
 use InetStudio\ChecksContest\Checks\Contracts\Services\Back\DataTableServiceContract;
 use InetStudio\ChecksContest\Checks\Contracts\Http\Requests\Back\SaveItemRequestContract;
-use InetStudio\ChecksContest\Checks\Contracts\Http\Responses\Back\Resource\ShowResponseContract;
 use InetStudio\ChecksContest\Checks\Contracts\Http\Responses\Back\Resource\FormResponseContract;
 use InetStudio\ChecksContest\Checks\Contracts\Http\Responses\Back\Resource\SaveResponseContract;
+use InetStudio\ChecksContest\Checks\Contracts\Http\Responses\Back\Resource\ShowResponseContract;
 use InetStudio\ChecksContest\Checks\Contracts\Http\Responses\Back\Resource\IndexResponseContract;
 use InetStudio\ChecksContest\Checks\Contracts\Http\Responses\Back\Resource\DestroyResponseContract;
 
