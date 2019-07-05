@@ -58,7 +58,13 @@ class ItemsService extends BaseService implements ItemsServiceContract
             0
         );
 
-        $item->addMediaFromRequest('check_image')->toMediaCollection('images', 'checks_contest_checks');
+        if (isset($data['check_image'])) {
+            $name = Str::random(32).'.'.$data['check_image']->getClientOriginalExtension();
+
+            $item->addMediaFromRequest('check_image')
+                ->usingFileName($name)
+                ->toMediaCollection('images', 'checks_contest_checks');
+        }
 
         event(
             app()->make(
