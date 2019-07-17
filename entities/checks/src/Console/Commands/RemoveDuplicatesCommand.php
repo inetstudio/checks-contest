@@ -41,8 +41,10 @@ class RemoveDuplicatesCommand extends Command
     public function handle()
     {
         $checksService = app()->make('InetStudio\ChecksContest\Checks\Contracts\Services\Back\ItemsServiceContract');
+        $statusesService = app()->make('InetStudio\ChecksContest\Statuses\Contracts\Services\Back\ItemsServiceContract');
 
         $checks = $checksService->getModel()->get();
+        $rejectedStatus = $statusesService->getModel()->where('alias', 'rejected')->first();
 
         $bar = $this->output->createProgressBar(count($checks));
 
@@ -51,7 +53,7 @@ class RemoveDuplicatesCommand extends Command
         foreach ($checks as $check) {
             $receiptCodes = $check->getJSONData('additional_info', 'codes', []);
 
-            if (empty($receiptCodes)) {
+            if (empty($receiptCodes) || $check->status_id == $rejectedStatus->id) {
                 continue;
             }
 
@@ -65,7 +67,7 @@ class RemoveDuplicatesCommand extends Command
 
                     if (! $check->hasJSONData('additional_info', 'duplicate')) {
                         if (isset($codes[$codeValue])) {
-                            $check->status_id = 3;
+                            $check->status_id = $rejectedStatus->id;
                             $check->setJSONData('additional_info', 'duplicate', true);
                         } else {
                             $codes[$codeValue] = $check->id;

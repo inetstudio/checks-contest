@@ -48,7 +48,7 @@ class StatusesSeedCommand extends Command
             [
                 'name' => 'Модерация',
                 'alias' => 'moderation',
-                'description' => 'Посты, ожидающие модерацию',
+                'description' => 'Чеки, ожидающие модерацию',
                 'color_class' => 'warning',
                 'types' => [
                     'checks_contest_status_default' => 'Статус по умолчанию',
@@ -58,7 +58,7 @@ class StatusesSeedCommand extends Command
             [
                 'name' => 'Одобрено',
                 'alias' => 'approved',
-                'description' => 'Одобренные посты',
+                'description' => 'Одобренные чеки',
                 'color_class' => 'primary',
                 'types' => [
                     'checks_contest_status_main' => 'Основной статус',
@@ -67,7 +67,7 @@ class StatusesSeedCommand extends Command
             [
                 'name' => 'Отклонено',
                 'alias' => 'rejected',
-                'description' => 'Отклоненные посты',
+                'description' => 'Отклоненные чеки',
                 'color_class' => 'danger',
             ],
         ];
