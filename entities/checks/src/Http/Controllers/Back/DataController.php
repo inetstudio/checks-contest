@@ -3,7 +3,7 @@
 namespace InetStudio\ChecksContest\Checks\Http\Controllers\Back;
 
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
+use InetStudio\AdminPanel\Base\Http\Controllers\Controller;
 use InetStudio\ChecksContest\Checks\Contracts\Services\Back\DataTableServiceContract;
 use InetStudio\ChecksContest\Checks\Contracts\Http\Controllers\Back\DataControllerContract;
 
