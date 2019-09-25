@@ -38,4 +38,19 @@ $(document).ready(function() {
       el: '#checkForm',
     });
   }
+
+  $('.wrapper-content').on('click', '.show-receipts', function() {
+    let url = $(this).attr('data-url');
+
+    $.ajax({
+      url: url,
+      method: 'GET',
+      dataType: 'html',
+      success: function(data) {
+        $('#receipts_modal .modal-body').html(data);
+
+        $('#receipts_modal').modal();
+      },
+    });
+  });
 });

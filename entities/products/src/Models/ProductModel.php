@@ -46,6 +46,8 @@ class ProductModel extends Model implements ProductModelContract
      * @var array
      */
     protected $fillable = [
+        'fns_receipt_id',
+        'check_id',
         'name',
         'quantity',
         'price',
@@ -71,10 +73,32 @@ class ProductModel extends Model implements ProductModelContract
 
         self::$buildQueryScopeDefaults['columns'] = [
             'id',
+            'fns_receipt_id',
+            'check_id',
             'name',
             'quantity',
             'price',
         ];
+    }
+
+    /**
+     * Сеттер атрибута fns_receipt_id.
+     *
+     * @param $value
+     */
+    public function setFnsReceiptIdAttribute($value): void
+    {
+        $this->attributes['fns_receipt_id'] = (int) trim(strip_tags($value));
+    }
+
+    /**
+     * Сеттер атрибута check_id.
+     *
+     * @param $value
+     */
+    public function setCheckIdAttribute($value): void
+    {
+        $this->attributes['check_id'] = (int) trim(strip_tags($value));
     }
 
     /**
@@ -94,7 +118,7 @@ class ProductModel extends Model implements ProductModelContract
      */
     public function setQuantityAttribute($value): void
     {
-        $this->attributes['quantity'] = (int) $value;
+        $this->attributes['quantity'] = $value;
     }
 
     /**
@@ -132,6 +156,24 @@ class ProductModel extends Model implements ProductModelContract
             get_class($checkModel),
             'id',
             'check_id'
+        );
+    }
+
+    /**
+     * Связь с моделью чека фнс.
+     *
+     * @return BelongsTo
+     *
+     * @throws BindingResolutionException
+     */
+    public function fnsReceipt(): BelongsTo
+    {
+        $fnsReceiptModel = app()->make('InetStudio\Fns\Receipts\Contracts\Models\ReceiptModelContract');
+
+        return $this->belongsTo(
+            get_class($fnsReceiptModel),
+            'id',
+            'fns_receipt_id'
         );
     }
 }

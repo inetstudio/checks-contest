@@ -14,11 +14,12 @@ class CreateChecksContestProductsTables extends Migration
     public function up()
     {
         Schema::create('checks_contest_products', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('check_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('check_id');
+            $table->unsignedBigInteger('fns_receipt_id')->default(0);
             $table->string('name');
-            $table->integer('quantity');
-            $table->integer('price');
+            $table->unsignedDecimal('quantity', 9, 3);
+            $table->unsignedInteger('price');
             $table->timestamps();
             $table->softDeletes();
         });

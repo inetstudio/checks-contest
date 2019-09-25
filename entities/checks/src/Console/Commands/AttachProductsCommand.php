@@ -44,13 +44,14 @@ class AttachProductsCommand extends Command
         $checks = $checksService->getModel()->has('receipts')->doesntHave('products')->get();
 
         foreach ($checks as $check) {
-            $fnsReceipt = $check->receipt;
+            $fnsReceipt = $check->receipts->first();
             $fnsReceiptData = $fnsReceipt->receipt['document']['receipt'];
 
             $products = [];
 
             foreach ($fnsReceiptData['items'] ?? [] as $item) {
                 $products[] = [
+                    'fns_receipt_id' => $fnsReceipt->id,
                     'name' => $item['name'],
                     'quantity' => $item['quantity'],
                     'price' => $item['price'],

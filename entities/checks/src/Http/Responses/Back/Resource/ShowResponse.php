@@ -37,7 +37,7 @@ class ShowResponse implements ShowResponseContract
     public function toResponse($request)
     {
         return view(
-            'admin.module.fns.receipts::back.modals.receipts-body',
+            'admin.module.checks-contest.checks::back.modals.receipts-body',
             ['item' => $this->item]
         )->render();
     }
