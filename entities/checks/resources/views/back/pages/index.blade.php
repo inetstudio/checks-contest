@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    @include('admin.module.fns.receipts::back.modals.receipts')
+    @include('admin.module.checks-contest.checks::back.modals.receipts')
 @endsection
 
 @pushonce('scripts:datatables_checks_checks_index')
