@@ -14,8 +14,10 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
      * @var array
      */
     public $bindings = [
+        'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\AttachFnsReceiptsCommandContract' => 'InetStudio\ChecksContest\Checks\Console\Commands\AttachFnsReceiptsCommand',
         'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\ModerateChecksCommandContract' => 'InetStudio\ChecksContest\Checks\Console\Commands\ModerateChecksCommand',
         'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\SetWinnerCommandContract' => 'InetStudio\ChecksContest\Checks\Console\Commands\SetWinnerCommand',
+        'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\RecognizeCodesCommandContract' => 'InetStudio\ChecksContest\Checks\Console\Commands\RecognizeCodesCommand',
         'InetStudio\ChecksContest\Checks\Contracts\Events\Back\ModifyItemEventContract' => 'InetStudio\ChecksContest\Checks\Events\Back\ModifyItemEvent',
         'InetStudio\ChecksContest\Checks\Contracts\Events\Back\ModerateItemEventContract' => 'InetStudio\ChecksContest\Checks\Events\Back\ModerateItemEvent',
         'InetStudio\ChecksContest\Checks\Contracts\Events\Back\SetWinnerEventContract' => 'InetStudio\ChecksContest\Checks\Events\Back\SetWinnerEvent',

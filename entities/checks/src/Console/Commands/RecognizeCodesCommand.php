@@ -4,11 +4,12 @@ namespace InetStudio\ChecksContest\Checks\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use InetStudio\ChecksContest\Checks\Contracts\Console\Commands\RecognizeCodesCommandContract;
 
 /**
  * Class RecognizeCodesCommand.
  */
-class RecognizeCodesCommand extends Command
+class RecognizeCodesCommand extends Command implements RecognizeCodesCommandContract
 {
     /**
      * The name and signature of the console command.

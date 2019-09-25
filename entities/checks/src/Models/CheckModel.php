@@ -6,11 +6,13 @@ use OwenIt\Auditing\Auditable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use InetStudio\Uploads\Models\Traits\HasImages;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use InetStudio\AdminPanel\Models\Traits\HasJSONColumns;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use InetStudio\ChecksContest\Statuses\Models\Traits\Status;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\ChecksContest\Checks\Contracts\Models\CheckModelContract;
+use InetStudio\CustomFieldsPackage\Fields\Models\Traits\HasCustomFields;
 use InetStudio\AdminPanel\Base\Models\Traits\Scopes\BuildQueryScopeTrait;
 
 /**
@@ -22,6 +24,7 @@ class CheckModel extends Model implements CheckModelContract
     use HasImages;
     use SoftDeletes;
     use HasJSONColumns;
+    use HasCustomFields;
     use BuildQueryScopeTrait;
 
     /**
@@ -108,6 +111,10 @@ class CheckModel extends Model implements CheckModelContract
                 $prizeQuery->select(['id', 'name', 'alias']);
             },
 
+            'products' => function ($prizeQuery) {
+                $prizeQuery->select(['id', 'name', 'quantity', 'price']);
+            },
+
             'receipts' => function ($receiptQuery) {
                 $receiptQuery->select(['id', 'qr_code', 'receipt']);
             },
@@ -189,6 +196,24 @@ class CheckModel extends Model implements CheckModelContract
             )
             ->withPivot(['confirmed', 'date_start', 'date_end'])
             ->withTimestamps();
+    }
+
+    /**
+     * Связь с моделью продукта.
+     *
+     * @return HasMany
+     *
+     * @throws BindingResolutionException
+     */
+    public function products(): HasMany
+    {
+        $productModel = app()->make('InetStudio\ChecksContest\Products\Contracts\Models\ProductModelContract');
+
+        return $this->hasMany(
+            get_class($productModel),
+            'check_id',
+            'id'
+        );
     }
 
     /**
