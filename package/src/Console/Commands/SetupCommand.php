@@ -51,6 +51,11 @@ class SetupCommand extends BaseSetupCommand
             ],
             [
                 'type' => 'artisan',
+                'description' => 'Checks contest products setup',
+                'command' => 'inetstudio:checks-contest:products:setup',
+            ],
+            [
+                'type' => 'artisan',
                 'description' => 'Checks contest statuses setup',
                 'command' => 'inetstudio:checks-contest:statuses:setup',
             ],

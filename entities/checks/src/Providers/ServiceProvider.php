@@ -33,6 +33,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->commands(
             [
                 'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\AttachFnsReceiptsCommandContract',
+                'InetStudio\ChecksContest\Checks\Console\Commands\AttachProductsCommand',
                 'InetStudio\ChecksContest\Checks\Console\Commands\CreateFoldersCommand',
                 'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\ModerateChecksCommandContract',
                 'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\RecognizeCodesCommandContract',

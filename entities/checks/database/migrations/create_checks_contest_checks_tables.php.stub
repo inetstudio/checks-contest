@@ -44,7 +44,6 @@ class CreateChecksContestChecksTables extends Migration
     public function down()
     {
         Schema::drop('checks_contest_checks_fns_receipts');
-        Schema::drop('checks_contest_checks_products');
         Schema::drop('checks_contest_checks_prizes');
         Schema::drop('checks_contest_checks');
     }
