@@ -20,6 +20,7 @@
       "InetStudio\\ChecksContest\\": "package/src",
       "InetStudio\\ChecksContest\\Checks\\": "entities/checks/src",
       "InetStudio\\ChecksContest\\Prizes\\": "entities/prizes/src",
+      "InetStudio\\ChecksContest\\Products\\": "entities/products/src",
       "InetStudio\\ChecksContest\\Statuses\\": "entities/statuses/src"
     }
   },
@@ -31,6 +32,8 @@
         "InetStudio\\ChecksContest\\Checks\\Providers\\ServiceProvider",
         "InetStudio\\ChecksContest\\Prizes\\Providers\\BindingsServiceProvider",
         "InetStudio\\ChecksContest\\Prizes\\Providers\\ServiceProvider",
+        "InetStudio\\ChecksContest\\Products\\Providers\\BindingsServiceProvider",
+        "InetStudio\\ChecksContest\\Products\\Providers\\ServiceProvider",
         "InetStudio\\ChecksContest\\Statuses\\Providers\\BindingsServiceProvider",
         "InetStudio\\ChecksContest\\Statuses\\Providers\\ServiceProvider"
       ]
