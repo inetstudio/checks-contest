@@ -65,7 +65,7 @@ class DataTableService extends DataTable implements DataTableServiceContract
                     'created_at',
                     'updated_at',
                 ],
-                'relations' => ['media', 'status', 'prizes', 'receipts'],
+                'relations' => ['media', 'status', 'prizes', 'fnsReceipts'],
             ]
         );
 

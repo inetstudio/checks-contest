@@ -53,4 +53,21 @@ $(document).ready(function() {
       },
     });
   });
+
+  $('#receipts_modal .save').on('click', function (event) {
+    event.preventDefault();
+
+    let form = $('#receipts_modal form');
+    let data = form.serializeArray();
+
+    $.ajax({
+      'url': form.attr('action'),
+      'type': form.attr('method'),
+      'data': data,
+      'dataType': 'json',
+      'success': function(data) {
+        $('#receipts_modal').modal('hide');
+      }
+    });
+  });
 });

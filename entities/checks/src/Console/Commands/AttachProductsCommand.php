@@ -2,6 +2,7 @@
 
 namespace InetStudio\ChecksContest\Checks\Console\Commands;
 
+use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 
@@ -41,10 +42,10 @@ class AttachProductsCommand extends Command
     {
         $checksService = app()->make('InetStudio\ChecksContest\Checks\Contracts\Services\Back\ItemsServiceContract');
 
-        $checks = $checksService->getModel()->has('receipts')->doesntHave('products')->get();
+        $checks = $checksService->getModel()->has('fnsReceipts')->doesntHave('products')->get();
 
         foreach ($checks as $check) {
-            $fnsReceipt = $check->receipts->first();
+            $fnsReceipt = $check->fnsReceipts->first();
             $fnsReceiptData = $fnsReceipt->receipt['document']['receipt'];
 
             $products = [];
@@ -59,6 +60,8 @@ class AttachProductsCommand extends Command
             }
 
             $check->products()->createMany($products);
+            $check->receipt_data = Arr::except($fnsReceiptData, ['items']);
+            $check->save();
         }
     }
 }

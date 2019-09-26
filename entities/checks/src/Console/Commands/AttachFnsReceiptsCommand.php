@@ -2,6 +2,7 @@
 
 namespace InetStudio\ChecksContest\Checks\Console\Commands;
 
+use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\ChecksContest\Checks\Contracts\Console\Commands\AttachFnsReceiptsCommandContract;
@@ -48,14 +49,16 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
 
         $checks = $checksService->getModel()->where([
             ['status_id', '=', $status->id],
-        ])->doesntHave('receipts')->get();
+        ])->doesntHave('fnsReceipts')->get();
 
         $bar = $this->output->createProgressBar(count($checks));
 
         foreach ($checks as $check) {
-            $codes = $check->getJSONData('additional_info', 'codes', []);
+            $codes = $check->getJSONData('receipt_data', 'codes', []);
 
             $receiptsIds = [];
+            $products = [];
+
             foreach ($codes as $code) {
                 if (! (($code[0] ?? '') == 'QR_CODE')) {
                     continue;
@@ -65,16 +68,31 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
                     continue;
                 }
 
-                $receipt = $receiptsService->getReceiptByQrCode($code[1]);
+                $fnsReceipt = $receiptsService->getReceiptByQrCode($code[1]);
 
-                if ($receipt) {
-                    $receiptsIds[] = $receipt['id'];
+                if ($fnsReceipt) {
+                    $receiptsIds[] = $fnsReceipt['id'];
+
+                    $fnsReceiptData = $fnsReceipt->receipt['document']['receipt'];
+
+                    foreach ($fnsReceiptData['items'] ?? [] as $item) {
+                        $products[] = [
+                            'fns_receipt_id' => $fnsReceipt->id,
+                            'name' => $item['name'],
+                            'quantity' => $item['quantity'],
+                            'price' => $item['price'],
+                        ];
+                    }
                 }
             }
 
             if (! empty($receiptsIds)) {
-                $check->receipts()->sync($receiptsIds);
+                $check->fnsReceipts()->sync($receiptsIds);
             }
+
+            $check->products()->createMany($products);
+            $check->receipt_data = Arr::except($fnsReceiptData, ['items']);
+            $check->save();
 
             $bar->advance();
         }

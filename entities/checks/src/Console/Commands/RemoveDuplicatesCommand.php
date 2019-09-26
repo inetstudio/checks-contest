@@ -51,7 +51,7 @@ class RemoveDuplicatesCommand extends Command
         $codes = [];
 
         foreach ($checks as $check) {
-            $receiptCodes = $check->getJSONData('additional_info', 'codes', []);
+            $receiptCodes = $check->getJSONData('receipt_data', 'codes', []);
 
             if (empty($receiptCodes) || $check->status_id == $rejectedStatus->id) {
                 continue;
@@ -65,13 +65,13 @@ class RemoveDuplicatesCommand extends Command
                         continue;
                     }
 
-                    if (! $check->hasJSONData('additional_info', 'duplicate')) {
+                    if (! $check->hasJSONData('receipt_data', 'duplicate')) {
                         if (isset($codes[$codeValue])) {
                             $check->status_id = $rejectedStatus->id;
-                            $check->setJSONData('additional_info', 'duplicate', true);
+                            $check->setJSONData('receipt_data', 'duplicate', true);
                         } else {
                             $codes[$codeValue] = $check->id;
-                            $check->setJSONData('additional_info', 'duplicate', false);
+                            $check->setJSONData('receipt_data', 'duplicate', false);
                         }
 
                         $check->save();

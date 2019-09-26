@@ -38,8 +38,13 @@ class ItemsService extends BaseService implements ItemsServiceContract
     {
         $action = ($id) ? 'отредактирован' : 'создан';
 
+        $receiptData = Arr::pull($data, 'receipt_data');
+
         $itemData = Arr::only($data, $this->model->getFillable());
         $item = $this->saveModel($itemData, $id);
+
+        $receiptData = array_merge($item['receipt_data'] ?? [], $receiptData);
+        $item = $this->saveModel(['receipt_data' => $receiptData], $id);
 
         $prizesData = Arr::get($data, 'prizes', []);
         app()->make('InetStudio\ChecksContest\Prizes\Contracts\Services\Back\ItemsServiceContract')

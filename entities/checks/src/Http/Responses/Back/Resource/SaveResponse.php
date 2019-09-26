@@ -37,11 +37,21 @@ class SaveResponse implements SaveResponseContract
     {
         $item = $this->item->fresh();
 
-        return response()->redirectToRoute(
-            'back.checks-contest.checks.edit',
-            [
-                $item['id'],
-            ]
-        );
+        if ($request->ajax()) {
+            return response()->json(
+                [
+                    'success' => true,
+                    'item' => $item,
+                ],
+                200
+            );
+        } else {
+            return response()->redirectToRoute(
+                'back.checks-contest.checks.edit',
+                [
+                    $item['id'],
+                ]
+            );
+        }
     }
 }

@@ -17,9 +17,16 @@
         @endforeach
     </ul>
 
-    @if (count($item['receipts']) > 0)
-        <button class="btn btn-default show-receipts" type="button" data-url="{{ route('back.checks-contest.checks.show', [$item['id']]) }}">
-            <i class="fa fa-qrcode"></i>
-        </button>
-    @endif
+    @php
+        $buttonClass = 'default';
+
+        if (count($item['fnsReceipts']) > 0) {
+            $buttonClass = 'primary';
+        } elseif (count($item['products']) > 0) {
+            $buttonClass = 'warning';
+        }
+    @endphp
+    <button class="btn btn-{{ $buttonClass }} show-receipts" type="button" data-url="{{ route('back.checks-contest.checks.show', [$item['id']]) }}">
+        <i class="fa fa-receipt"></i>
+    </button>
 </div>

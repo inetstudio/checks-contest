@@ -132,6 +132,26 @@ class ProductModel extends Model implements ProductModelContract
     }
 
     /**
+     * Геттер атрибута price_formatted.
+     *
+     * @return float
+     */
+    public function getPriceFormattedAttribute(): float
+    {
+        return (float) number_format($this->getAttribute('price') / 100, 2);
+    }
+
+    /**
+     * Геттер атрибута sum.
+     *
+     * @return float
+     */
+    public function getSumAttribute(): float
+    {
+        return (float) number_format($this->getAttribute('quantity') * ($this->getAttribute('price') / 100), 2);
+    }
+
+    /**
      * Геттер атрибута type.
      *
      * @return string

@@ -50,13 +50,13 @@ class RecognizeCodesCommand extends Command implements RecognizeCodesCommandCont
         ])->get();
 
         foreach ($checks as $check) {
-            if (! $check->hasJSONData('additional_info', 'codes')) {
+            if (! $check->hasJSONData('receipt_data', 'codes')) {
                 $imagePath = $check->getFirstMediaPath('images');
 
                 $codes = DecodeBarcodeFile($imagePath, 0x4000000);
                 $codes = (is_array($codes)) ? $codes : [];
 
-                $check->setJSONData('additional_info', 'codes', $codes);
+                $check->setJSONData('receipt_data', 'codes', $codes);
                 $check->save();
             }
         }

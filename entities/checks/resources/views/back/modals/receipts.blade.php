@@ -11,6 +11,7 @@
 
             </div>
             <div class="modal-footer">
+                <button type="button" class="save btn btn-primary">Сохранить</button>
                 <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
             </div>
         </div>

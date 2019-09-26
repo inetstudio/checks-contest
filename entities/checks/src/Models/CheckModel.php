@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use InetStudio\ChecksContest\Statuses\Models\Traits\Status;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\ChecksContest\Checks\Contracts\Models\CheckModelContract;
-use InetStudio\CustomFieldsPackage\Fields\Models\Traits\HasCustomFields;
 use InetStudio\AdminPanel\Base\Models\Traits\Scopes\BuildQueryScopeTrait;
 
 /**
@@ -24,7 +23,6 @@ class CheckModel extends Model implements CheckModelContract
     use HasImages;
     use SoftDeletes;
     use HasJSONColumns;
-    use HasCustomFields;
     use BuildQueryScopeTrait;
 
     /**
@@ -63,6 +61,7 @@ class CheckModel extends Model implements CheckModelContract
      */
     protected $fillable = [
         'verify_hash',
+        'receipt_data',
         'additional_info',
         'status_id',
     ];
@@ -84,6 +83,7 @@ class CheckModel extends Model implements CheckModelContract
      * @var array
      */
     protected $casts = [
+        'receipt_data' => 'array',
         'additional_info' => 'array',
     ];
 
@@ -95,7 +95,7 @@ class CheckModel extends Model implements CheckModelContract
         parent::boot();
 
         self::$buildQueryScopeDefaults['columns'] = [
-            'id', 'additional_info', 'status_id',
+            'id', 'receipt_data', 'additional_info', 'status_id',
         ];
 
         self::$buildQueryScopeDefaults['relations'] = [
@@ -115,7 +115,7 @@ class CheckModel extends Model implements CheckModelContract
                 $prizeQuery->select(['id', 'name', 'quantity', 'price']);
             },
 
-            'receipts' => function ($receiptQuery) {
+            'fnsReceipts' => function ($receiptQuery) {
                 $receiptQuery->select(['id', 'qr_code', 'receipt']);
             },
         ];
@@ -129,6 +129,16 @@ class CheckModel extends Model implements CheckModelContract
     public function setVerifyHashAttribute($value)
     {
         $this->attributes['verify_hash'] = trim(strip_tags($value));
+    }
+
+    /**
+     * Сеттер атрибута receipt_data.
+     *
+     * @param $value
+     */
+    public function setReceiptDataAttribute($value)
+    {
+        $this->attributes['receipt_data'] = json_encode((array) $value);
     }
 
     /**
@@ -223,7 +233,7 @@ class CheckModel extends Model implements CheckModelContract
      *
      * @throws BindingResolutionException
      */
-    public function receipts(): BelongsToMany
+    public function fnsReceipts(): BelongsToMany
     {
         $receiptModel = app()->make('InetStudio\Fns\Receipts\Contracts\Models\ReceiptModelContract');
 
