@@ -1,25 +1,36 @@
 <template>
-    <div>
-        <div class="form-group row checks_contest_products-package">
-            <label class="col-sm-2 col-form-label font-bold">Продукты</label>
-            <div class="col-sm-10">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content no-borders">
-                        <a href="#" class="btn btn-xs btn-primary btn-xs" v-on:click.prevent="addProduct">Добавить</a>
-                        <ul class="products-list m-t small-list">
-                            <products-list-item
-                                v-for="product in products"
-                                :key="product.model.id"
-                                v-bind:product="product"
-                                v-on:remove="removeProduct"
-                            />
-                        </ul>
-                    </div>
-                </div>
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Продукты</h5>
+            <div class="ibox-tools">
+                <a href="#" class="btn btn-xs btn-primary btn-xs" v-on:click.prevent="addProduct">Добавить</a>
             </div>
         </div>
-
-        <div class="hr-line-dashed"></div>
+        <div class="ibox-content">
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <th>Продукт</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                    <th>Сумма</th>
+                    <th></th>
+                </tr>
+                <products-list-item
+                    v-for="product in products"
+                    :key="product.model.id"
+                    v-bind:product="product"
+                    v-on:remove="removeProduct"
+                />
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><strong>Итого:</strong></td>
+                    <td><strong>{{ total }}</strong></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -41,8 +52,17 @@
     },
     computed: {
       mode() {
-        return window.Admin.vue.stores['products'].state.mode;
+        return window.Admin.vue.stores['checks_contest_products'].state.mode;
       },
+      total() {
+        let total = 0;
+
+        this.products.forEach(function (product) {
+          total += (product.model.quantity * product.model.price);
+        });
+
+        return total.toFixed(2);
+      }
     },
     watch: {
       mode: function(newMode) {
@@ -50,11 +70,21 @@
           this.saveProduct();
         }
       },
-      productssProp: function() {
+      productsProp: function() {
         this.products = this.prepareProducts();
       },
     },
     methods: {
+      formatNumber(number, fractionDigits) {
+        number = String(number)
+        number = number.replace(',', '.');
+        number = number.replace( /^([^.]*\.)(.*)$/, function ( a, b, c ) {
+          return b + c.replace( /\./g, '' );
+        });
+        number = number.replace(/[^0-9.]/g, '');
+
+        return parseFloat(number).toFixed(fractionDigits);
+      },
       prepareProducts() {
         let component = this;
         let products = [];
@@ -65,24 +95,20 @@
             model: {
               id: element.id,
               name: element.name,
-              product_id: element.id.toString(),
-              confirmed: (element.pivot.confirmed === 1) ? ['1'] : [],
-              date_start: (element.pivot.date_start) ? component.getDate(element.pivot.date_start) : '',
-              date_end: (element.pivot.date_end) ? component.getDate(element.pivot.date_end) : ''
+              quantity: component.formatNumber(element.quantity, 3),
+              price: (component.formatNumber(element.price, 2) / 100).toFixed(2),
+              product_data: element.product_data || {},
             },
             hash: window.hash(element),
           });
-
-          window.Admin.vue.stores['products'].commit('addProductId', element.id);
         });
 
         return products;
       },
       initProductsComponent() {
-        if (typeof window.Admin.vue.modulesComponents.$refs['checks_contest_ProductsListItemForm'] ==
-            'undefined') {
-          window.Admin.vue.modulesComponents.modules.products.components = _.union(
-              window.Admin.vue.modulesComponents.modules.products.components, [
+        if (typeof window.Admin.vue.modulesComponents.$refs['checks_contest_products_ProductsListItemForm'] == 'undefined') {
+          window.Admin.vue.modulesComponents.modules.checks_contest_products.components = _.union(
+              window.Admin.vue.modulesComponents.modules.checks_contest_products.components, [
                 {
                   name: 'ProductsListItemForm',
                   data: {},
@@ -93,8 +119,8 @@
       addProduct() {
         this.initProductsComponent();
 
-        window.Admin.vue.stores['products'].commit('setMode', 'add_list_item');
-        window.Admin.vue.stores['products'].commit('setProduct', {});
+        window.Admin.vue.stores['checks_contest_products'].commit('setMode', 'add_list_item');
+        window.Admin.vue.stores['checks_contest_products'].commit('setProduct', {});
 
         window.waitForElement('#products_list_item_form_modal', function() {
           $('#products_list_item_form_modal').modal();
@@ -116,8 +142,6 @@
               return product.model.id !== payload.id;
             });
 
-            window.Admin.vue.stores['products'].commit('removeProductId', payload.id);
-
             component.$emit('update:products', {
               products: _.map(this.products, 'model'),
             });
@@ -127,8 +151,10 @@
       saveProduct() {
         let component = this;
 
-        let storeProduct = JSON.parse(JSON.stringify(window.Admin.vue.stores['products'].state.product));
+        let storeProduct = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_products'].state.product));
         storeProduct.hash = window.hash(storeProduct.model);
+        storeProduct.model.price = component.formatNumber(storeProduct.model.price, 2);
+        storeProduct.model.quantity = component.formatNumber(storeProduct.model.quantity, 3);
 
         let index = this.getProductIndex(storeProduct.model.id);
 
@@ -136,8 +162,6 @@
           this.$set(this.products, index, storeProduct);
         } else {
           this.products.push(storeProduct);
-
-          window.Admin.vue.stores['products'].commit('addProductId', parseInt(storeProduct.model.product_id));
         }
 
         component.$emit('update:products', {
@@ -148,9 +172,6 @@
         return _.findIndex(this.products, function(product) {
           return product.model.id === id;
         });
-      },
-      getDate(dateTime) {
-        return flatpickr.formatDate(flatpickr.parseDate(dateTime, 'Y-m-d H:i:s'), 'd.m.Y');
       }
     },
   };

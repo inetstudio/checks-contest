@@ -12,7 +12,6 @@
   "require": {
     "inetstudio/admin-panel": "1.8.*",
     "inetstudio/classifiers": "1.8.*",
-    "inetstudio/custom-fields": "1.8.*",
     "inetstudio/fns": "1.8.*"
   },
   "autoload": {

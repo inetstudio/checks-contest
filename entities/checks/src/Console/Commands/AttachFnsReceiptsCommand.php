@@ -49,14 +49,13 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
 
         $checks = $checksService->getModel()->where([
             ['status_id', '=', $status->id],
-        ])->doesntHave('fnsReceipts')->get();
+        ])->doesntHave('fnsReceipt')->get();
 
         $bar = $this->output->createProgressBar(count($checks));
 
         foreach ($checks as $check) {
             $codes = $check->getJSONData('receipt_data', 'codes', []);
 
-            $receiptsIds = [];
             $products = [];
 
             foreach ($codes as $code) {
@@ -71,25 +70,24 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
                 $fnsReceipt = $receiptsService->getReceiptByQrCode($code[1]);
 
                 if ($fnsReceipt) {
-                    $receiptsIds[] = $fnsReceipt['id'];
-
                     $fnsReceiptData = $fnsReceipt->receipt['document']['receipt'];
 
                     foreach ($fnsReceiptData['items'] ?? [] as $item) {
                         $products[] = [
+                            'receipt_id' => $check->id,
                             'fns_receipt_id' => $fnsReceipt->id,
                             'name' => $item['name'],
                             'quantity' => $item['quantity'],
                             'price' => $item['price'],
+                            'product_data' => $item,
                         ];
                     }
+
+                    break;
                 }
             }
 
-            if (! empty($receiptsIds)) {
-                $check->fnsReceipts()->sync($receiptsIds);
-            }
-
+            $check->fns_receipt_id = $fnsReceipt->id ?? 0;
             $check->products()->createMany($products);
             $check->receipt_data = Arr::except($fnsReceiptData, ['items']);
             $check->save();

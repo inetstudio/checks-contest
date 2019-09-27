@@ -6,8 +6,8 @@ use OwenIt\Auditing\Auditable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use InetStudio\AdminPanel\Models\Traits\HasJSONColumns;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use InetStudio\CustomFieldsPackage\Fields\Models\Traits\HasCustomFields;
 use InetStudio\AdminPanel\Base\Models\Traits\Scopes\BuildQueryScopeTrait;
 use InetStudio\ChecksContest\Products\Contracts\Models\ProductModelContract;
 
@@ -18,7 +18,7 @@ class ProductModel extends Model implements ProductModelContract
 {
     use Auditable;
     use SoftDeletes;
-    use HasCustomFields;
+    use HasJSONColumns;
     use BuildQueryScopeTrait;
 
     /**
@@ -47,10 +47,11 @@ class ProductModel extends Model implements ProductModelContract
      */
     protected $fillable = [
         'fns_receipt_id',
-        'check_id',
+        'receipt_id',
         'name',
         'quantity',
         'price',
+        'product_data',
     ];
 
     /**
@@ -65,6 +66,15 @@ class ProductModel extends Model implements ProductModelContract
     ];
 
     /**
+     * Атрибуты, которые должны быть преобразованы к базовым типам.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'product_data' => 'array',
+    ];
+
+    /**
      * Загрузка модели.
      */
     protected static function boot()
@@ -74,10 +84,11 @@ class ProductModel extends Model implements ProductModelContract
         self::$buildQueryScopeDefaults['columns'] = [
             'id',
             'fns_receipt_id',
-            'check_id',
+            'receipt_id',
             'name',
             'quantity',
             'price',
+            'product_data',
         ];
     }
 
@@ -96,9 +107,9 @@ class ProductModel extends Model implements ProductModelContract
      *
      * @param $value
      */
-    public function setCheckIdAttribute($value): void
+    public function setReceiptIdAttribute($value): void
     {
-        $this->attributes['check_id'] = (int) trim(strip_tags($value));
+        $this->attributes['receipt_id'] = (int) trim(strip_tags($value));
     }
 
     /**
@@ -132,6 +143,16 @@ class ProductModel extends Model implements ProductModelContract
     }
 
     /**
+     * Сеттер атрибута product_data.
+     *
+     * @param $value
+     */
+    public function setProductDataAttribute($value)
+    {
+        $this->attributes['product_data'] = json_encode((array) $value);
+    }
+
+    /**
      * Геттер атрибута price_formatted.
      *
      * @return float
@@ -162,25 +183,7 @@ class ProductModel extends Model implements ProductModelContract
     }
 
     /**
-     * Связь с моделью чека.
-     *
-     * @return BelongsTo
-     *
-     * @throws BindingResolutionException
-     */
-    public function check(): BelongsTo
-    {
-        $checkModel = app()->make('InetStudio\ChecksContest\Checks\Contracts\Models\CheckModelContract');
-
-        return $this->belongsTo(
-            get_class($checkModel),
-            'id',
-            'check_id'
-        );
-    }
-
-    /**
-     * Связь с моделью чека фнс.
+     * Связь с моделью чека ФНС.
      *
      * @return BelongsTo
      *
@@ -194,6 +197,24 @@ class ProductModel extends Model implements ProductModelContract
             get_class($fnsReceiptModel),
             'id',
             'fns_receipt_id'
+        );
+    }
+
+    /**
+     * Связь с моделью чека.
+     *
+     * @return BelongsTo
+     *
+     * @throws BindingResolutionException
+     */
+    public function receipt(): BelongsTo
+    {
+        $checkModel = app()->make('InetStudio\ChecksContest\Checks\Contracts\Models\CheckModelContract');
+
+        return $this->belongsTo(
+            get_class($checkModel),
+            'id',
+            'receipt_id'
         );
     }
 }

@@ -1,19 +1,17 @@
-window.Admin.vue.stores['products'] = new Vuex.Store({
+window.Admin.vue.stores['checks_contest_products'] = new Vuex.Store({
   state: {
     emptyProduct: {
       model: {
         name: '',
-        product_id: '',
-        confirmed: [],
-        date_start: '',
-        date_end: ''
+        quantity: 0,
+        price: 0,
+        product_data: {}
       },
       errors: {},
       isModified: false,
       hash: '',
     },
     product: {},
-    productsIds: [],
     mode: '',
   },
   mutations: {
@@ -25,14 +23,6 @@ window.Admin.vue.stores['products'] = new Vuex.Store({
       resultProduct.hash = window.hash(resultProduct.model);
 
       state.product = resultProduct;
-    },
-    addProductId(state, productId) {
-      state.productsIds.push(productId);
-    },
-    removeProductId(state, productId) {
-      state.productsIds = _.remove(state.productsIds, function(stateProductId) {
-        return stateProductId !== productId;
-      });
     },
     setMode(state, mode) {
       state.mode = mode;

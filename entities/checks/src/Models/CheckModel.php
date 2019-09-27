@@ -6,6 +6,7 @@ use OwenIt\Auditing\Auditable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use InetStudio\Uploads\Models\Traits\HasImages;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use InetStudio\AdminPanel\Models\Traits\HasJSONColumns;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -60,6 +61,7 @@ class CheckModel extends Model implements CheckModelContract
      * @var array
      */
     protected $fillable = [
+        'fns_receipt_id',
         'verify_hash',
         'receipt_data',
         'additional_info',
@@ -95,7 +97,7 @@ class CheckModel extends Model implements CheckModelContract
         parent::boot();
 
         self::$buildQueryScopeDefaults['columns'] = [
-            'id', 'receipt_data', 'additional_info', 'status_id',
+            'id', 'fns_receipt_id', 'verify_hash', 'receipt_data', 'additional_info', 'status_id',
         ];
 
         self::$buildQueryScopeDefaults['relations'] = [
@@ -115,7 +117,7 @@ class CheckModel extends Model implements CheckModelContract
                 $prizeQuery->select(['id', 'name', 'quantity', 'price']);
             },
 
-            'fnsReceipts' => function ($receiptQuery) {
+            'fnsReceipt' => function ($receiptQuery) {
                 $receiptQuery->select(['id', 'qr_code', 'receipt']);
             },
         ];
@@ -221,7 +223,7 @@ class CheckModel extends Model implements CheckModelContract
 
         return $this->hasMany(
             get_class($productModel),
-            'check_id',
+            'receipt_id',
             'id'
         );
     }
@@ -229,20 +231,18 @@ class CheckModel extends Model implements CheckModelContract
     /**
      * Связь с моделью чека ФНС.
      *
-     * @return BelongsToMany
+     * @return HasOne
      *
      * @throws BindingResolutionException
      */
-    public function fnsReceipts(): BelongsToMany
+    public function fnsReceipt(): HasOne
     {
-        $receiptModel = app()->make('InetStudio\Fns\Receipts\Contracts\Models\ReceiptModelContract');
+        $fnsReceiptModel = app()->make('InetStudio\Fns\Receipts\Contracts\Models\ReceiptModelContract');
 
-        return $this->belongsToMany(
-                get_class($receiptModel),
-                'checks_contest_checks_fns_receipts',
-                'check_id',
-                'receipt_id'
-            )
-            ->withTimestamps();
+        return $this->hasOne(
+            get_class($fnsReceiptModel),
+            'id',
+            'fns_receipt_id'
+        );
     }
 }

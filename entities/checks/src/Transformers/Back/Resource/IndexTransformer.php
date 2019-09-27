@@ -23,11 +23,13 @@ class IndexTransformer extends TransformerAbstract implements IndexTransformerCo
      */
     public function transform(CheckModelContract $item): array
     {
-        $checkData = $item['additional_info'];
+        $receiptData = $item['receipt_data'];
+        $userData = $item['additional_info'];
 
         return [
             'id' => $item['id'],
-            'additional_info' => $checkData,
+            'receipt_data' => $receiptData,
+            'additional_info' => $userData,
             'status' => view(
                 'admin.module.checks-contest.checks::back.partials.datatables.status', [
                 'item' => $item['status'],
@@ -44,10 +46,10 @@ class IndexTransformer extends TransformerAbstract implements IndexTransformerCo
             )->render(),
             'check' => view('admin.module.checks-contest.checks::back.partials.datatables.check', compact('item'))
                 ->render(),
-            'name' => $checkData['name'],
-            'surname' => $checkData['surname'],
-            'email' => $checkData['email'],
-            'phone' => $checkData['phone'],
+            'name' => $userData['name'],
+            'surname' => $userData['surname'],
+            'email' => $userData['email'],
+            'phone' => $userData['phone'],
             'created_at' => (string) $item['created_at'],
             'updated_at' => (string) $item['updated_at'],
             'actions' => view('admin.module.checks-contest.checks::back.partials.datatables.actions', compact('item'))

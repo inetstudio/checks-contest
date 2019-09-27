@@ -18,15 +18,13 @@
     </ul>
 
     @php
-        $buttonClass = 'default';
+        $icon = 'receipt';
 
-        if (count($item['fnsReceipts']) > 0) {
-            $buttonClass = 'primary';
-        } elseif (count($item['products']) > 0) {
-            $buttonClass = 'warning';
+        if ($item['fnsReceipt']) {
+            $icon = 'qrcode';
         }
     @endphp
-    <button class="btn btn-{{ $buttonClass }} show-receipts" type="button" data-url="{{ route('back.checks-contest.checks.show', [$item['id']]) }}">
-        <i class="fa fa-receipt"></i>
+    <button class="btn btn-default show-receipts" type="button" data-url="{{ route('back.checks-contest.checks.show', [$item['id']]) }}">
+        <i class="fa fa-{{ $icon }}"></i>
     </button>
 </div>

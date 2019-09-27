@@ -7,7 +7,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span
                             aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
-                    <h1 class="modal-title">Приз</h1>
+                    <h1 class="modal-title">Продукт</h1>
                 </div>
 
                 <div class="modal-body">
@@ -18,44 +18,31 @@
                         </div>
 
                         <base-dropdown
-                                label="Приз"
-                                name="product_id"
-                                v-bind:attributes="{
-                                    'data-placeholder': 'Выберите приз'
-                                }"
-                                v-bind:options="options.products"
-                                v-bind:selected="product.model.product_id"
-                                v-on:update:selected="selectProduct($event)"
+                                label = "Категория товара"
+                                name = "product_type"
+                                v-bind:attributes = "{
+                                'data-placeholder': 'Выберите категорию товара'
+                            }"
+                            v-bind:options = "options.categories"
+                            v-bind:selected.sync="product.model.product_data.category"
                         />
 
-                        <base-date
-                                label="Дата"
-                                v-bind:name="[
-                                    'date_start',
-                                    'date_end'
-                                ]"
-                                v-bind:value="[
-                                    product.model.date_start,
-                                    product.model.date_end,
-                                ]"
-                                v-bind:attributes="{
-                                    'data-options': JSON.stringify(attributes)
-                                }"
-                                v-on:update:date_start="product.model.date_start = $event"
-                                v-on:update:date_end="product.model.date_end = $event"
+                        <base-input-text
+                            label="Название"
+                            name="answer"
+                            v-bind:value.sync="product.model.name"
                         />
 
-                        <base-checkboxes
-                                label="Подтвердить"
-                                name="confirmed"
-                                v-bind:checkboxes="[
-                                    {
-                                        value: 1,
-                                        label: ''
-                                    }
-                                ]"
-                                v-bind:selected="product.model.confirmed"
-                                v-on:update:selected="product.model.confirmed = $event"
+                        <base-input-text
+                            label="Количество"
+                            name="answer"
+                            v-bind:value.sync="product.model.quantity"
+                        />
+
+                        <base-input-text
+                            label="Стоимость единицы товара"
+                            name="answer"
+                            v-bind:value.sync="product.model.price"
                         />
                     </div>
                 </div>
@@ -76,18 +63,19 @@
       return {
         options: {
           loading: true,
-          products: []
+          categories: [
+            {
+              value: 'beauty',
+              text: 'Бьюти',
+            }
+          ]
         },
-        product: {},
-        attributes: {
-          dateFormat: 'd.m.Y',
-          enableTime: false
-        }
+        product: {}
       };
     },
     computed: {
       mode() {
-        return window.Admin.vue.stores['products'].state.mode;
+        return window.Admin.vue.stores['checks_contest_products'].state.mode;
       },
     },
     watch: {
@@ -105,51 +93,28 @@
       initComponent: function() {
         let component = this;
 
-        component.product = JSON.parse(JSON.stringify(window.Admin.vue.stores['products'].state.emptyProduct));
+        component.product = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_products'].state.emptyProduct));
 
-        let url = route('back.checks-contest.products.getSuggestions');
-
-        axios.post(url).then(response => {
-          component.options.products = _.map(response.data.items, function (item) {
-            return {
-                value: item.id,
-                text: item.name
-            };
-          });
-
-          component.options.loading = false;
-        });
+        component.options.loading = false;
       },
       loadProduct() {
         let component = this;
 
-        component.product = JSON.parse(JSON.stringify(window.Admin.vue.stores['products'].state.product));
-
-        $('#product_id').val(component.product.model.product_id).trigger('change');
-        $('#date_start')[0]._flatpickr.setDate(component.product.model.date_start);
-        $('#date_end')[0]._flatpickr.setDate(component.product.model.date_end);
+        component.product = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_products'].state.product));
       },
       saveProduct() {
         let component = this;
 
-        if (window.Admin.vue.stores['products'].state.mode === 'add_list_item'
-            && window.Admin.vue.stores['products'].state.productsIds.indexOf(parseInt(component.product.model.product_id)) > -1) {
-
+        if (component.product.isModified && component.product.model.name !== '' && component.product.model.quantity !== '' && component.product.model.price !== '') {
+          window.Admin.vue.stores['checks_contest_products'].commit('setProduct', JSON.parse(JSON.stringify(component.product)));
+          window.Admin.vue.stores['checks_contest_products'].commit('setMode', 'save_list_item');
+        } else {
           $(this.$refs.modal).modal('hide');
 
           return;
-        } else if (component.product.isModified && component.product.model.product_id !== 0) {
-          window.Admin.vue.stores['products'].commit('setProduct', JSON.parse(JSON.stringify(component.product)));
-          window.Admin.vue.stores['products'].commit('setMode', 'save_list_item');
         }
 
         $(this.$refs.modal).modal('hide');
-      },
-      selectProduct(data) {
-        if (data) {
-          this.product.model.product_id = data;
-          this.product.model.name = $('#product_id option[value='+data+']').text();
-        }
       }
     },
     created: function() {
@@ -161,11 +126,12 @@
       this.$nextTick(function() {
         $(component.$refs.modal).on('show.bs.modal', function() {
           component.loadProduct();
+
+          $('#product_type').val(null).trigger('change');
         });
 
         $(component.$refs.modal).on('hide.bs.modal', function() {
-          component.product = JSON.parse(JSON.stringify(window.Admin.vue.stores['products'].state.emptyProduct));
-          $('#product_id').val(null).trigger('change');
+          component.product = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_products'].state.emptyProduct));
         });
       });
     },

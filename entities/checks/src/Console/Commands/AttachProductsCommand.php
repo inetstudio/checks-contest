@@ -42,10 +42,10 @@ class AttachProductsCommand extends Command
     {
         $checksService = app()->make('InetStudio\ChecksContest\Checks\Contracts\Services\Back\ItemsServiceContract');
 
-        $checks = $checksService->getModel()->has('fnsReceipts')->doesntHave('products')->get();
+        $checks = $checksService->getModel()->has('fnsReceipt')->doesntHave('products')->get();
 
         foreach ($checks as $check) {
-            $fnsReceipt = $check->fnsReceipts->first();
+            $fnsReceipt = $check->fnsReceipt;
             $fnsReceiptData = $fnsReceipt->receipt['document']['receipt'];
 
             $products = [];

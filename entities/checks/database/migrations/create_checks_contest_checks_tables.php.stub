@@ -15,6 +15,7 @@ class CreateChecksContestChecksTables extends Migration
     {
         Schema::create('checks_contest_checks', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedBigInteger('fns_receipt_id')->index()->default(0);
             $table->string('verify_hash')->default('');
             $table->json('receipt_data')->nullable();
             $table->json('additional_info')->nullable();
@@ -31,12 +32,6 @@ class CreateChecksContestChecksTables extends Migration
             $table->timestamp('date_end')->nullable();
             $table->timestamps();
         });
-
-        Schema::create('checks_contest_checks_fns_receipts', function (Blueprint $table) {
-            $table->integer('check_id')->unsigned()->index();
-            $table->integer('receipt_id')->unsigned()->index();
-            $table->timestamps();
-        });
     }
 
     /**
@@ -44,7 +39,6 @@ class CreateChecksContestChecksTables extends Migration
      */
     public function down()
     {
-        Schema::drop('checks_contest_checks_fns_receipts');
         Schema::drop('checks_contest_checks_prizes');
         Schema::drop('checks_contest_checks');
     }

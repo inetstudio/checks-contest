@@ -64,11 +64,16 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label font-bold">Чек</label>
                                                 <div class="col-sm-1">
-                                                    @if (count($item['fnsReceipts']) > 0)
-                                                        <button class="btn btn-default show-receipts" type="button" data-url="{{ route('back.checks-contest.checks.show', [$item['id']]) }}">
-                                                            <i class="fa fa-qrcode"></i>
-                                                        </button>
-                                                    @endif
+                                                    @php
+                                                        $icon = 'receipt';
+
+                                                        if ($item['fnsReceipt']) {
+                                                            $icon = 'qrcode';
+                                                        }
+                                                    @endphp
+                                                    <button class="btn btn-default show-receipts" type="button" data-url="{{ route('back.checks-contest.checks.show', [$item['id']]) }}">
+                                                        <i class="fa fa-{{ $icon }}"></i>
+                                                    </button>
                                                 </div>
                                                 <div class="col-sm-9">
                                                     <a data-fancybox="" href="{{ url($item->getFirstMediaUrl('images')) }}">
