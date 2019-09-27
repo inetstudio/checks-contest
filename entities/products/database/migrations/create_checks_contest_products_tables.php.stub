@@ -15,7 +15,7 @@ class CreateChecksContestProductsTables extends Migration
     {
         Schema::create('checks_contest_products', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('fns_receipt_id');
+            $table->unsignedBigInteger('fns_receipt_id')->default(0);
             $table->unsignedBigInteger('receipt_id');
             $table->string('name');
             $table->unsignedDecimal('quantity', 9, 3);
