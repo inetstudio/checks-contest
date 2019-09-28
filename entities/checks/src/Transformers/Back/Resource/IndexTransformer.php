@@ -46,10 +46,10 @@ class IndexTransformer extends TransformerAbstract implements IndexTransformerCo
             )->render(),
             'check' => view('admin.module.checks-contest.checks::back.partials.datatables.check', compact('item'))
                 ->render(),
-            'name' => $userData['name'],
-            'surname' => $userData['surname'],
-            'email' => $userData['email'],
-            'phone' => $userData['phone'],
+            'name' => $userData['name'] ?? '',
+            'surname' => $userData['surname'] ?? '',
+            'email' => $userData['email'] ?? '',
+            'phone' => $userData['phone'] ?? '',
             'created_at' => (string) $item['created_at'],
             'updated_at' => (string) $item['updated_at'],
             'actions' => view('admin.module.checks-contest.checks::back.partials.datatables.actions', compact('item'))

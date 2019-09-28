@@ -16,6 +16,7 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
     public $bindings = [
         'InetStudio\ChecksContest\Products\Contracts\Events\Back\ModifyItemEventContract' => 'InetStudio\ChecksContest\Products\Events\Back\ModifyItemEvent',
         'InetStudio\ChecksContest\Products\Contracts\Models\ProductModelContract' => 'InetStudio\ChecksContest\Products\Models\ProductModel',
+        'InetStudio\ChecksContest\Products\Contracts\Services\Back\ItemsServiceContract' => 'InetStudio\ChecksContest\Products\Services\Back\ItemsService',
     ];
 
     /**

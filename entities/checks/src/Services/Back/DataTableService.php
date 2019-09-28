@@ -166,7 +166,7 @@ class DataTableService extends DataTable implements DataTableServiceContract
         $translation = trans('admin::datatables');
 
         return [
-            'order' => [10, 'desc'],
+            'order' => [11, 'desc'],
             'paging' => true,
             'pagingType' => 'full_numbers',
             'searching' => true,

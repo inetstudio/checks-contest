@@ -58,8 +58,8 @@ class RemoveDuplicatesCommand extends Command
             }
 
             foreach ($receiptCodes as $receiptCode) {
-                if (($receiptCode[0] ?? '') == 'QR_CODE') {
-                    $codeValue = trim($receiptCode[1] ?? '');
+                if (($receiptCode['type'] ?? '') == 'QR_CODE') {
+                    $codeValue = trim($receiptCode['value'] ?? '');
 
                     if (! $codeValue) {
                         continue;

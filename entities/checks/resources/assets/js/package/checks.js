@@ -42,32 +42,43 @@ $(document).ready(function() {
   $('.wrapper-content').on('click', '.show-receipts', function() {
     let url = $(this).attr('data-url');
 
+    $('#receipts_modal').find('.ibox-content').removeClass('sk-loading');
+
     $.ajax({
       url: url,
       method: 'GET',
       dataType: 'html',
       success: function(data) {
-        $('#receipts_modal .modal-body').html(data);
+        $('#receipts_modal .modal-body .content').html(data);
+
+        let receiptModalApp = new Vue({
+          el: '#receipts_modal',
+        });
 
         $('#receipts_modal').modal();
       },
     });
   });
+});
 
-  $('#receipts_modal .save').on('click', function (event) {
-    event.preventDefault();
+$(document).on('click', '#receipts_modal .save', function (event) {
+  event.preventDefault();
 
-    let form = $('#receipts_modal form');
-    let data = form.serializeArray();
+  let form = $('#receipts_modal form');
+  let data = form.serializeArray();
+  let container = $('#receipts_modal').find('.ibox-content');
 
-    $.ajax({
-      'url': form.attr('action'),
-      'type': form.attr('method'),
-      'data': data,
-      'dataType': 'json',
-      'success': function(data) {
-        $('#receipts_modal').modal('hide');
-      }
-    });
+  container.addClass('sk-loading');
+
+  $.ajax({
+    'url': form.attr('action'),
+    'type': form.attr('method'),
+    'data': data,
+    'dataType': 'json',
+    'success': function(data) {
+      container.removeClass('sk-loading');
+
+      $('#receipts_modal').modal('hide');
+    }
   });
 });

@@ -1,3 +1,3 @@
 <li class="breadcrumb-item">
-    <span>Конкурс по постам</span>
+    <span>Конкурс по чекам</span>
 </li>

@@ -2,6 +2,8 @@ window.Admin.vue.stores['checks_contest_products'] = new Vuex.Store({
   state: {
     emptyProduct: {
       model: {
+        fns_receipt_id: 0,
+        receipt_id: 0,
         name: '',
         quantity: 0,
         price: 0,
@@ -27,5 +29,12 @@ window.Admin.vue.stores['checks_contest_products'] = new Vuex.Store({
     setMode(state, mode) {
       state.mode = mode;
     },
+    modifyEmptyProduct(state, product) {
+      let emptyProduct = JSON.parse(JSON.stringify(state.emptyProduct));
+      emptyProduct.model.fns_receipt_id = product.fns_receipt_id;
+      emptyProduct.model.receipt_id = product.receipt_id;
+
+      state.emptyProduct = emptyProduct;
+    }
   },
 });

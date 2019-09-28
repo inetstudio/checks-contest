@@ -23,26 +23,26 @@
                                 v-bind:attributes = "{
                                 'data-placeholder': 'Выберите категорию товара'
                             }"
-                            v-bind:options = "options.categories"
-                            v-bind:selected.sync="product.model.product_data.category"
+                                v-bind:options = "options.categories"
+                                v-bind:selected.sync="product.model.product_data.category"
                         />
 
                         <base-input-text
-                            label="Название"
-                            name="answer"
-                            v-bind:value.sync="product.model.name"
+                                label="Название"
+                                name="answer"
+                                v-bind:value.sync="product.model.name"
                         />
 
                         <base-input-text
-                            label="Количество"
-                            name="answer"
-                            v-bind:value.sync="product.model.quantity"
+                                label="Количество"
+                                name="answer"
+                                v-bind:value.sync="product.model.quantity"
                         />
 
                         <base-input-text
-                            label="Стоимость единицы товара"
-                            name="answer"
-                            v-bind:value.sync="product.model.price"
+                                label="Стоимость единицы товара"
+                                name="answer"
+                                v-bind:value.sync="product.model.price"
                         />
                     </div>
                 </div>
@@ -127,7 +127,9 @@
         $(component.$refs.modal).on('show.bs.modal', function() {
           component.loadProduct();
 
-          $('#product_type').val(null).trigger('change');
+          let category = _.get(component.product, 'model.product_data.category', null);
+
+          $('#product_type').val(category).trigger('change');
         });
 
         $(component.$refs.modal).on('hide.bs.modal', function() {

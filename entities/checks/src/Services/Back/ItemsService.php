@@ -50,6 +50,13 @@ class ItemsService extends BaseService implements ItemsServiceContract
         app()->make('InetStudio\ChecksContest\Prizes\Contracts\Services\Back\ItemsServiceContract')
             ->attachToObject($prizesData, $item);
 
+        if (Arr::has($data, 'products')) {
+            $productsData = Arr::get($data, 'products', []);
+
+            app()->make('InetStudio\ChecksContest\Products\Contracts\Services\Back\ItemsServiceContract')
+                ->attachToObject($productsData, $item);
+        }
+
         event(
             app()->make(
                 'InetStudio\ChecksContest\Checks\Contracts\Events\Back\ModifyItemEventContract',

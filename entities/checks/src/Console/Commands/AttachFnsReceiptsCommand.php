@@ -59,11 +59,11 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
             $products = [];
 
             foreach ($codes as $code) {
-                if (! (($code[0] ?? '') == 'QR_CODE')) {
+                if (! (($code['type'] ?? '') == 'QR_CODE')) {
                     continue;
                 }
 
-                if (! ($code[1] ?? '')) {
+                if (! ($code['value'] ?? '')) {
                     continue;
                 }
 
@@ -89,7 +89,7 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
 
             $check->fns_receipt_id = $fnsReceipt->id ?? 0;
             $check->products()->createMany($products);
-            $check->receipt_data = Arr::except($fnsReceiptData, ['items']);
+            $check->setJSONData('receipt_data', 'receipt', Arr::except($fnsReceiptData, ['items']));
             $check->save();
 
             $bar->advance();

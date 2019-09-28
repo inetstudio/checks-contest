@@ -6,15 +6,9 @@
         <td>{{ this.getSum(product.model) }}</td>
         <td>
             <div class="float-right">
-                <a href="#" class="btn btn-xs btn-default edit-product m-r-xs"
-                   v-on:click.prevent.stop="editProduct"><i class="fa fa-pencil-alt"></i></a>
-                <a href="#" class="btn btn-xs btn-danger delete-product" v-on:click.prevent.stop="removeProduct"><i
-                        class="fa fa-times"></i></a>
+                <a href="#" class="btn btn-xs btn-default edit-product m-r-xs" v-on:click.prevent.stop="editProduct"><i class="fa fa-pencil-alt"></i></a>
+                <a href="#" class="btn btn-xs btn-danger delete-product" v-on:click.prevent.stop="removeProduct"><i class="fa fa-times"></i></a>
             </div>
-            <input :name="'products[' + product.model.id + '][name]'" type="hidden" :value="product.model.name">
-            <input :name="'products[' + product.model.id + '][quantity]'" type="hidden" :value="product.model.quantity">
-            <input :name="'products[' + product.model.id + '][price]'" type="hidden" :value="product.model.price">
-            <input :name="'products[' + product.model.id + '][product_data]'" type="hidden" :value="JSON.stringify(product.model.product_data)">
         </td>
     </tr>
 </template>

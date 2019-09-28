@@ -49,6 +49,8 @@ class RecognizeCodesCommand extends Command implements RecognizeCodesCommandCont
             ['status_id', '=', $status->id],
         ])->get();
 
+        $bar = $this->output->createProgressBar(count($checks));
+
         foreach ($checks as $check) {
             if (! $check->hasJSONData('receipt_data', 'codes')) {
                 $imagePath = $check->getFirstMediaPath('images');
@@ -59,6 +61,10 @@ class RecognizeCodesCommand extends Command implements RecognizeCodesCommandCont
                 $check->setJSONData('receipt_data', 'codes', $codes);
                 $check->save();
             }
+
+            $bar->advance();
         }
+
+        $bar->finish();
     }
 }

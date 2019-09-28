@@ -17,10 +17,10 @@
                     <th></th>
                 </tr>
                 <products-list-item
-                    v-for="product in products"
-                    :key="product.model.id"
-                    v-bind:product="product"
-                    v-on:remove="removeProduct"
+                        v-for="product in products"
+                        :key="product.model.id"
+                        v-bind:product="product"
+                        v-on:remove="removeProduct"
                 />
                 <tr>
                     <td></td>
@@ -31,6 +31,7 @@
                 </tbody>
             </table>
         </div>
+        <input :name="'products'" type="hidden" :value="JSON.stringify(preparedProducts)">
     </div>
 </template>
 
@@ -43,6 +44,14 @@
         default: function() {
           return [];
         },
+      },
+      fnsReceiptIdProp: {
+        type: Number,
+        default: 0
+      },
+      receiptIdProp: {
+        type: Number,
+        default: 0
       },
     },
     data() {
@@ -62,6 +71,15 @@
         });
 
         return total.toFixed(2);
+      },
+      preparedProducts() {
+        let products = JSON.parse(JSON.stringify(this.products));
+
+        return _.map(products, function (item) {
+          item.model.price *= 100;
+
+          return item.model;
+        });
       }
     },
     watch: {
@@ -94,6 +112,8 @@
             isModified: false,
             model: {
               id: element.id,
+              fns_receipt_id: element.fns_receipt_id,
+              receipt_id: element.receipt_id,
               name: element.name,
               quantity: component.formatNumber(element.quantity, 3),
               price: (component.formatNumber(element.price, 2) / 100).toFixed(2),
@@ -173,6 +193,12 @@
           return product.model.id === id;
         });
       }
+    },
+    created: function() {
+      window.Admin.vue.stores['checks_contest_products'].commit('modifyEmptyProduct', {
+        fns_receipt_id: this.fnsReceiptIdProp,
+        receipt_id: this.receiptIdProp,
+      });
     },
   };
 </script>
