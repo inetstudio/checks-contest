@@ -87,7 +87,7 @@
     },
     computed: {
       mode() {
-        return window.Admin.vue.stores['prizes'].state.mode;
+        return window.Admin.vue.stores['checks_contest_prizes'].state.mode;
       },
     },
     watch: {
@@ -105,15 +105,15 @@
       initComponent: function() {
         let component = this;
 
-        component.prize = JSON.parse(JSON.stringify(window.Admin.vue.stores['prizes'].state.emptyPrize));
+        component.prize = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_prizes'].state.emptyPrize));
 
         let url = route('back.checks-contest.prizes.getSuggestions');
 
         axios.post(url).then(response => {
           component.options.prizes = _.map(response.data.items, function (item) {
             return {
-                value: item.id,
-                text: item.name
+              value: item.id,
+              text: item.name
             };
           });
 
@@ -123,7 +123,7 @@
       loadPrize() {
         let component = this;
 
-        component.prize = JSON.parse(JSON.stringify(window.Admin.vue.stores['prizes'].state.prize));
+        component.prize = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_prizes'].state.prize));
 
         $('#prize_id').val(component.prize.model.prize_id).trigger('change');
         $('#date_start')[0]._flatpickr.setDate(component.prize.model.date_start);
@@ -132,15 +132,15 @@
       savePrize() {
         let component = this;
 
-        if (window.Admin.vue.stores['prizes'].state.mode === 'add_list_item'
-            && window.Admin.vue.stores['prizes'].state.prizesIds.indexOf(parseInt(component.prize.model.prize_id)) > -1) {
+        if (window.Admin.vue.stores['checks_contest_prizes'].state.mode === 'add_list_item'
+            && window.Admin.vue.stores['checks_contest_prizes'].state.prizesIds.indexOf(parseInt(component.prize.model.prize_id)) > -1) {
 
           $(this.$refs.modal).modal('hide');
 
           return;
         } else if (component.prize.isModified && component.prize.model.prize_id !== 0) {
-          window.Admin.vue.stores['prizes'].commit('setPrize', JSON.parse(JSON.stringify(component.prize)));
-          window.Admin.vue.stores['prizes'].commit('setMode', 'save_list_item');
+          window.Admin.vue.stores['checks_contest_prizes'].commit('setPrize', JSON.parse(JSON.stringify(component.prize)));
+          window.Admin.vue.stores['checks_contest_prizes'].commit('setMode', 'save_list_item');
         }
 
         $(this.$refs.modal).modal('hide');
@@ -164,7 +164,7 @@
         });
 
         $(component.$refs.modal).on('hide.bs.modal', function() {
-          component.prize = JSON.parse(JSON.stringify(window.Admin.vue.stores['prizes'].state.emptyPrize));
+          component.prize = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_prizes'].state.emptyPrize));
           $('#prize_id').val(null).trigger('change');
         });
       });

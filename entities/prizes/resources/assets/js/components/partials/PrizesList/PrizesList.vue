@@ -8,10 +8,10 @@
                         <a href="#" class="btn btn-xs btn-primary btn-xs" v-on:click.prevent="addPrize">Добавить</a>
                         <ul class="prizes-list m-t small-list">
                             <prizes-list-item
-                                v-for="prize in prizes"
-                                :key="prize.model.id"
-                                v-bind:prize="prize"
-                                v-on:remove="removePrize"
+                                    v-for="prize in prizes"
+                                    :key="prize.model.id"
+                                    v-bind:prize="prize"
+                                    v-on:remove="removePrize"
                             />
                         </ul>
                     </div>
@@ -41,7 +41,7 @@
     },
     computed: {
       mode() {
-        return window.Admin.vue.stores['prizes'].state.mode;
+        return window.Admin.vue.stores['checks_contest_prizes'].state.mode;
       },
     },
     watch: {
@@ -73,16 +73,16 @@
             hash: window.hash(element),
           });
 
-          window.Admin.vue.stores['prizes'].commit('addPrizeId', element.id);
+          window.Admin.vue.stores['checks_contest_prizes'].commit('addPrizeId', element.id);
         });
 
         return prizes;
       },
       initPrizesComponent() {
-        if (typeof window.Admin.vue.modulesComponents.$refs['checks_contest_PrizesListItemForm'] ==
+        if (typeof window.Admin.vue.modulesComponents.$refs['checks_contest_prizes_PrizesListItemForm'] ==
             'undefined') {
-          window.Admin.vue.modulesComponents.modules.prizes.components = _.union(
-              window.Admin.vue.modulesComponents.modules.prizes.components, [
+          window.Admin.vue.modulesComponents.modules.checks_contest_prizes.components = _.union(
+              window.Admin.vue.modulesComponents.modules.checks_contest_prizes.components, [
                 {
                   name: 'PrizesListItemForm',
                   data: {},
@@ -93,8 +93,8 @@
       addPrize() {
         this.initPrizesComponent();
 
-        window.Admin.vue.stores['prizes'].commit('setMode', 'add_list_item');
-        window.Admin.vue.stores['prizes'].commit('setPrize', {});
+        window.Admin.vue.stores['checks_contest_prizes'].commit('setMode', 'add_list_item');
+        window.Admin.vue.stores['checks_contest_prizes'].commit('setPrize', {});
 
         window.waitForElement('#prizes_list_item_form_modal', function() {
           $('#prizes_list_item_form_modal').modal();
@@ -116,7 +116,7 @@
               return prize.model.id !== payload.id;
             });
 
-            window.Admin.vue.stores['prizes'].commit('removePrizeId', payload.id);
+            window.Admin.vue.stores['checks_contest_prizes'].commit('removePrizeId', payload.id);
 
             component.$emit('update:prizes', {
               prizes: _.map(this.prizes, 'model'),
@@ -127,7 +127,7 @@
       savePrize() {
         let component = this;
 
-        let storePrize = JSON.parse(JSON.stringify(window.Admin.vue.stores['prizes'].state.prize));
+        let storePrize = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_prizes'].state.prize));
         storePrize.hash = window.hash(storePrize.model);
 
         let index = this.getPrizeIndex(storePrize.model.id);
@@ -137,7 +137,7 @@
         } else {
           this.prizes.push(storePrize);
 
-          window.Admin.vue.stores['prizes'].commit('addPrizeId', parseInt(storePrize.model.prize_id));
+          window.Admin.vue.stores['checks_contest_prizes'].commit('addPrizeId', parseInt(storePrize.model.prize_id));
         }
 
         component.$emit('update:prizes', {

@@ -1,4 +1,4 @@
-window.Admin.vue.stores['prizes'] = new Vuex.Store({
+window.Admin.vue.stores['checks_contest_prizes'] = new Vuex.Store({
   state: {
     emptyPrize: {
       model: {
