@@ -52,15 +52,17 @@ class AttachProductsCommand extends Command
 
             foreach ($fnsReceiptData['items'] ?? [] as $item) {
                 $products[] = [
+                    'receipt_id' => $check->id,
                     'fns_receipt_id' => $fnsReceipt->id,
                     'name' => $item['name'],
                     'quantity' => $item['quantity'],
                     'price' => $item['price'],
+                    'product_data' => $item,
                 ];
             }
 
             $check->products()->createMany($products);
-            $check->receipt_data = Arr::except($fnsReceiptData, ['items']);
+            $check->setJSONData('receipt_data', 'receipt', Arr::except($fnsReceiptData, ['items']));
             $check->save();
         }
     }

@@ -120,9 +120,9 @@ class ItemsService extends BaseService implements ItemsServiceContract
 
                     $stages['prizes'][$prize['alias']]['stages'][$key]['winners'][] = [
                         'id' => $check->id,
-                        'name' => $check->additional_info['name'].' '.$check->additional_info['surname'],
-                        'email' => Str::hideEmail($check->additional_info['email']),
-                        'phone' => $this->hidePhone($check->additional_info['phone']),
+                        'name' => $check->getJSONData('additional_info', 'name', '').' '.$check->getJSONData('additional_info', 'surname', ''),
+                        'email' => Str::hideEmail($check->getJSONData('additional_info', 'email', '')),
+                        'phone' => $this->hidePhone($check->getJSONData('additional_info', 'phone', '')),
                     ];
 
                     $stages['prizes'][$prize['alias']]['totalWinners'] += 1;

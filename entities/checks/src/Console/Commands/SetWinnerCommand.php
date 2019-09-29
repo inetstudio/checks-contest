@@ -129,10 +129,8 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
             })->get();
 
         foreach ($winnersChecks as $winnerCheck) {
-            $data = $winnerCheck->additional_info;
-
-            $winnersEmails[] = $data['email'];
-            $winnersPhones[] = $data['phone'];
+            $winnersEmails[] = $winnerCheck->getJSONData('additional_info', 'email');
+            $winnersPhones[] = $winnerCheck->getJSONData('additional_info', 'phone');
         }
 
         $checks = $checksService->getModel()->with('prizes')->where([
@@ -147,9 +145,16 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
         })->get();
 
         $checks = $checks->filter(function ($check) use ($winnersEmails, $winnersPhones) {
-            $data = $check->additional_info;
+            $email = $check->getJSONData('additional_info', 'email');
+            $phone = $check->getJSONData('additional_info', 'phone');
 
-            return ! (in_array($data['email'], $winnersEmails) || in_array($data['phone'], $winnersPhones));
+            if ($email && in_array($email, $winnersEmails)) {
+                return false;
+            }
+
+            if ($phone && in_array($phone, $winnersPhones)) {
+                return false;
+            }
         })->values();
 
         return $checks;
@@ -203,7 +208,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
                 'date_end' => ($stageData['end'] != $stageData['start'])
                     ? Carbon::createFromFormat('d.m.y', $stageData['end'])->format('Y-m-d H:i:s')
                     : null,
-                'confirmed' => 0,
+                'confirmed' => $stageData['confirmed'] ?? 0,
             ],
         ];
 

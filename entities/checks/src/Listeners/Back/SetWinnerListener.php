@@ -18,11 +18,11 @@ class SetWinnerListener implements SetWinnerListenerContract
      */
     public function handle($event): void
     {
-        $check = $event->check;
+        $item = $event->check;
         $prize = $event->prize;
 
-        $email = $check->additional_info['email'];
-        $name = $check->additional_info['name'].' '.$check->additional_info['surname'];
+        $email = $item->getJSONData('additional_info', 'email');
+        $name = $item->getJSONData('additional_info', 'name').' '.$item->getJSONData('additional_info', 'surname');
 
         $subject = 'Вы выиграли приз';
 

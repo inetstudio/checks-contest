@@ -32,8 +32,8 @@ class ItemStatusChangeListener implements ItemStatusChangeListenerContract
         $item = $event->item;
         $statusAlias = $item->status->alias;
 
-        $email = $item->additional_info['email'];
-        $name = $item->additional_info['name'].' '.$item->additional_info['surname'];
+        $email = $item->getJSONData('additional_info', 'email');
+        $name = $item->getJSONData('additional_info', 'name').' '.$item->getJSONData('additional_info', 'surname');
 
         $subject = $this->subjects[$statusAlias] ?? '';
 
