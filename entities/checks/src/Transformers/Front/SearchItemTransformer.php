@@ -2,6 +2,7 @@
 
 namespace InetStudio\ChecksContest\Checks\Transformers\Front;
 
+use Carbon\Carbon;
 use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Collection as FractalCollection;
 use InetStudio\ChecksContest\Checks\Contracts\Models\CheckModelContract;
@@ -21,8 +22,14 @@ class SearchItemTransformer extends TransformerAbstract implements SearchItemTra
      */
     public function transform(CheckModelContract $item): array
     {
+        /** @var Carbon $createdAt */
+        $createdAt = $item['created_at'];
+
         return [
             'id' => $item['id'],
+            'date' => Carbon::formatDateToRus($item['created_at']->format('d.m.Y')),
+            'time' => $createdAt->format('H:i'),
+            'status' => $item['status']['name'],
         ];
     }
 

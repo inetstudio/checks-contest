@@ -32,8 +32,9 @@ interface ItemsServiceContract extends BaseServiceContract
      *
      * @param  string  $field
      * @param  string  $search
+     * @param  string  $type
      *
      * @return Collection
      */
-    public function search(string $field, string $search): Collection;
+    public function search(string $field, string $search, string $type): Collection;
 }

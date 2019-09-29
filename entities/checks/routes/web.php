@@ -39,8 +39,9 @@ Route::group(
         Route::post('checks-contest/checks/send', 'ItemsControllerContract@send')
             ->name('front.checks-contest.checks.send');
 
-        Route::post('checks-contest/checks/search/{field}', 'ItemsControllerContract@search')
+        Route::post('checks-contest/checks/search/{field}/{type}', 'ItemsControllerContract@search')
             ->where('field', 'phone|email')
+            ->where('type', 'winner|status')
             ->name('front.checks-contest.checks.search');
     }
 );

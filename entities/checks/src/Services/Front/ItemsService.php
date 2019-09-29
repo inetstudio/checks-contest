@@ -139,16 +139,23 @@ class ItemsService extends BaseService implements ItemsServiceContract
      *
      * @param  string  $field
      * @param  string  $search
+     * @param  string  $type
      *
      * @return Collection
      */
-    public function search(string $field, string $search): Collection
+    public function search(string $field, string $search, string $type): Collection
     {
-        $items = $this->model::where(
+        $builder = $this->model::where(
             [
                 ['additional_info->'.$field, '=', $search],
             ]
-        )->whereHas('prizes')->get();
+        );
+
+        if ($type == 'winner') {
+            $builder->whereHas('prizes');
+        }
+
+        $items = $builder->get();
 
         return $items;
     }

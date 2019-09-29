@@ -36,21 +36,22 @@ class ItemsController extends Controller implements ItemsControllerContract
     }
 
     /**
-     * Поиск чека победителя.
+     * Поиск чека.
      *
      * @param  ItemsServiceContract  $checksService
      * @param  Request  $request
      * @param  string  $field
+     * @param  string  $type
      *
      * @return SearchResponseContract
      *
      * @throws BindingResolutionException
      */
-    public function search(ItemsServiceContract $checksService, Request $request, string $field): SearchResponseContract
+    public function search(ItemsServiceContract $checksService, Request $request, string $field, string $type): SearchResponseContract
     {
         $search = $request->get('query', '') ?? '';
 
-        $items = $checksService->search($field, $search);
+        $items = $checksService->search($field, $search, $type);
 
         return $this->app->make(SearchResponseContract::class, compact('items'));
     }

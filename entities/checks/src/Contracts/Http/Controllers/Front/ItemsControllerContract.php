@@ -29,8 +29,9 @@ interface ItemsControllerContract
      * @param  ItemsServiceContract  $checksService
      * @param  Request  $request
      * @param  string  $field
+     * @param  string  $type
      *
      * @return SearchResponseContract
      */
-    public function search(ItemsServiceContract $checksService, Request $request, string $field): SearchResponseContract;
+    public function search(ItemsServiceContract $checksService, Request $request, string $field, string $type): SearchResponseContract;
 }

@@ -38,7 +38,7 @@ class ItemsService extends BaseService implements ItemsServiceContract
     {
         $action = ($id) ? 'отредактирован' : 'создан';
 
-        $receiptData = Arr::pull($data, 'receipt_data');
+        $receiptData = Arr::pull($data, 'receipt_data', []);
 
         $itemData = Arr::only($data, $this->model->getFillable());
         $item = $this->saveModel($itemData, $id);
