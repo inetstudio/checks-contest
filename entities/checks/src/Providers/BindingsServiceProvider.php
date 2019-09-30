@@ -23,6 +23,7 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ChecksContest\Checks\Contracts\Events\Back\SetWinnerEventContract' => 'InetStudio\ChecksContest\Checks\Events\Back\SetWinnerEvent',
         'InetStudio\ChecksContest\Checks\Contracts\Events\Front\SendItemEventContract' => 'InetStudio\ChecksContest\Checks\Events\Front\SendItemEvent',
         'InetStudio\ChecksContest\Checks\Contracts\Exports\ItemsExportContract' => 'InetStudio\ChecksContest\Checks\Exports\ItemsExport',
+        'InetStudio\ChecksContest\Checks\Contracts\Exports\ItemsFullExportContract' => 'InetStudio\ChecksContest\Checks\Exports\ItemsFullExport',
         'InetStudio\ChecksContest\Checks\Contracts\Http\Controllers\Back\ResourceControllerContract' => 'InetStudio\ChecksContest\Checks\Http\Controllers\Back\ResourceController',
         'InetStudio\ChecksContest\Checks\Contracts\Http\Controllers\Back\DataControllerContract' => 'InetStudio\ChecksContest\Checks\Http\Controllers\Back\DataController',
         'InetStudio\ChecksContest\Checks\Contracts\Http\Controllers\Back\ExportControllerContract' => 'InetStudio\ChecksContest\Checks\Http\Controllers\Back\ExportController',

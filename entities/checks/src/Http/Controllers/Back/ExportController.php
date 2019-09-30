@@ -21,12 +21,24 @@ class ExportController extends Controller implements ExportControllerContract
      * @return BinaryFileResponse
      *
      * @throws BindingResolutionException
-     * @throws Exception
-     * @throws PhpOfficeException
      */
     public function exportItems(): BinaryFileResponse
     {
         $export = app()->make('InetStudio\ChecksContest\Checks\Contracts\Exports\ItemsExportContract');
+
+        return Excel::download($export, time().'.xlsx');
+    }
+
+    /**
+     * Выгружаем объекты.
+     *
+     * @return BinaryFileResponse
+     *
+     * @throws BindingResolutionException
+     */
+    public function exportFullItems(): BinaryFileResponse
+    {
+        $export = app()->make('InetStudio\ChecksContest\Checks\Contracts\Exports\ItemsFullExportContract');
 
         return Excel::download($export, time().'.xlsx');
     }

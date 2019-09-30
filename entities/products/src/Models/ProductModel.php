@@ -159,7 +159,7 @@ class ProductModel extends Model implements ProductModelContract
      */
     public function getPriceFormattedAttribute(): float
     {
-        return (float) number_format($this->getAttribute('price') / 100, 2);
+        return (float) number_format($this->getAttribute('price') / 100, 2, '.', '');
     }
 
     /**
@@ -169,7 +169,7 @@ class ProductModel extends Model implements ProductModelContract
      */
     public function getSumAttribute(): float
     {
-        return (float) number_format($this->getAttribute('quantity') * ($this->getAttribute('price') / 100), 2);
+        return (float) number_format($this->getAttribute('quantity') * ($this->getAttribute('price') / 100), 2, '.', '');
     }
 
     /**

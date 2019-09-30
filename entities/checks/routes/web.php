@@ -16,6 +16,9 @@ Route::group(
         Route::get('checks/export', 'ExportControllerContract@exportItems')
             ->name('back.checks-contest.checks.export');
 
+        Route::get('checks/full/export', 'ExportControllerContract@exportFullItems')
+            ->name('back.checks-contest.checks.full.export');
+
         Route::resource(
             'checks',
             'ResourceControllerContract',
