@@ -10,6 +10,7 @@
             <table class="table table-hover">
                 <tbody>
                 <tr>
+                    <th></th>
                     <th>Продукт</th>
                     <th>Количество</th>
                     <th>Цена</th>
@@ -23,6 +24,7 @@
                         v-on:remove="removeProduct"
                 />
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td><strong>Итого:</strong></td>

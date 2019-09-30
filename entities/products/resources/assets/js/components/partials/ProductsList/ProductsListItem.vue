@@ -1,5 +1,6 @@
 <template>
     <tr>
+        <td><span class="label label-default" v-if="getProductCategory(product)">{{ getProductCategory(product) }}</span></td>
         <td>{{ product.model.name }}</td>
         <td>{{ product.model.quantity }}</td>
         <td>{{ product.model.price }}</td>
@@ -52,6 +53,9 @@
         this.$emit('remove', {
           id: this.product.model.id,
         });
+      },
+      getProductCategory(product) {
+        return _.get(product, 'model.product_data.category', null);
       },
       getSum(product) {
         return (product.quantity * product.price).toFixed(2);
