@@ -10,9 +10,9 @@
     }
   ],
   "require": {
-    "inetstudio/admin-panel": "1.8.*",
-    "inetstudio/classifiers": "1.8.*",
-    "inetstudio/fns": "1.8.*"
+    "inetstudio/admin-panel": "^6.0",
+    "inetstudio/classifiers": "^6.0",
+    "inetstudio/fns": "^6.0"
   },
   "autoload": {
     "psr-4": {
