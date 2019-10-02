@@ -8,6 +8,6 @@ use InetStudio\AdminPanel\Base\Contracts\Models\BaseModelContract;
 /**
  * Interface ProductModelContract.
  */
-interface ProductModelContract extends BaseModelContract, Auditable
+interface PrizeModelContract extends BaseModelContract, Auditable
 {
 }

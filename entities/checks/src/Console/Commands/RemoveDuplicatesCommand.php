@@ -2,7 +2,6 @@
 
 namespace InetStudio\ChecksContest\Checks\Console\Commands;
 
-use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 
