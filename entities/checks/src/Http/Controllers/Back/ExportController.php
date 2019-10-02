@@ -2,12 +2,10 @@
 
 namespace InetStudio\ChecksContest\Checks\Http\Controllers\Back;
 
-use InetStudio\AdminPanel\Base\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use InetStudio\AdminPanel\Base\Http\Controllers\Controller;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use PhpOffice\PhpSpreadsheet\Writer\Exception as PhpOfficeException;
 use InetStudio\ChecksContest\Checks\Contracts\Http\Controllers\Back\ExportControllerContract;
 
 /**
