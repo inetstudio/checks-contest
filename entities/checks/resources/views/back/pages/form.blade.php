@@ -60,6 +60,15 @@
                                         </div>
                                         <div class="hr-line-dashed"></div>
 
+                                        <div class="form-group row">
+                                            <label for="message" class="col-sm-2 col-form-label font-bold">Данные чека</label>
+
+                                            <div class="col-sm-10">
+                                                <pre class="json-data">@json($item['receipt_data'])</pre>
+                                            </div>
+                                        </div>
+                                        <div class="hr-line-dashed"></div>
+
                                         @if ($item->getFirstMedia('images'))
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label font-bold">Чек</label>

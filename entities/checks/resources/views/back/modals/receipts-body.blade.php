@@ -37,4 +37,10 @@
             v-bind:receipt-id-prop="{{ $item['id'] }}"
     />
 </div>
+
+@foreach ($item->prizes as $prize)
+    <input name="prizes[{{ $prize->id }}][date_start]" type="hidden" value="{{ ($prize->pivot->date_start) ? (new \Carbon\Carbon($prize->pivot->date_start))->format('d.m.Y') : '' }}">
+    <input name="prizes[{{ $prize->id }}][date_end]" type="hidden" value="{{ ($prize->pivot->date_end) ? (new \Carbon\Carbon($prize->pivot->date_end))->format('d.m.Y') : '' }}">
+    <input name="prizes[{{ $prize->id }}][confirmed]" type="hidden" value="{{ $prize->pivot->confirmed }}">
+@endforeach
 {!! Form::close()!!}
