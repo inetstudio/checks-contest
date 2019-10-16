@@ -155,6 +155,8 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
             if ($phone && in_array($phone, $winnersPhones)) {
                 return false;
             }
+
+            return true;
         })->values();
 
         return $checks;
