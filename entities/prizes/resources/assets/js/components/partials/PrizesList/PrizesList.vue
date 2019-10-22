@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="checks_contest_prizes-package">
         <a href="#" class="btn btn-xs btn-primary btn-xs" v-on:click.prevent="addPrize">Добавить</a>
         <ul class="prizes-list m-t small-list">
             <prizes-list-item

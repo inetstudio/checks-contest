@@ -2,7 +2,6 @@
 
 namespace InetStudio\ChecksContest\Prizes\Transformers\Back\Resource;
 
-use Throwable;
 use InetStudio\AdminPanel\Base\Transformers\BaseTransformer;
 use InetStudio\ChecksContest\Prizes\Contracts\Models\PrizeModelContract;
 use InetStudio\ChecksContest\Prizes\Contracts\Transformers\Back\Resource\ShowTransformerContract;
@@ -18,8 +17,6 @@ class ShowTransformer extends BaseTransformer implements ShowTransformerContract
      * @param  PrizeModelContract  $item
      *
      * @return array
-     *
-     * @throws Throwable
      */
     public function transform(PrizeModelContract $item): array
     {

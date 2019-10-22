@@ -2,7 +2,6 @@
 
 namespace InetStudio\ChecksContest\Statuses\Transformers\Back\Resource;
 
-use Throwable;
 use League\Fractal\TransformerAbstract;
 use InetStudio\ChecksContest\Statuses\Contracts\Models\StatusModelContract;
 use InetStudio\ChecksContest\Statuses\Contracts\Transformers\Back\Resource\ShowTransformerContract;
@@ -18,8 +17,6 @@ class ShowTransformer extends TransformerAbstract implements ShowTransformerCont
      * @param  StatusModelContract  $item
      *
      * @return array
-     *
-     * @throws Throwable
      */
     public function transform(StatusModelContract $item): array
     {

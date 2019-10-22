@@ -1,8 +1,10 @@
-let receiptModalApp = new Vue({
-  el: '#receipts_modal',
-});
-
 $(document).ready(function() {
+  if ($('#receipts_modal').length > 0) {
+    let receiptModalApp = new Vue({
+      el: '#receipts_modal',
+    });
+  }
+
   $('.check-table').on('click', 'a.check-moderate', function(event) {
     event.preventDefault();
 

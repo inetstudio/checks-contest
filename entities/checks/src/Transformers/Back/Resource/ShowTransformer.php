@@ -2,7 +2,6 @@
 
 namespace InetStudio\ChecksContest\Checks\Transformers\Back\Resource;
 
-use Throwable;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection as FractalCollection;
 use InetStudio\AdminPanel\Base\Transformers\BaseTransformer;
@@ -28,8 +27,6 @@ class ShowTransformer extends BaseTransformer implements ShowTransformerContract
      * @param  CheckModelContract  $item
      *
      * @return array
-     *
-     * @throws Throwable
      */
     public function transform(CheckModelContract $item): array
     {
