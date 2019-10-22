@@ -1,6 +1,6 @@
 $(document).ready(function() {
   if ($('#receipts_modal').length > 0) {
-    let receiptModalApp = new Vue({
+    receiptModalApp = new Vue({
       el: '#receipts_modal',
     });
   }
