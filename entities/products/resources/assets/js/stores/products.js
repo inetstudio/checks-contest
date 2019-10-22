@@ -7,6 +7,7 @@ window.Admin.vue.stores['checks_contest_products'] = new Vuex.Store({
         name: '',
         quantity: 0,
         price: 0,
+        highlight: false,
         product_data: {}
       },
       errors: {},

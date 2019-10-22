@@ -1,25 +1,15 @@
 <template>
     <div>
-        <div class="form-group row checks_contest_prizes-package">
-            <label class="col-sm-2 col-form-label font-bold">Призы</label>
-            <div class="col-sm-10">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content no-borders">
-                        <a href="#" class="btn btn-xs btn-primary btn-xs" v-on:click.prevent="addPrize">Добавить</a>
-                        <ul class="prizes-list m-t small-list">
-                            <prizes-list-item
-                                    v-for="prize in prizes"
-                                    :key="prize.model.id"
-                                    v-bind:prize="prize"
-                                    v-on:remove="removePrize"
-                            />
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="hr-line-dashed"></div>
+        <a href="#" class="btn btn-xs btn-primary btn-xs" v-on:click.prevent="addPrize">Добавить</a>
+        <ul class="prizes-list m-t small-list">
+            <prizes-list-item
+                v-for="prize in prizes"
+                :key="prize.model.id"
+                v-bind:prize="prize"
+                v-on:remove="removePrize"
+            />
+        </ul>
+        <input :name="'prizes'" type="hidden" :value="JSON.stringify(preparedPrizes)">
     </div>
 </template>
 
@@ -43,14 +33,23 @@
       mode() {
         return window.Admin.vue.stores['checks_contest_prizes'].state.mode;
       },
+      preparedPrizes() {
+        let prizes = JSON.parse(JSON.stringify(this.prizes));
+
+        return _.map(prizes, function (item) {
+          item.model.confirmed = item.model.confirmed[0] || '';
+
+          return item.model;
+        });
+      }
     },
     watch: {
-      mode: function(newMode) {
-        if (newMode === 'save_list_item') {
+      mode: function(newMode, oldMode) {
+        if (newMode === 'save_list_item' && oldMode === 'add_list_item') {
           this.savePrize();
         }
       },
-      prizessProp: function() {
+      prizesProp: function() {
         this.prizes = this.preparePrizes();
       },
     },

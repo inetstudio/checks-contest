@@ -46,9 +46,12 @@ class ItemsService extends BaseService implements ItemsServiceContract
         $receiptData = array_merge($item['receipt_data'] ?? [], $receiptData);
         $item = $this->saveModel(['receipt_data' => $receiptData], $id);
 
-        $prizesData = Arr::get($data, 'prizes', []);
-        app()->make('InetStudio\ChecksContest\Prizes\Contracts\Services\Back\ItemsServiceContract')
-            ->attachToObject($prizesData, $item);
+        if (Arr::has($data, 'prizes')) {
+            $prizesData = Arr::get($data, 'prizes', []);
+
+            app()->make('InetStudio\ChecksContest\Prizes\Contracts\Services\Back\ItemsServiceContract')
+                ->attachToObject($prizesData, $item);
+        }
 
         if (Arr::has($data, 'products')) {
             $productsData = Arr::get($data, 'products', []);

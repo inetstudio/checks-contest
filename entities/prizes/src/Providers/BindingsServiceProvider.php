@@ -30,6 +30,7 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ChecksContest\Prizes\Contracts\Services\Back\UtilityServiceContract' => 'InetStudio\ChecksContest\Prizes\Services\Back\UtilityService',
         'InetStudio\ChecksContest\Prizes\Contracts\Services\Front\ItemsServiceContract' => 'InetStudio\ChecksContest\Prizes\Services\Front\ItemsService',
         'InetStudio\ChecksContest\Prizes\Contracts\Transformers\Back\Resource\IndexTransformerContract' => 'InetStudio\ChecksContest\Prizes\Transformers\Back\Resource\IndexTransformer',
+        'InetStudio\ChecksContest\Prizes\Contracts\Transformers\Back\Resource\ShowTransformerContract' => 'InetStudio\ChecksContest\Prizes\Transformers\Back\Resource\ShowTransformer',
         'InetStudio\ChecksContest\Prizes\Contracts\Transformers\Back\Utility\SuggestionTransformerContract' => 'InetStudio\ChecksContest\Prizes\Transformers\Back\Utility\SuggestionTransformer',
     ];
 

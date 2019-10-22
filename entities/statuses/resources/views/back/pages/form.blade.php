@@ -106,6 +106,18 @@
                                             ],
                                         ]) !!}
 
+                                        {!! Form::hidden('fill_reason', 0) !!}
+                                        {!! Form::checks('fill_reason', $item->fill_reason, [
+                                            'label' => [
+                                                'title' => 'Указать причину перевода',
+                                            ],
+                                            'checks' => [
+                                                [
+                                                    'value' => 1,
+                                                ],
+                                            ],
+                                        ]) !!}
+
                                     </div>
                                 </div>
                             </div>

@@ -2,6 +2,7 @@
 
 namespace InetStudio\ChecksContest\Checks\Http\Responses\Back\Resource;
 
+use Throwable;
 use Illuminate\Http\Request;
 use InetStudio\ChecksContest\Checks\Contracts\Models\CheckModelContract;
 use InetStudio\ChecksContest\Checks\Contracts\Http\Responses\Back\Resource\SaveResponseContract;
@@ -32,6 +33,8 @@ class SaveResponse implements SaveResponseContract
      * @param  Request  $request
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     *
+     * @throws Throwable
      */
     public function toResponse($request)
     {
@@ -42,6 +45,12 @@ class SaveResponse implements SaveResponseContract
                 [
                     'success' => true,
                     'item' => $item,
+                    'prizes' => view(
+                        'admin.module.checks-contest.checks::back.partials.datatables.prizes',
+                        [
+                            'prizes' => $item['prizes'],
+                        ]
+                    )->render(),
                 ],
                 200
             );

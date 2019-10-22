@@ -2,6 +2,7 @@
 
 namespace InetStudio\ChecksContest\Checks\Contracts\Http\Controllers\Back;
 
+use Illuminate\Http\Request;
 use InetStudio\ChecksContest\Checks\Contracts\Services\Back\ItemsServiceContract;
 use InetStudio\ChecksContest\Checks\Contracts\Services\Back\DataTableServiceContract;
 use InetStudio\ChecksContest\Checks\Contracts\Http\Requests\Back\SaveItemRequestContract;
@@ -53,12 +54,12 @@ interface ResourceControllerContract
     /**
      * Отображение объекта.
      *
-     * @param  ItemsServiceContract  $resourceService
-     * @param  int  $id
+     * @param  Request  $request
+     * @param  ShowResponseContract  $response
      *
      * @return ShowResponseContract
      */
-    public function show(ItemsServiceContract $resourceService, int $id = 0): ShowResponseContract;
+    public function show(Request $request, ShowResponseContract $response): ShowResponseContract;
 
     /**
      * Удаление объекта.

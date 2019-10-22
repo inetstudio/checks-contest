@@ -1,38 +1,31 @@
 <template>
-    <div class="ibox">
-        <div class="ibox-title">
-            <h5>Продукты</h5>
-            <div class="ibox-tools">
-                <a href="#" class="btn btn-xs btn-primary btn-xs" v-on:click.prevent="addProduct">Добавить</a>
-            </div>
-        </div>
-        <div class="ibox-content">
-            <table class="table table-hover">
-                <tbody>
-                <tr>
-                    <th></th>
-                    <th>Продукт</th>
-                    <th>Количество</th>
-                    <th>Цена</th>
-                    <th>Сумма</th>
-                    <th></th>
-                </tr>
-                <products-list-item
-                        v-for="product in products"
-                        :key="product.model.id"
-                        v-bind:product="product"
-                        v-on:remove="removeProduct"
-                />
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><strong>Итого:</strong></td>
-                    <td><strong>{{ total }}</strong></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <div>
+        <a href="#" class="btn btn-xs btn-primary btn-xs m-b-lg" v-on:click.prevent="addProduct">Добавить</a>
+        <table class="table table-hover">
+            <tbody>
+            <tr>
+                <th></th>
+                <th>Продукт</th>
+                <th>Количество</th>
+                <th>Цена</th>
+                <th>Сумма</th>
+                <th></th>
+            </tr>
+            <products-list-item
+                v-for="product in products"
+                :key="product.model.id"
+                v-bind:product="product"
+                v-on:remove="removeProduct"
+            />
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><strong>Итого:</strong></td>
+                <td><strong>{{ total }}</strong></td>
+            </tr>
+            </tbody>
+        </table>
         <input :name="'products'" type="hidden" :value="JSON.stringify(preparedProducts)">
     </div>
 </template>
@@ -120,6 +113,7 @@
               quantity: component.formatNumber(element.quantity, 3),
               price: (component.formatNumber(element.price, 2) / 100).toFixed(2),
               product_data: element.product_data || {},
+              highlight: element.highlight
             },
             hash: window.hash(element),
           });

@@ -89,7 +89,6 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
 
             $check->fns_receipt_id = $fnsReceipt->id ?? 0;
             $check->products()->createMany($products);
-            $check->setJSONData('receipt_data', 'receipt', Arr::except($fnsReceiptData, ['items']));
             $check->save();
 
             $bar->advance();

@@ -5,15 +5,10 @@
                 <i v-if="prize.model.confirmed[0]" class="fa fa-check-square"></i><span class="m-l-xs">{{ prize.model.name }}</span>
             </div>
             <div class="col-2">
-                <div class="float-right">
-                    <a href="#" class="btn btn-xs btn-default edit-prize m-r-xs"
-                       v-on:click.prevent.stop="editPrize"><i class="fa fa-pencil-alt"></i></a>
-                    <a href="#" class="btn btn-xs btn-danger delete-prize" v-on:click.prevent.stop="removePrize"><i
-                            class="fa fa-times"></i></a>
+                <div class="btn-group float-right">
+                    <a href="#" class="btn btn-xs btn-default edit-prize m-r" v-on:click.prevent.stop="editPrize"><i class="fa fa-pencil-alt"></i></a>
+                    <a href="#" class="btn btn-xs btn-danger delete-prize" v-on:click.prevent.stop="removePrize"><i class="fa fa-times"></i></a>
                 </div>
-                <input :name="'prizes[' + prize.model.prize_id + '][date_start]'" type="hidden" :value="prize.model.date_start">
-                <input :name="'prizes[' + prize.model.prize_id + '][date_end]'" type="hidden" :value="prize.model.date_end">
-                <input :name="'prizes[' + prize.model.prize_id + '][confirmed]'" type="hidden" :value="prize.model.confirmed[0] || ''">
             </div>
         </div>
     </li>

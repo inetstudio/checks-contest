@@ -65,16 +65,28 @@ class ItemsService extends BaseService implements ItemsServiceContract
      */
     public function attachToObject($prizes, $item): void
     {
+        if (! $prizes) {
+            return;
+        }
+
         if ($prizes instanceof Request) {
-            $prizes = $prizes->get('prizes', []);
-        } else {
-            $prizes = (array) $prizes;
+            $prizes = $prizes->get('prizes');
+
+            if (! $prizes) {
+                return;
+            }
+        }
+
+        if (is_string($prizes)) {
+            $prizes = json_decode($prizes, true);
         }
 
         $oldPrizes = $item->prizes;
 
         if (! empty($prizes)) {
-            $prizes = collect($prizes)->mapWithKeys(function ($item, $key) {
+            $prizes = collect($prizes)->mapWithKeys(function ($item) {
+                $key = $item['prize_id'];
+
                 return [
                     $key => [
                         'date_start' => Carbon::createFromFormat('d.m.Y', $item['date_start'])->setTime(0, 0, 0)->format('Y-m-d H:i:s'),

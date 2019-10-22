@@ -37,5 +37,10 @@ window.Admin.vue.stores['checks_contest_prizes'] = new Vuex.Store({
     setMode(state, mode) {
       state.mode = mode;
     },
+    reset(state) {
+      state.mode = '';
+      state.prize = {};
+      state.prizesIds = [];
+    }
   },
 });

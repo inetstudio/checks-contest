@@ -29,6 +29,7 @@ class IndexTransformer extends TransformerAbstract implements IndexTransformerCo
         return [
             'id' => $item['id'],
             'receipt_data' => $receiptData,
+            'fnsReceipt' => $item['fnsReceipt']['receipt'],
             'additional_info' => $userData,
             'status' => view(
                 'admin.module.checks-contest.checks::back.partials.datatables.status', [

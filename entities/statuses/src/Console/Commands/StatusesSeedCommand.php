@@ -23,7 +23,7 @@ class StatusesSeedCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Seed social contest statuses';
+    protected $description = 'Seed checks contest statuses';
 
     /**
      * Запуск команды.
@@ -54,6 +54,7 @@ class StatusesSeedCommand extends Command
                     'checks_contest_status_default' => 'Статус по умолчанию',
                     'checks_contest_status_check' => 'Проверка',
                 ],
+                'fill_reason' => false,
             ],
             [
                 'name' => 'Одобрено',
@@ -63,12 +64,14 @@ class StatusesSeedCommand extends Command
                 'types' => [
                     'checks_contest_status_main' => 'Основной статус',
                 ],
+                'fill_reason' => false,
             ],
             [
                 'name' => 'Отклонено',
                 'alias' => 'rejected',
                 'description' => 'Отклоненные чеки',
                 'color_class' => 'danger',
+                'fill_reason' => true,
             ],
         ];
 

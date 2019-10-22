@@ -1,14 +1,18 @@
 <template>
-    <tr>
+    <tr v-bind:style="{ 'background-color': (product.model.highlight ? 'rgba(66, 234, 57, 0.275)' : '') }">
         <td><span class="label label-default" v-if="getProductCategory(product)">{{ getProductCategory(product) }}</span></td>
         <td>{{ product.model.name }}</td>
         <td>{{ product.model.quantity }}</td>
         <td>{{ product.model.price }}</td>
         <td>{{ this.getSum(product.model) }}</td>
         <td>
-            <div class="float-right">
-                <a href="#" class="btn btn-xs btn-default edit-product m-r-xs" v-on:click.prevent.stop="editProduct"><i class="fa fa-pencil-alt"></i></a>
-                <a href="#" class="btn btn-xs btn-danger delete-product" v-on:click.prevent.stop="removeProduct"><i class="fa fa-times"></i></a>
+            <div class="btn-group float-right">
+                <a href="#" class="btn btn-xs btn-default m-r edit-product" v-on:click.prevent.stop="editProduct">
+                    <i class="fa fa-pencil-alt"></i>
+                </a>
+                <a href="#" class="btn btn-xs btn-danger delete-product" v-on:click.prevent.stop="removeProduct">
+                    <i class="fa fa-times"></i>
+                </a>
             </div>
         </td>
     </tr>

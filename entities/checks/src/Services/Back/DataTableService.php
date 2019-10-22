@@ -96,11 +96,18 @@ class DataTableService extends DataTable implements DataTableServiceContract
     protected function getColumns(): array
     {
         return [
-            ['data' => 'id', 'name' => 'id', 'title' => 'ID'],
+            ['data' => 'id', 'name' => 'id', 'title' => 'ID', 'className' => 'receipt-id'],
             [
                 'data' => 'receipt_data',
                 'name' => 'receipt_data',
                 'title' => 'Чек',
+                'orderable' => false,
+                'visible' => false,
+            ],
+            [
+                'data' => 'fnsReceipt',
+                'name' => 'fnsReceipt.receipt',
+                'title' => 'Чек ФНС',
                 'orderable' => false,
                 'visible' => false,
             ],
@@ -111,15 +118,16 @@ class DataTableService extends DataTable implements DataTableServiceContract
                 'orderable' => false,
                 'visible' => false,
             ],
-            ['data' => 'status', 'name' => 'status.name', 'title' => 'Статус', 'orderable' => false],
+            ['data' => 'status', 'name' => 'status.name', 'title' => 'Статус', 'orderable' => false, 'className' => 'receipt-status'],
             [
                 'data' => 'moderation',
                 'name' => 'moderation',
                 'title' => 'Модерация',
                 'orderable' => false,
                 'searchable' => false,
+                'className' => 'receipt-moderation',
             ],
-            ['data' => 'prizes', 'name' => 'prizes.name', 'title' => 'Призы', 'orderable' => false],
+            ['data' => 'prizes', 'name' => 'prizes.name', 'title' => 'Призы', 'orderable' => false, 'className' => 'receipt-prizes'],
             ['data' => 'check', 'name' => 'check', 'title' => 'Чек', 'orderable' => false, 'searchable' => false],
             ['data' => 'name', 'name' => 'name', 'title' => 'Имя', 'orderable' => false, 'searchable' => false],
             [
@@ -166,7 +174,7 @@ class DataTableService extends DataTable implements DataTableServiceContract
         $translation = trans('admin::datatables');
 
         return [
-            'order' => [11, 'desc'],
+            'order' => [12, 'desc'],
             'paging' => true,
             'pagingType' => 'full_numbers',
             'searching' => true,

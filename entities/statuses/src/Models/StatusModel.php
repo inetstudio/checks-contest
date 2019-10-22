@@ -51,6 +51,7 @@ class StatusModel extends Model implements StatusModelContract
         'alias',
         'description',
         'color_class',
+        'fill_reason',
     ];
 
     /**
@@ -88,6 +89,7 @@ class StatusModel extends Model implements StatusModelContract
             'name',
             'alias',
             'color_class',
+            'fill_reason',
         ];
     }
 
@@ -131,6 +133,18 @@ class StatusModel extends Model implements StatusModelContract
     public function setColorClassAttribute($value): void
     {
         $this->attributes['color_class'] = trim(strip_tags($value));
+    }
+
+    /**
+     * Сеттер атрибута fill_reason.
+     *
+     * @param $value
+     */
+    public function setFillReasonAttribute($value): void
+    {
+        $value = $value[0] ?? (is_array($value) ? '' : $value);
+
+        $this->attributes['fill_reason'] = (bool) trim(strip_tags($value));
     }
 
     /**

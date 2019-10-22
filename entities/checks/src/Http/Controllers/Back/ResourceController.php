@@ -2,6 +2,7 @@
 
 namespace InetStudio\ChecksContest\Checks\Http\Controllers\Back;
 
+use Illuminate\Http\Request;
 use InetStudio\AdminPanel\Base\Http\Controllers\Controller;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\ChecksContest\Checks\Contracts\Services\Back\ItemsServiceContract;
@@ -107,18 +108,14 @@ class ResourceController extends Controller implements ResourceControllerContrac
     /**
      * Отображение объекта.
      *
-     * @param  ItemsServiceContract  $resourceService
-     * @param  int  $id
+     * @param  Request  $request
+     * @param  ShowResponseContract  $response
      *
      * @return ShowResponseContract
-     *
-     * @throws BindingResolutionException
      */
-    public function show(ItemsServiceContract $resourceService, int $id = 0): ShowResponseContract
+    public function show(Request $request, ShowResponseContract $response): ShowResponseContract
     {
-        $item = $resourceService->getItemById($id);
-
-        return $this->app->make(ShowResponseContract::class, compact('item'));
+        return $response;
     }
 
     /**

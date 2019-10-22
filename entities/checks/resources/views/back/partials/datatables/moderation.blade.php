@@ -1,17 +1,16 @@
 @inject('statusesService', 'InetStudio\ChecksContest\Statuses\Contracts\Services\Back\ItemsServiceContract')
 
 @php
-    $statuses = $statusesService->getAllItems()->pluck('name', 'alias')->toArray()
+    $statuses = $statusesService->getAllItems()->get();
 @endphp
 
 <div class="btn-group">
     <button data-toggle="dropdown" class="btn btn-xs btn-default dropdown-toggle" aria-expanded="false">Статус</button>
     <ul class="dropdown-menu">
-        @foreach ($statuses as $statusAlias => $statusName)
-            @if ($statusAlias != $item['status']['alias'])
+        @foreach ($statuses as $status)
+            @if ($status['alias'] != $item['status']['alias'])
                 <li>
-                    <a class="check-moderate"
-                       href="{{ route('back.checks-contest.checks.moderate', ['id' => $item['id'], 'statusAlias' => $statusAlias]) }}">{{ $statusName }}</a>
+                    <a class="check-moderate" href="{{ route('back.checks-contest.checks.moderate', ['id' => $item['id'], 'statusAlias' => $status['alias']]) }}" {!! ($status['fill_reason']) ? 'data-reason' : '' !!}>{{ $status['name'] }}</a>
                 </li>
             @endif
         @endforeach
