@@ -45,7 +45,7 @@
     },
     watch: {
       mode: function(newMode, oldMode) {
-        if (newMode === 'save_list_item' && oldMode === 'add_list_item') {
+        if (newMode === 'save_list_item' && (oldMode === 'add_list_item' || oldMode === 'edit_list_item')) {
           this.savePrize();
         }
       },
