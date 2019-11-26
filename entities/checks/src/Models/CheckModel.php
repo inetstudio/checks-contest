@@ -6,6 +6,7 @@ use OwenIt\Auditing\Auditable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use InetStudio\Uploads\Models\Traits\HasImages;
+use InetStudio\ACL\Users\Models\Traits\HasUser;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use InetStudio\AdminPanel\Models\Traits\HasJSONColumns;
@@ -65,6 +66,7 @@ class CheckModel extends Model implements CheckModelContract
         'verify_hash',
         'receipt_data',
         'additional_info',
+        'user_id',
         'status_id',
     ];
 
@@ -97,12 +99,16 @@ class CheckModel extends Model implements CheckModelContract
         parent::boot();
 
         self::$buildQueryScopeDefaults['columns'] = [
-            'id', 'fns_receipt_id', 'verify_hash', 'receipt_data', 'additional_info', 'status_id',
+            'id', 'fns_receipt_id', 'verify_hash', 'receipt_data', 'additional_info', 'user_id', 'status_id',
         ];
 
         self::$buildQueryScopeDefaults['relations'] = [
             'media' => function ($mediaQuery) {
                 $mediaQuery->select(['id', 'model_id', 'model_type', 'collection_name', 'file_name', 'disk']);
+            },
+
+            'user' => function ($userQuery) {
+                $userQuery->select(['id', 'name', 'email']);
             },
 
             'status' => function ($statusQuery) {
@@ -154,6 +160,16 @@ class CheckModel extends Model implements CheckModelContract
     }
 
     /**
+     * Сеттер атрибута user_id.
+     *
+     * @param $value
+     */
+    public function setUserIdAttribute($value)
+    {
+        $this->attributes['user_id'] = (int) trim(strip_tags($value));
+    }
+
+    /**
      * Сеттер атрибута status_id.
      *
      * @param $value
@@ -188,6 +204,7 @@ class CheckModel extends Model implements CheckModelContract
     }
 
     use Status;
+    use HasUser;
 
     /**
      * Связь с моделью приза.
