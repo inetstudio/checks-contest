@@ -31,7 +31,7 @@ class ModerateResponse implements ModerateResponseContract
     public function __construct(bool $result, CheckModelContract $item)
     {
         $this->result = $result;
-        $this->item = $item;
+        $this->item = $item->fresh();
     }
 
     /**
@@ -57,6 +57,12 @@ class ModerateResponse implements ModerateResponseContract
                 'admin.module.checks-contest.checks::back.partials.datatables.moderation',
                 [
                     'item' => $this->item,
+                ]
+            )->render(),
+            'prizes' => view(
+                'admin.module.checks-contest.checks::back.partials.datatables.prizes',
+                [
+                    'prizes' => $this->item['prizes'],
                 ]
             )->render(),
         ] : [

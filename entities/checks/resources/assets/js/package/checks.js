@@ -148,6 +148,7 @@ function processModerateResponse(button, result)
 
   if (result.success === true) {
     button.closest('tr').find('.receipt-status').html(result.status);
+    button.closest('tr').find('.receipt-prizes').html(result.prizes);
     button.closest('td').html(result.moderation);
 
     swal.fire({
