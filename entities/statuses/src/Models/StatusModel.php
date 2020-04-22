@@ -52,6 +52,7 @@ class StatusModel extends Model implements StatusModelContract
         'description',
         'color_class',
         'fill_reason',
+        'draw',
     ];
 
     /**
@@ -145,6 +146,18 @@ class StatusModel extends Model implements StatusModelContract
         $value = $value[0] ?? (is_array($value) ? '' : $value);
 
         $this->attributes['fill_reason'] = (bool) trim(strip_tags($value));
+    }
+
+    /**
+     * Сеттер атрибута draw.
+     *
+     * @param $value
+     */
+    public function setDrawAttribute($value): void
+    {
+        $value = $value[0] ?? (is_array($value) ? '' : $value);
+
+        $this->attributes['draw'] = (bool) trim(strip_tags($value));
     }
 
     /**

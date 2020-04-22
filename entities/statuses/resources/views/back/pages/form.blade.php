@@ -118,6 +118,18 @@
                                             ],
                                         ]) !!}
 
+                                        {!! Form::hidden('draw', 0) !!}
+                                        {!! Form::checks('draw', $item->fill_reason, [
+                                            'label' => [
+                                                'title' => 'Участвует в розыгрыше призов',
+                                            ],
+                                            'checks' => [
+                                                [
+                                                    'value' => 1,
+                                                ],
+                                            ],
+                                        ]) !!}
+
                                     </div>
                                 </div>
                             </div>

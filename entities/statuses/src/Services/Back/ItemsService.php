@@ -4,6 +4,7 @@ namespace InetStudio\ChecksContest\Statuses\Services\Back;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Database\Eloquent\Collection;
 use InetStudio\AdminPanel\Base\Services\BaseService;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\ChecksContest\Statuses\Contracts\Models\StatusModelContract;
@@ -74,5 +75,15 @@ class ItemsService extends BaseService implements ItemsServiceContract
         }
 
         return $status;
+    }
+
+    /**
+     * Возвращаем статусы, участвующие в розыгрыше призов.
+     *
+     * @return Collection
+     */
+    public function getParticipateInDrawStatuses(): Collection
+    {
+        return $this->getModel()->where('draw', 1)->get();
     }
 }
