@@ -104,7 +104,7 @@ class CheckModel extends Model implements CheckModelContract
 
         self::$buildQueryScopeDefaults['relations'] = [
             'media' => function ($mediaQuery) {
-                $mediaQuery->select(['id', 'model_id', 'model_type', 'collection_name', 'file_name', 'disk']);
+                $mediaQuery->select(['id', 'model_id', 'model_type', 'collection_name', 'file_name', 'disk', 'conversions_disk', 'uuid']);
             },
 
             'user' => function ($userQuery) {
