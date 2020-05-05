@@ -95,13 +95,13 @@ class ModerateChecksCommand extends Command implements ModerateChecksCommandCont
 
         foreach ($items as $item) {
             if (! $item->created_at->greaterThanOrEqualTo($this->contestStartDate)) {
-                $this->moderateItem($item, $rejectedStatus);
+                $this->moderateItem($item, $rejectedStatus, 'Загрузка до начала конкурса');
 
                 continue;
             }
 
             if ($item->created_at->greaterThanOrEqualTo($this->contestEndDate)) {
-                $this->moderateItem($item, $rejectedStatus);
+                $this->moderateItem($item, $rejectedStatus, 'Загрузка после окончания конкурса');
 
                 continue;
             }
@@ -115,7 +115,13 @@ class ModerateChecksCommand extends Command implements ModerateChecksCommandCont
             $receiptDate = Carbon::parse($receipt['receipt']['document']['receipt']['dateTime']);
 
             if (! $receiptDate->greaterThanOrEqualTo($this->contestStartDate)) {
-                $this->moderateItem($item, $rejectedStatus);
+                $this->moderateItem($item, $rejectedStatus, 'Покупка до начала конкурса');
+
+                continue;
+            }
+
+            if ($receiptDate->greaterThanOrEqualTo($this->contestEndDate)) {
+                $this->moderateItem($item, $rejectedStatus, 'Покупка после окончания конкурса');
 
                 continue;
             }
@@ -169,16 +175,10 @@ class ModerateChecksCommand extends Command implements ModerateChecksCommandCont
                         continue;
                     }
 
-                    if (! $item->hasJSONData('receipt_data', 'duplicate')) {
-                        if (isset($codes[$codeValue])) {
-                            $item->setJSONData('receipt_data', 'duplicate', true);
+                    if (! $item->hasJSONData('receipt_data', 'duplicate') && isset($codes[$codeValue])) {
+                        $item->setJSONData('receipt_data', 'duplicate', true);
 
-                            $this->moderateItem($item, $rejectedStatus);
-                        } else {
-                            $codes[$codeValue] = $item->id;
-
-                            $item->save();
-                        }
+                        $this->moderateItem($item, $rejectedStatus, 'Дубликат');
                     } else {
                         $codes[$codeValue] = $item->id;
                     }
@@ -223,16 +223,10 @@ class ModerateChecksCommand extends Command implements ModerateChecksCommandCont
                     continue;
                 }
 
-                if (! $item->hasJSONData('receipt_data', 'duplicate')) {
-                    if (isset($fnsData[$rawData])) {
-                        $item->setJSONData('receipt_data', 'duplicate', true);
+                if (! $item->hasJSONData('receipt_data', 'duplicate') && isset($fnsData[$rawData])) {
+                    $item->setJSONData('receipt_data', 'duplicate', true);
 
-                        $this->moderateItem($item, $rejectedStatus);
-                    } else {
-                        $fnsData[$rawData] = $item->id;
-
-                        $item->save();
-                    }
+                    $this->moderateItem($item, $rejectedStatus, 'Дубликат');
                 } else {
                     $fnsData[$rawData] = $item->id;
                 }
@@ -249,14 +243,20 @@ class ModerateChecksCommand extends Command implements ModerateChecksCommandCont
      *
      * @param  CheckModelContract  $item
      * @param  StatusModelContract  $status
+     * @param  string  $reason
      *
      * @return CheckModelContract
      *
      * @throws BindingResolutionException
      */
-    protected function moderateItem(CheckModelContract $item, StatusModelContract $status): CheckModelContract
+    protected function moderateItem(CheckModelContract $item, StatusModelContract $status, string $reason = ''): CheckModelContract
     {
         $item->status_id = $status['id'];
+
+        if ($reason) {
+            $item->setJSONData('receipt_data', 'statusReason', $reason);
+        }
+
         $item->save();
 
         event(
