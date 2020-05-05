@@ -37,7 +37,6 @@ class ServiceProvider extends BaseServiceProvider
                 'InetStudio\ChecksContest\Checks\Console\Commands\CreateFoldersCommand',
                 'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\ModerateChecksCommandContract',
                 'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\RecognizeCodesCommandContract',
-                'InetStudio\ChecksContest\Checks\Console\Commands\RemoveDuplicatesCommand',
                 'InetStudio\ChecksContest\Checks\Console\Commands\SetupCommand',
                 'InetStudio\ChecksContest\Checks\Contracts\Console\Commands\SetWinnerCommandContract',
             ]
