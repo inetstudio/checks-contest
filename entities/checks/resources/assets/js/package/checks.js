@@ -98,9 +98,13 @@ $(document).on('click', '#receipts_modal .save', function (event) {
       container.removeClass('sk-loading');
 
       let receiptId = _.find(formData, {'name':'check_id'}).value;
-      $('.check-table').find('.receipt-id').filter(function() {
+      let row = $('.check-table').find('.receipt-id').filter(function() {
         return $(this).text() === receiptId;
-      }).closest('tr').find('.receipt-prizes').html(data.prizes);
+      }).closest('tr');
+
+      row.find('.receipt-status').html(data.status);
+      row.find('.receipt-prizes').html(data.prizes);
+      row.html(data.moderation);
 
       $('#receipts_modal').modal('hide');
     }
@@ -147,8 +151,10 @@ function processModerateResponse(button, result)
   }
 
   if (result.success === true) {
-    button.closest('tr').find('.receipt-status').html(result.status);
-    button.closest('tr').find('.receipt-prizes').html(result.prizes);
+    let row = button.closest('tr');
+    row.find('.receipt-status').html(result.status);
+    row.find('.receipt-prizes').html(result.prizes);
+
     button.closest('td').html(result.moderation);
 
     swal.fire({

@@ -28,19 +28,8 @@
       },
     },
     methods: {
-      initProductsComponent() {
-        if (typeof window.Admin.vue.modulesComponents.$refs['checks_contest_products_ProductsListItemForm'] == 'undefined') {
-          window.Admin.vue.modulesComponents.modules.checks_contest_products.components = _.union(
-              window.Admin.vue.modulesComponents.modules.checks_contest_products.components, [
-                {
-                  name: 'ProductsListItemForm',
-                  data: {},
-                },
-              ]);
-        }
-      },
       editProduct() {
-        this.initProductsComponent();
+        window.Admin.vue.helpers.initComponent('checks_contest_products', 'ProductsListItemForm', {});
 
         window.Admin.vue.stores['checks_contest_products'].commit('setMode', 'edit_list_item');
 

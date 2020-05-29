@@ -32,7 +32,7 @@ class SaveResponse implements SaveResponseContract
      *
      * @param  Request  $request
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
      * @throws Throwable
      */
@@ -45,6 +45,16 @@ class SaveResponse implements SaveResponseContract
                 [
                     'success' => true,
                     'item' => $item,
+                    'status' => view(
+                        'admin.module.checks-contest.checks::back.partials.datatables.status',
+                        [
+                            'item' => $item['status'],
+                        ]
+                    )->render(),
+                    'moderation' => view(
+                        'admin.module.checks-contest.checks::back.partials.datatables.moderation',
+                        compact('item')
+                    )->render(),
                     'prizes' => view(
                         'admin.module.checks-contest.checks::back.partials.datatables.prizes',
                         [

@@ -18,14 +18,14 @@
                         </div>
 
                         <base-dropdown
-                                label = "Категория товара"
-                                name = "product_type"
-                                v-bind:attributes = "{
-                                'data-placeholder': 'Выберите категорию товара',
-                                'data-allow-clear': 'true'
-                                }"
-                                v-bind:options = "options.categories"
-                                v-bind:selected.sync="product.model.product_data.category"
+                            label = "Категория товара"
+                            v-bind:attributes="{
+                                placeholder: 'Выберите категорию товара',
+                                clearable: true,
+                                reduce: option => option.value
+                            }"
+                            v-bind:options="options.categories"
+                            v-bind:selected.sync="product.model.product_data.category"
                         />
 
                         <base-input-text

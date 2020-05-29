@@ -121,19 +121,8 @@
 
         return products;
       },
-      initProductsComponent() {
-        if (typeof window.Admin.vue.modulesComponents.$refs['checks_contest_products_ProductsListItemForm'] == 'undefined') {
-          window.Admin.vue.modulesComponents.modules.checks_contest_products.components = _.union(
-              window.Admin.vue.modulesComponents.modules.checks_contest_products.components, [
-                {
-                  name: 'ProductsListItemForm',
-                  data: {},
-                },
-              ]);
-        }
-      },
       addProduct() {
-        this.initProductsComponent();
+        window.Admin.vue.helpers.initComponent('checks_contest_products', 'ProductsListItemForm', {});
 
         window.Admin.vue.stores['checks_contest_products'].commit('setMode', 'add_list_item');
         window.Admin.vue.stores['checks_contest_products'].commit('setProduct', {});
