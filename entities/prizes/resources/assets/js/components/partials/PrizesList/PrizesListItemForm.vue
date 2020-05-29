@@ -18,29 +18,30 @@
                         </div>
 
                         <base-dropdown
-                                label="Приз"
-                                name="prize_id"
-                                v-bind:attributes="{
-                                    'data-placeholder': 'Выберите приз'
-                                }"
-                                v-bind:options="options.prizes"
-                                v-bind:selected="prize.model.prize_id"
-                                v-on:update:selected="selectPrize($event)"
+                            label="Приз"
+                            v-bind:attributes="{
+                                placeholder: 'Выберите приз',
+                                clearable: true,
+                                reduce: option => option.value
+                            }"
+                            v-bind:options="options.prizes"
+                            v-bind:selected="prize.model.prize_id"
+                            v-on:update:selected="selectPrize($event)"
                         />
 
                         <base-date
                                 label="Дата"
-                                v-bind:name="[
-                                    'date_start',
-                                    'date_end'
+                                v-bind:dates="[
+                                    {
+                                      name: 'date_start',
+                                      value: prize.model.date_start
+                                    },
+                                    {
+                                      name: 'date_end',
+                                      value: prize.model.date_end
+                                    }
                                 ]"
-                                v-bind:value="[
-                                    prize.model.date_start,
-                                    prize.model.date_end,
-                                ]"
-                                v-bind:attributes="{
-                                    'data-options': JSON.stringify(attributes)
-                                }"
+                                v-bind:options="options.dates"
                                 v-on:update:date_start="prize.model.date_start = $event"
                                 v-on:update:date_end="prize.model.date_end = $event"
                         />
@@ -76,13 +77,13 @@
       return {
         options: {
           loading: true,
-          prizes: []
+          prizes: [],
+          dates: {
+            dateFormat: 'd.m.Y',
+            enableTime: false
+          }
         },
-        prize: {},
-        attributes: {
-          dateFormat: 'd.m.Y',
-          enableTime: false
-        }
+        prize: {}
       };
     },
     computed: {
