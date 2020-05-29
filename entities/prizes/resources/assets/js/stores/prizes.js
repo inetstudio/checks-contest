@@ -1,46 +1,50 @@
 window.Admin.vue.stores['checks_contest_prizes'] = new Vuex.Store({
   state: {
-    emptyPrize: {
-      model: {
-        name: '',
-        prize_id: '',
-        confirmed: [],
-        date_start: '',
-        date_end: ''
-      },
+    prize: {
+      model: {},
       errors: {},
-      isModified: false,
       hash: '',
     },
-    prize: {},
-    prizesIds: [],
+    prizes: [],
     mode: '',
   },
   mutations: {
     setPrize(state, prize) {
-      let emptyPrize = JSON.parse(JSON.stringify(state.emptyPrize));
-      emptyPrize.model.id = UUID.generate();
+      let prizeCopy = JSON.parse(JSON.stringify(prize));
 
-      let resultPrize = _.merge(emptyPrize, prize);
-      resultPrize.hash = window.hash(resultPrize.model);
+      state.prize.model = (prizeCopy.hasOwnProperty('model')) ? prizeCopy.model : prizeCopy;
+      state.prize.hash = window.hash(state.prize.model);
+    },
+    newPrize(state, checkId) {
+      let prizeId = UUID.generate();
 
-      state.prize = resultPrize;
+      let prize = {
+        id: prizeId,
+        pivot: {
+          check_id: checkId,
+          prize_id: prizeId,
+          confirmed: 0,
+          date_start: null,
+          date_end: null
+        }
+      };
+
+      this.commit('setPrize', prize);
     },
-    addPrizeId(state, prizeId) {
-      state.prizesIds.push(prizeId);
-    },
-    removePrizeId(state, prizeId) {
-      state.prizesIds = _.remove(state.prizesIds, function(statePrizeId) {
-        return statePrizeId !== prizeId;
-      });
+    setPrizes(state, prizes) {
+      state.prizes = prizes;
     },
     setMode(state, mode) {
       state.mode = mode;
     },
     reset(state) {
       state.mode = '';
-      state.prize = {};
-      state.prizesIds = [];
+      state.prize = {
+        model: {},
+        errors: {},
+        hash: ''
+      };
+      state.prizes = [];
     }
   },
 });

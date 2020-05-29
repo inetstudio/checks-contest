@@ -30,19 +30,19 @@
 
                         <base-input-text
                                 label="Название"
-                                name="answer"
+                                name="name"
                                 v-bind:value.sync="product.model.name"
                         />
 
                         <base-input-text
                                 label="Количество"
-                                name="answer"
+                                name="quantity"
                                 v-bind:value.sync="product.model.quantity"
                         />
 
                         <base-input-text
                                 label="Стоимость единицы товара"
-                                name="answer"
+                                name="price"
                                 v-bind:value.sync="product.model.price"
                         />
                     </div>

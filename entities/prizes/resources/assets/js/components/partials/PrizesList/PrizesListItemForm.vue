@@ -1,6 +1,5 @@
 <template>
-    <div class="modal inmodal fade" id="prizes_list_item_form_modal" tabindex="-1" role="dialog" aria-hidden="true"
-         ref="modal">
+    <div class="modal inmodal fade" id="checks_contest_prizes_list_item_form_modal" tabindex="-1" role="dialog" aria-hidden="true" ref="modal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
@@ -18,52 +17,53 @@
                         </div>
 
                         <base-dropdown
-                            label="Приз"
-                            v-bind:attributes="{
+                                label="Приз"
+                                v-bind:attributes="{
                                 placeholder: 'Выберите приз',
-                                clearable: true,
+                                disabled: (mode === 'edit_list_item'),
+                                clearable: false,
                                 reduce: option => option.value
                             }"
-                            v-bind:options="options.prizes"
-                            v-bind:selected="prize.model.prize_id"
-                            v-on:update:selected="selectPrize($event)"
+                                v-bind:options="options.prizes"
+                                v-bind:selected="(mode === 'edit_list_item') ? _.get(prize, 'model.id', 0) : 0"
+                                v-on:update:selected="selectPrize($event)"
                         />
 
                         <base-date
                                 label="Дата"
                                 v-bind:dates="[
-                                    {
-                                      name: 'date_start',
-                                      value: prize.model.date_start
-                                    },
-                                    {
-                                      name: 'date_end',
-                                      value: prize.model.date_end
-                                    }
-                                ]"
+                                {
+                                  name: 'date_start',
+                                  value: formatDate(_.get(prize, 'model.pivot.date_start', null), 'Z', 'd.m.Y')
+                                },
+                                {
+                                  name: 'date_end',
+                                  value: formatDate(_.get(prize, 'model.pivot.date_end', null), 'Z', 'd.m.Y')
+                                }
+                            ]"
                                 v-bind:options="options.dates"
-                                v-on:update:date_start="prize.model.date_start = $event"
-                                v-on:update:date_end="prize.model.date_end = $event"
+                                v-on:update:date_start="prize.model.pivot.date_start = formatDate($event, 'd.m.Y', 'Z')"
+                                v-on:update:date_end="prize.model.pivot.date_end = formatDate($event, 'd.m.Y', 'Z')"
                         />
 
                         <base-checkboxes
                                 label="Подтвердить"
                                 name="confirmed"
                                 v-bind:checkboxes="[
-                                    {
-                                        value: 1,
-                                        label: ''
-                                    }
-                                ]"
-                                v-bind:selected="prize.model.confirmed"
-                                v-on:update:selected="prize.model.confirmed = $event"
+                                {
+                                    value: 1,
+                                    label: ''
+                                }
+                            ]"
+                                v-bind:selected="_.get(prize, 'model.pivot.confirmed', 0)"
+                                v-on:update:selected="prize.model.pivot.confirmed = (parseInt($event[0]) || 0)"
                         />
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
-                    <a href="#" class="btn btn-primary" v-on:click.prevent="savePrize">Сохранить</a>
+                    <a href="#" class="btn btn-primary" v-on:click.prevent="save">Сохранить</a>
                 </div>
             </div>
         </div>
@@ -72,7 +72,7 @@
 
 <script>
   export default {
-    name: 'PrizesListItemForm',
+    name: 'ChecksContestPrizesListItemForm',
     data() {
       return {
         options: {
@@ -87,34 +87,35 @@
       };
     },
     computed: {
+      _() {
+        return _;
+      },
       mode() {
         return window.Admin.vue.stores['checks_contest_prizes'].state.mode;
-      },
+      }
     },
     watch: {
       'prize.model': {
         handler: function(newValue, oldValue) {
-          this.prize.isModified = !(!newValue
-              || typeof newValue.id === 'undefined'
-              || typeof oldValue.id === 'undefined'
-              || this.prize.hash === window.hash(newValue));
+          let component = this;
+
+          component.prize.hash = window.hash(newValue);
         },
-        deep: true,
-      },
+        deep: true
+      }
     },
     methods: {
       initComponent: function() {
         let component = this;
 
-        component.prize = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_prizes'].state.emptyPrize));
-
-        let url = route('back.checks-contest.prizes.getSuggestions');
+        let url = route('back.back.checks-contest.prizes.getSuggestions');
 
         axios.post(url).then(response => {
           component.options.prizes = _.map(response.data.items, function (item) {
             return {
               value: item.id,
-              text: item.name
+              text: item.name,
+              model: item.extra
             };
           });
 
@@ -126,31 +127,42 @@
 
         component.prize = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_prizes'].state.prize));
 
-        $('#prize_id').val(component.prize.model.prize_id).trigger('change');
-        $('#date_start')[0]._flatpickr.setDate(component.prize.model.date_start);
-        $('#date_end')[0]._flatpickr.setDate(component.prize.model.date_end);
+        $(component.$refs.modal).find('#prize_id').val(_.get(component.prize, 'model.id', 0)).trigger('change');
       },
-      savePrize() {
+      save() {
         let component = this;
 
-        if (window.Admin.vue.stores['checks_contest_prizes'].state.mode === 'add_list_item'
-            && window.Admin.vue.stores['checks_contest_prizes'].state.prizesIds.indexOf(parseInt(component.prize.model.prize_id)) > -1) {
+        let existsIndex = _.findIndex(window.Admin.vue.stores['checks_contest_prizes'].state.prizes, function(prize) {
+          return prize.model.id === _.get(component.prize, 'model.id', null);
+        });
 
-          $(this.$refs.modal).modal('hide');
+        if (typeof component.prize.model.alias === 'undefined' || existsIndex > -1 && component.mode === 'add_list_item') {
+          $(component.$refs.modal).modal('hide');
 
           return;
-        } else if (component.prize.isModified && component.prize.model.prize_id !== 0) {
-          window.Admin.vue.stores['checks_contest_prizes'].commit('setPrize', JSON.parse(JSON.stringify(component.prize)));
-          window.Admin.vue.stores['checks_contest_prizes'].commit('setMode', 'save_list_item');
         }
 
-        $(this.$refs.modal).modal('hide');
+        window.Admin.vue.stores['checks_contest_prizes'].commit('setPrize', JSON.parse(JSON.stringify(component.prize.model)));
+        window.Admin.vue.stores['checks_contest_prizes'].commit('setMode', 'save_list_item');
+
+        $(component.$refs.modal).modal('hide');
       },
-      selectPrize(data) {
-        if (data) {
-          this.prize.model.prize_id = data;
-          this.prize.model.name = $('#prize_id option[value='+data+']').text();
+      selectPrize(id) {
+        let component = this;
+
+        if (id) {
+          let prizeIndex = _.findIndex(component.options.prizes, function (prize) {
+            return prize.model.id === parseInt(id);
+          });
+
+          if (prizeIndex > -1) {
+            component.prize.model = _.merge(component.prize.model, component.options.prizes[prizeIndex].model);
+            component.prize.model.pivot.prize_id = component.options.prizes[prizeIndex].model.id;
+          }
         }
+      },
+      formatDate(dateTime, fromFormat, toFormat) {
+        return dateTime ? flatpickr.formatDate(flatpickr.parseDate(dateTime, fromFormat), toFormat) : null;
       }
     },
     created: function() {
@@ -159,17 +171,16 @@
     mounted() {
       let component = this;
 
-      this.$nextTick(function() {
-        $(component.$refs.modal).on('show.bs.modal', function() {
+      component.$nextTick(function() {
+        $(component.$refs.modal).on('show.bs.modal', function () {
           component.loadPrize();
         });
 
-        $(component.$refs.modal).on('hide.bs.modal', function() {
-          component.prize = JSON.parse(JSON.stringify(window.Admin.vue.stores['checks_contest_prizes'].state.emptyPrize));
-          $('#prize_id').val(null).trigger('change');
+        $(component.$refs.modal).on('hide.bs.modal', function () {
+          $(component.$refs.modal).find('#prize_id').val(null).trigger('change');
         });
       });
-    },
+    }
   };
 </script>
 

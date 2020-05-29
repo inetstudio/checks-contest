@@ -2,12 +2,12 @@
     <li>
         <div class="row">
             <div class="col-10">
-                <i v-if="prize.model.confirmed[0]" class="fa fa-check-square"></i><span class="m-l-xs">{{ prize.model.name }}</span>
+                <i v-if="prize.model.pivot.confirmed" class="fa fa-check-square"></i><span class="m-l-xs">{{ prize.model.name }}</span>
             </div>
             <div class="col-2">
                 <div class="btn-group float-right">
-                    <a href="#" class="btn btn-xs btn-default edit-prize m-r" v-on:click.prevent.stop="editPrize"><i class="fa fa-pencil-alt"></i></a>
-                    <a href="#" class="btn btn-xs btn-danger delete-prize" v-on:click.prevent.stop="removePrize"><i class="fa fa-times"></i></a>
+                    <a href="#" class="btn btn-xs btn-default edit-prize m-r" v-on:click.prevent.stop="edit"><i class="fa fa-pencil-alt"></i></a>
+                    <a href="#" class="btn btn-xs btn-danger delete-prize" v-on:click.prevent.stop="remove"><i class="fa fa-times"></i></a>
                 </div>
             </div>
         </div>
@@ -16,34 +16,34 @@
 
 <script>
   export default {
-    name: 'PrizesListItem',
+    name: 'ChecksContestPrizesListItem',
     props: {
       prize: {
         type: Object,
-        required: true,
+        required: true
       },
     },
     methods: {
-      editPrize() {
-        window.Admin.vue.helpers.initComponent('checks_contest_prizes', 'PrizesListItemForm', {});
+      edit() {
+        let component = this;
+
+        window.Admin.vue.helpers.initComponent('checks_contest_prizes', 'ChecksContestPrizesListItemForm', {});
 
         window.Admin.vue.stores['checks_contest_prizes'].commit('setMode', 'edit_list_item');
+        window.Admin.vue.stores['checks_contest_prizes'].commit('setPrize', component.prize);
 
-        let prize = JSON.parse(JSON.stringify(this.prize));
-        prize.isModified = false;
-
-        window.Admin.vue.stores['checks_contest_prizes'].commit('setPrize', prize);
-
-        window.waitForElement('#prizes_list_item_form_modal', function() {
-          $('#prizes_list_item_form_modal').modal();
+        window.waitForElement('#checks_contest_prizes_list_item_form_modal', function () {
+          $('#checks_contest_prizes_list_item_form_modal').modal();
         });
       },
-      removePrize() {
-        this.$emit('remove', {
-          id: this.prize.model.id,
+      remove() {
+        let component = this;
+
+        component.$emit('remove', {
+          id: component.prize.model.id
         });
-      },
-    },
+      }
+    }
   };
 </script>
 

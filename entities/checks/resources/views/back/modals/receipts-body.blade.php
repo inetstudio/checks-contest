@@ -143,7 +143,7 @@
                 </div>
                 <div class="ibox-content" style="display: none;">
                     <div>
-                        <prizes-list
+                        <checks-contest-prizes-list
                             v-bind:prizes-prop="{{ json_encode($item['prizes']) }}"
                         />
                     </div>
