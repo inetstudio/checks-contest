@@ -2,56 +2,29 @@
 
 namespace InetStudio\ReceiptsContest\Receipts\Http\Responses\Front;
 
-use League\Fractal\Manager;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Contracts\Container\BindingResolutionException;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Front\SearchResponseContract;
 
-/**
- * Class SearchResponse.
- */
 class SearchResponse implements SearchResponseContract
 {
-    /**
-     * @var Collection
-     */
-    protected $items;
+    protected ItemsServiceContract $itemsService;
 
-    /**
-     * SearchResponse constructor.
-     *
-     * @param  Collection  $items
-     */
-    public function __construct(Collection $items)
+    public function __construct(ItemsServiceContract $itemsService)
     {
-        $this->items = $items;
+        $this->itemsService = $itemsService;
     }
 
-    /**
-     * Возвращаем результаты поиска.
-     *
-     * @param  Request  $request
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
-     *
-     * @throws BindingResolutionException
-     */
     public function toResponse($request)
     {
-        $transformer = app()->make(
-            'InetStudio\ReceiptsContest\Receipts\Contracts\Transformers\Front\SearchItemTransformerContract'
+        $field = $request->route('field', 'email');
+        $type = $request->route('type', '');
+        $query = $request->input('query', '');
+
+        $resource = $this->itemsService->search($field, $query, $type);
+
+        return app()->make(
+            'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Resources\Front\Search\ItemsCollectionContract',
+            compact('resource')
         );
-
-        $resource = $transformer->transformCollection($this->items);
-
-        $serializer = app()->make('InetStudio\AdminPanel\Base\Contracts\Serializers\SimpleDataArraySerializerContract');
-
-        $manager = new Manager();
-        $manager->setSerializer($serializer);
-
-        $transformation = $manager->createData($resource)->toArray();
-
-        return response()->json($transformation);
     }
 }

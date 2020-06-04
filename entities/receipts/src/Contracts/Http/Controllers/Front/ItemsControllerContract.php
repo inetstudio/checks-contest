@@ -2,36 +2,14 @@
 
 namespace InetStudio\ReceiptsContest\Receipts\Contracts\Http\Controllers\Front;
 
-use Illuminate\Http\Request;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Front\SaveItemRequestContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Front\SendRequestContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Front\SearchRequestContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Front\SendResponseContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Front\SearchResponseContract;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Front\SendItemResponseContract;
 
-/**
- * Interface ItemsControllerContract.
- */
 interface ItemsControllerContract
 {
-    /**
-     * Отправлен чек для участия в конкурсе.
-     *
-     * @param  ItemsServiceContract  $checksService
-     * @param  SaveItemRequestContract  $request
-     *
-     * @return SendItemResponseContract
-     */
-    public function send(ItemsServiceContract $checksService, SaveItemRequestContract $request): SendItemResponseContract;
+    public function send(SendRequestContract $request, SendResponseContract $response): SendResponseContract;
 
-    /**
-     * Поиск чека победителя.
-     *
-     * @param  ItemsServiceContract  $checksService
-     * @param  Request  $request
-     * @param  string  $field
-     * @param  string  $type
-     *
-     * @return SearchResponseContract
-     */
-    public function search(ItemsServiceContract $checksService, Request $request, string $field, string $type): SearchResponseContract;
+    public function search(SearchRequestContract $request, SearchResponseContract $response): SearchResponseContract;
 }

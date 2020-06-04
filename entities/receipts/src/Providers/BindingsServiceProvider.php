@@ -37,9 +37,13 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Back\Resource\ShowRequestContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Requests\Back\Resource\ShowRequest',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Back\Resource\StoreRequestContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Requests\Back\Resource\StoreRequest',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Back\Resource\UpdateRequestContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Requests\Back\Resource\UpdateRequest',
+        'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Front\SearchRequestContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Requests\Front\SearchRequest',
+        'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Front\SendRequestContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Requests\Front\SendRequest',
 
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Resources\Back\Resource\Index\ItemResourceContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Resources\Back\Resource\Index\ItemResource',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Resources\Back\Resource\Show\ItemResourceContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Resources\Back\Resource\Show\ItemResource',
+        'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Resources\Front\Search\ItemResourceContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Resources\Front\Search\ItemResource',
+        'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Resources\Front\Search\ItemsCollectionContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Resources\Front\Search\ItemsCollection',
 
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Data\GetIndexDataResponseContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Responses\Back\Data\GetIndexDataResponse',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Export\ExportItemsFullResponseContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Responses\Back\Export\ExportItemsFullResponse',
@@ -50,8 +54,8 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\ShowResponseContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Responses\Back\Resource\ShowResponse',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\StoreResponseContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Responses\Back\Resource\StoreResponse',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\UpdateResponseContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Responses\Back\Resource\UpdateResponse',
-        'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Front\SendItemResponseContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Responses\Front\SendItemResponse',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Front\SearchResponseContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Responses\Front\SearchResponse',
+        'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Front\SendResponseContract' => 'InetStudio\ReceiptsContest\Receipts\Http\Responses\Front\SendResponse',
 
         'InetStudio\ReceiptsContest\Receipts\Contracts\Listeners\Back\SetWinnerListenerContract' => 'InetStudio\ReceiptsContest\Receipts\Listeners\Back\SetWinnerListener',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Listeners\ItemStatusChangeListenerContract' => 'InetStudio\ReceiptsContest\Receipts\Listeners\ItemStatusChangeListener',
@@ -66,7 +70,6 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
 
         'InetStudio\ReceiptsContest\Receipts\Contracts\Transformers\Back\Common\PreviewTransformerContract' => 'InetStudio\ReceiptsContest\Receipts\Transformers\Back\Common\PreviewTransformer',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Transformers\Back\Resource\ShowTransformerContract' => 'InetStudio\ReceiptsContest\Receipts\Transformers\Back\Resource\ShowTransformer',
-        'InetStudio\ReceiptsContest\Receipts\Contracts\Transformers\Front\SearchItemTransformerContract' => 'InetStudio\ReceiptsContest\Receipts\Transformers\Front\SearchItemTransformer',
     ];
 
     public function provides()

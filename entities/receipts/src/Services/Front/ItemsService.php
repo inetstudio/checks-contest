@@ -6,37 +6,21 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Receipts\Services\ItemsService as BaseItemsService;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract;
 
-/**
- * Class ItemsService.
- */
 class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
-    /**
-     * @var array
-     */
-    public $stages = [];
+    public array $stages = [];
 
-    /**
-     * Отправлен чек для участия в конкурсе.
-     *
-     * @param  array  $data
-     *
-     * @return ReceiptModelContract
-     *
-     * @throws BindingResolutionException
-     */
     public function send(array $data): ReceiptModelContract
     {
         $statusesService = app()->make(
             'InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract'
         );
 
-        $status = $statusesService->getDefaultStatus();
+        $status = $statusesService->getItemsByType('default')->first();
 
         $itemData = Arr::get($data, 'additional_info');
         $item = $this->saveModel(
@@ -66,11 +50,6 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
         return $item;
     }
 
-    /**
-     * Получаем этапы конкурса с победителями.
-     *
-     * @return array
-     */
     public function getContestStages(): array
     {
         $stages = [
@@ -124,20 +103,11 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
         return $stages;
     }
 
-    /**
-     * Поиск чеков.
-     *
-     * @param  string  $field
-     * @param  string  $search
-     * @param  string  $type
-     *
-     * @return Collection
-     */
-    public function search(string $field, string $search, string $type): Collection
+    public function search(string $field, string $query, string $type): Collection
     {
         $builder = $this->model::where(
             [
-                ['additional_info->'.$field, '=', $search],
+                ['additional_info->'.$field, '=', $query],
             ]
         );
 
@@ -145,18 +115,9 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
             $builder->whereHas('prizes');
         }
 
-        $items = $builder->get();
-
-        return $items;
+        return $builder->get();
     }
 
-    /**
-     * Форматируем дату.
-     *
-     * @param  string  $date
-     *
-     * @return string
-     */
     protected function formatDate(string $date): string
     {
         $formattedDate = Carbon::createFromFormat('d.m.y', $date, 'Europe/Moscow')->format('d.m.Y');
@@ -164,14 +125,7 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
         return Carbon::formatDateToRus($formattedDate);
     }
 
-    /**
-     * Получаем
-     *
-     * @param $phone
-     *
-     * @return string
-     */
-    protected function hidePhone($phone): string
+    protected function hidePhone(string $phone): string
     {
         $phone = str_replace(['+', '-', '(', ')', ' '], '', $phone);
         $lastSymbols = substr($phone, -4);
