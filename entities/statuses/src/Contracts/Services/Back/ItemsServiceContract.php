@@ -1,22 +1,14 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Contracts\Services\Back;
+namespace InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back;
 
-use InetStudio\AdminPanel\Base\Contracts\Services\BaseServiceContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Models\StatusModelContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\DTO\ItemDataContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Models\StatusModelContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\ItemsServiceContract as BaseItemsServiceContract;
 
-/**
- * Interface ItemsServiceContract.
- */
-interface ItemsServiceContract extends BaseServiceContract
+interface ItemsServiceContract extends BaseItemsServiceContract
 {
-    /**
-     * Сохраняем модель.
-     *
-     * @param  array  $data
-     * @param  int  $id
-     *
-     * @return StatusModelContract
-     */
-    public function save(array $data, int $id): StatusModelContract;
+    public function save(ItemDataContract $data): StatusModelContract;
+
+    public function destroy($id): int;
 }

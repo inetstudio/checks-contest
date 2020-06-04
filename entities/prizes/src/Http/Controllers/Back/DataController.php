@@ -1,26 +1,16 @@
 <?php
 
-namespace InetStudio\ChecksContest\Prizes\Http\Controllers\Back;
+namespace InetStudio\ReceiptsContest\Prizes\Http\Controllers\Back;
 
-use Illuminate\Http\JsonResponse;
 use InetStudio\AdminPanel\Base\Http\Controllers\Controller;
-use InetStudio\ChecksContest\Prizes\Contracts\Services\Back\DataTableServiceContract;
-use InetStudio\ChecksContest\Prizes\Contracts\Http\Controllers\Back\DataControllerContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Controllers\Back\DataControllerContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Requests\Back\Data\GetIndexDataRequestContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Data\GetIndexDataResponseContract;
 
-/**
- * Class DataController.
- */
 class DataController extends Controller implements DataControllerContract
 {
-    /**
-     * Получаем данные для отображения в таблице.
-     *
-     * @param  DataTableServiceContract  $dataTableService
-     *
-     * @return JsonResponse
-     */
-    public function data(DataTableServiceContract $dataTableService): JsonResponse
+    public function getIndexData(GetIndexDataRequestContract $request, GetIndexDataResponseContract $response): GetIndexDataResponseContract
     {
-        return $dataTableService->ajax();
+        return $response;
     }
 }

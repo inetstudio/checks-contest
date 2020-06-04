@@ -1,23 +1,12 @@
 <?php
 
-namespace InetStudio\ChecksContest\Prizes\Services\Front;
+declare(strict_types=1);
 
-use InetStudio\AdminPanel\Base\Services\BaseService;
-use InetStudio\ChecksContest\Prizes\Contracts\Models\PrizeModelContract;
-use InetStudio\ChecksContest\Prizes\Contracts\Services\Front\ItemsServiceContract;
+namespace InetStudio\ReceiptsContest\Prizes\Services\Front;
 
-/**
- * Class ItemsService.
- */
-class ItemsService extends BaseService implements ItemsServiceContract
+use InetStudio\ReceiptsContest\Prizes\Services\ItemsService as BaseItemsService;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Front\ItemsServiceContract;
+
+class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
-    /**
-     * ItemsService constructor.
-     *
-     * @param  PrizeModelContract  $model
-     */
-    public function __construct(PrizeModelContract $model)
-    {
-        parent::__construct($model);
-    }
 }

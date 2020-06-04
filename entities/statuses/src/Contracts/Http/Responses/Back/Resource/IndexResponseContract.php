@@ -1,12 +1,9 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Contracts\Http\Responses\Back\Resource;
+namespace InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource;
 
 use Illuminate\Contracts\Support\Responsable;
 
-/**
- * Interface IndexResponseContract.
- */
 interface IndexResponseContract extends Responsable
 {
 }

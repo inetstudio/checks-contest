@@ -1,9 +1,9 @@
 <?php
 
-namespace InetStudio\ChecksContest\Products\Contracts\Services\Back;
+namespace InetStudio\ReceiptsContest\Products\Contracts\Services\Back;
 
 use InetStudio\AdminPanel\Base\Contracts\Services\BaseServiceContract;
-use InetStudio\ChecksContest\Products\Contracts\Models\ProductModelContract;
+use InetStudio\ReceiptsContest\Products\Contracts\Models\ProductModelContract;
 
 /**
  * Interface ItemsServiceContract.

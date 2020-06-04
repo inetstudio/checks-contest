@@ -1,31 +1,15 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Console\Commands;
+namespace InetStudio\ReceiptsContest\Statuses\Console\Commands;
 
 use InetStudio\AdminPanel\Base\Console\Commands\BaseSetupCommand;
 
-/**
- * Class SetupCommand.
- */
 class SetupCommand extends BaseSetupCommand
 {
-    /**
-     * Имя команды.
-     *
-     * @var string
-     */
-    protected $name = 'inetstudio:checks-contest:statuses:setup';
+    protected $name = 'inetstudio:receipts-contest:statuses:setup';
 
-    /**
-     * Описание команды.
-     *
-     * @var string
-     */
-    protected $description = 'Setup social contest statuses package';
+    protected $description = 'Setup receipts contest statuses package';
 
-    /**
-     * Инициализация команд.
-     */
     protected function initCommands(): void
     {
         $this->calls = [
@@ -34,7 +18,7 @@ class SetupCommand extends BaseSetupCommand
                 'description' => 'Publish migrations',
                 'command' => 'vendor:publish',
                 'params' => [
-                    '--provider' => 'InetStudio\ChecksContest\Statuses\Providers\ServiceProvider',
+                    '--provider' => 'InetStudio\ReceiptsContest\Statuses\Providers\ServiceProvider',
                     '--tag' => 'migrations',
                 ],
             ],
@@ -46,7 +30,7 @@ class SetupCommand extends BaseSetupCommand
             [
                 'type' => 'artisan',
                 'description' => 'Seed statuses',
-                'command' => 'inetstudio:checks-contest:statuses:seed',
+                'command' => 'inetstudio:receipts-contest:statuses:seed',
             ],
         ];
     }

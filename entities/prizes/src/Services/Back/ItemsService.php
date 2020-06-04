@@ -1,100 +1,54 @@
 <?php
 
-namespace InetStudio\ChecksContest\Prizes\Services\Back;
+declare(strict_types=1);
 
-use Carbon\Carbon;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use InetStudio\AdminPanel\Base\Services\BaseService;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use InetStudio\ChecksContest\Prizes\Contracts\Models\PrizeModelContract;
-use InetStudio\ChecksContest\Prizes\Contracts\Services\Back\ItemsServiceContract;
+namespace InetStudio\ReceiptsContest\Prizes\Services\Back;
 
-/**
- * Class ItemsService.
- */
-class ItemsService extends BaseService implements ItemsServiceContract
+use Illuminate\Support\Collection;
+use InetStudio\ReceiptsContest\Prizes\Contracts\DTO\ItemDataContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Models\PrizeModelContract;
+use InetStudio\ReceiptsContest\Prizes\Services\ItemsService as BaseItemsService;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back\ItemsServiceContract;
+
+class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
-    /**
-     * ItemsService constructor.
-     *
-     * @param  PrizeModelContract  $model
-     */
-    public function __construct(PrizeModelContract $model)
+    public function save(ItemDataContract $data): PrizeModelContract
     {
-        parent::__construct($model);
-    }
-
-    /**
-     * Сохраняем модель.
-     *
-     * @param  array  $data
-     * @param  int  $id
-     *
-     * @return PrizeModelContract
-     *
-     * @throws BindingResolutionException
-     */
-    public function save(array $data, int $id): PrizeModelContract
-    {
-        $action = ($id) ? 'отредактирован' : 'создан';
-
-        $itemData = Arr::only($data, $this->model->getFillable());
-        $item = $this->saveModel($itemData, $id);
+        $item = $this->model::updateOrCreate(
+            [
+                'id' => $data->id,
+            ],
+            $data->except('id')->toArray()
+        );
 
         event(
             app()->make(
-                'InetStudio\ChecksContest\Prizes\Contracts\Events\Back\ModifyItemEventContract',
+                'InetStudio\ReceiptsContest\Prizes\Contracts\Events\Back\ModifyItemEventContract',
                 compact('item')
             )
         );
 
-        Session::flash('success', 'Приз «'.$item['name'].'» успешно '.$action);
-
         return $item;
     }
 
-    /**
-     * Присваиваем призы объекту.
-     *
-     * @param $prizes
-     * @param $item
-     *
-     * @throws BindingResolutionException
-     */
+    public function destroy($id): int
+    {
+        return $this->model::destroy($id);
+    }
+
     public function attachToObject($prizes, $item): void
     {
-        if (! $prizes) {
+        if ($prizes === null) {
             return;
-        }
-
-        if ($prizes instanceof Request) {
-            $prizes = $prizes->get('prizes');
-
-            if (! $prizes) {
-                return;
-            }
-        }
-
-        if (is_string($prizes)) {
-            $prizes = json_decode($prizes, true);
         }
 
         $oldPrizes = $item->prizes;
 
         if (! empty($prizes)) {
             $prizes = collect($prizes)->mapWithKeys(function ($item) {
-                $key = $item['prize_id'];
-
                 return [
-                    $key => [
-                        'date_start' => Carbon::createFromFormat('d.m.Y', $item['date_start'])->setTime(0, 0, 0)->format('Y-m-d H:i:s'),
-                        'date_end' => ($item['date_end'] != $item['date_start'] && $item['date_end'] != null)
-                            ? Carbon::createFromFormat('d.m.Y', $item['date_end'])->setTime(0, 0, 0)->format('Y-m-d H:i:s')
-                            : null,
-                        'confirmed' => (int) ($item['confirmed'] ?? 0),
-                    ],
+                    $item->id => $item->pivot->except('created_at', 'updated_at')->toArray(),
                 ];
             })->toArray();
 
@@ -108,16 +62,7 @@ class ItemsService extends BaseService implements ItemsServiceContract
         $this->fireWinnerEvent($item, $oldPrizes, $newPrizes);
     }
 
-    /**
-     * Событие при подтверждении приза.
-     *
-     * @param $check
-     * @param $oldPrizes
-     * @param $newPrizes
-     *
-     * @throws BindingResolutionException
-     */
-    protected function fireWinnerEvent($check, $oldPrizes, $newPrizes): void
+    protected function fireWinnerEvent(ReceiptModelContract $receipt, Collection $oldPrizes, Collection $newPrizes): void
     {
         $oldConfirmed = $oldPrizes->mapWithKeys(function ($item) {
             return [
@@ -129,8 +74,8 @@ class ItemsService extends BaseService implements ItemsServiceContract
             if ($prize->pivot->confirmed == 1 && (isset($oldConfirmed[$prize->id]) && $oldConfirmed[$prize->id] == 0 || ! isset($oldConfirmed[$prize->id]))) {
                 event(
                     app()->make(
-                        'InetStudio\ChecksContest\Checks\Contracts\Events\Back\SetWinnerEventContract',
-                        compact('check', 'prize')
+                        'InetStudio\ReceiptsContest\Receipts\Contracts\Events\Back\SetWinnerEventContract',
+                        compact('receipt', 'prize')
                     )
                 );
             }

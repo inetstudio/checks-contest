@@ -1,21 +1,10 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Contracts\Services\Back;
+namespace InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back;
 
 use Illuminate\Support\Collection;
-use InetStudio\AdminPanel\Base\Contracts\Services\BaseServiceContract;
 
-/**
- * Interface UtilityServiceContract.
- */
-interface UtilityServiceContract extends BaseServiceContract
+interface UtilityServiceContract
 {
-    /**
-     * Получаем подсказки.
-     *
-     * @param  string  $search
-     *
-     * @return Collection
-     */
     public function getSuggestions(string $search): Collection;
 }

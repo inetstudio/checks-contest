@@ -1,40 +1,22 @@
 <?php
 
-namespace InetStudio\ChecksContest\Products\Services\Back;
+namespace InetStudio\ReceiptsContest\Products\Services\Back;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use InetStudio\AdminPanel\Base\Services\BaseService;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use InetStudio\ChecksContest\Products\Contracts\Models\ProductModelContract;
-use InetStudio\ChecksContest\Products\Contracts\Services\Back\ItemsServiceContract;
+use InetStudio\ReceiptsContest\Products\Contracts\Models\ProductModelContract;
+use InetStudio\ReceiptsContest\Products\Contracts\Services\Back\ItemsServiceContract;
 
-/**
- * Class ItemsService.
- */
 class ItemsService extends BaseService implements ItemsServiceContract
 {
-    /**
-     * ItemsService constructor.
-     *
-     * @param  ProductModelContract  $model
-     */
     public function __construct(ProductModelContract $model)
     {
         parent::__construct($model);
     }
 
-    /**
-     * Сохраняем модель.
-     *
-     * @param  array  $data
-     * @param  int  $id
-     *
-     * @return ProductModelContract
-     *
-     * @throws BindingResolutionException
-     */
     public function save(array $data, int $id): ProductModelContract
     {
         $action = ($id) ? 'отредактирован' : 'создан';
@@ -44,7 +26,7 @@ class ItemsService extends BaseService implements ItemsServiceContract
 
         event(
             app()->make(
-                'InetStudio\ChecksContest\Products\Contracts\Events\Back\ModifyItemEventContract',
+                'InetStudio\ReceiptsContest\Products\Contracts\Events\Back\ModifyItemEventContract',
                 compact('item')
             )
         );
@@ -54,14 +36,6 @@ class ItemsService extends BaseService implements ItemsServiceContract
         return $item;
     }
 
-    /**
-     * Присваиваем продукты объекту.
-     *
-     * @param $products
-     * @param $item
-     *
-     * @throws BindingResolutionException
-     */
     public function attachToObject($products, $item): void
     {
         if (! $products) {

@@ -1,80 +1,35 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Contracts\Http\Controllers\Back;
+namespace InetStudio\ReceiptsContest\Statuses\Contracts\Http\Controllers\Back;
 
-use InetStudio\ChecksContest\Statuses\Contracts\Services\Back\ItemsServiceContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Services\Back\DataTableServiceContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Http\Requests\Back\SaveItemRequestContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Http\Responses\Back\Resource\FormResponseContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Http\Responses\Back\Resource\SaveResponseContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Http\Responses\Back\Resource\IndexResponseContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Http\Responses\Back\Resource\DestroyResponseContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Resource\ShowRequestContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Resource\EditRequestContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Resource\IndexRequestContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Resource\StoreRequestContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Resource\CreateRequestContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\ShowResponseContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\EditResponseContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Resource\UpdateRequestContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\IndexResponseContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\StoreResponseContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Resource\DestroyRequestContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\CreateResponseContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\UpdateResponseContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\DestroyResponseContract;
 
-/**
- * Interface ResourceControllerContract.
- */
 interface ResourceControllerContract
 {
-    /**
-     * Список объектов.
-     *
-     * @param  DataTableServiceContract  $dataTableService
-     *
-     * @return IndexResponseContract
-     */
-    public function index(DataTableServiceContract $dataTableService): IndexResponseContract;
+    public function index(IndexRequestContract $request, IndexResponseContract $response): IndexResponseContract;
 
-    /**
-     * Создание объекта.
-     *
-     * @param  ItemsServiceContract  $resourceService
-     *
-     * @return FormResponseContract
-     */
-    public function create(ItemsServiceContract $resourceService): FormResponseContract;
+    public function create(CreateRequestContract $request, CreateResponseContract $response): CreateResponseContract;
 
-    /**
-     * Создание объекта.
-     *
-     * @param  ItemsServiceContract  $resourceService
-     * @param  SaveItemRequestContract  $request
-     *
-     * @return SaveResponseContract
-     */
-    public function store(ItemsServiceContract $resourceService, SaveItemRequestContract $request): SaveResponseContract;
+    public function store(StoreRequestContract $request, StoreResponseContract $response): StoreResponseContract;
 
-    /**
-     * Редактирование объекта.
-     *
-     * @param  ItemsServiceContract  $resourceService
-     * @param  int  $id
-     *
-     * @return FormResponseContract
-     */
-    public function edit(ItemsServiceContract $resourceService, int $id = 0): FormResponseContract;
+    public function show(ShowRequestContract $request, ShowResponseContract $response): ShowResponseContract;
 
-    /**
-     * Обновление объекта.
-     *
-     * @param  ItemsServiceContract  $resourceService
-     * @param  SaveItemRequestContract  $request
-     * @param  int  $id
-     *
-     * @return SaveResponseContract
-     */
-    public function update(
-        ItemsServiceContract $resourceService,
-        SaveItemRequestContract $request,
-        int $id = 0
-    ): SaveResponseContract;
+    public function edit(EditRequestContract $request, EditResponseContract $response): EditResponseContract;
 
-    /**
-     * Удаление объекта.
-     *
-     * @param  ItemsServiceContract  $resourceService
-     * @param  int  $id
-     *
-     * @return DestroyResponseContract
-     */
-    public function destroy(ItemsServiceContract $resourceService, int $id = 0): DestroyResponseContract;
+    public function update(UpdateRequestContract $request, UpdateResponseContract $response): UpdateResponseContract;
+
+    public function destroy(DestroyRequestContract $request, DestroyResponseContract $response): DestroyResponseContract;
 }

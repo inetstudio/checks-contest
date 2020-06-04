@@ -1,6 +1,6 @@
 <?php
 
-namespace InetStudio\ChecksContest\Console\Commands;
+namespace InetStudio\ReceiptsContest\Console\Commands;
 
 use InetStudio\AdminPanel\Base\Console\Commands\BaseSetupCommand;
 
@@ -14,14 +14,14 @@ class SetupCommand extends BaseSetupCommand
      *
      * @var string
      */
-    protected $name = 'inetstudio:checks-contest:setup';
+    protected $name = 'inetstudio:receipts-contest:setup';
 
     /**
      * Описание команды.
      *
      * @var string
      */
-    protected $description = 'Setup checks package';
+    protected $description = 'Setup receipts contest package';
 
     /**
      * Инициализация команд.
@@ -41,23 +41,23 @@ class SetupCommand extends BaseSetupCommand
             ],
             [
                 'type' => 'artisan',
-                'description' => 'Checks contest checks setup',
-                'command' => 'inetstudio:checks-contest:checks:setup',
+                'description' => 'Receipts contest receipts setup',
+                'command' => 'inetstudio:receipts-contest:receipts:setup',
             ],
             [
                 'type' => 'artisan',
-                'description' => 'Checks contest prizes setup',
-                'command' => 'inetstudio:checks-contest:prizes:setup',
+                'description' => 'Receipts contest prizes setup',
+                'command' => 'inetstudio:receipts-contest:prizes:setup',
             ],
             [
                 'type' => 'artisan',
-                'description' => 'Checks contest products setup',
-                'command' => 'inetstudio:checks-contest:products:setup',
+                'description' => 'Receipts contest products setup',
+                'command' => 'inetstudio:receipts-contest:products:setup',
             ],
             [
                 'type' => 'artisan',
-                'description' => 'Checks contest statuses setup',
-                'command' => 'inetstudio:checks-contest:statuses:setup',
+                'description' => 'Receipts contest statuses setup',
+                'command' => 'inetstudio:receipts-contest:statuses:setup',
             ],
         ];
     }

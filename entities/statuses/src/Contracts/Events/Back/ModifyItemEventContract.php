@@ -1,10 +1,7 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Contracts\Events\Back;
+namespace InetStudio\ReceiptsContest\Statuses\Contracts\Events\Back;
 
-/**
- * Interface ModifyItemEventContract.
- */
 interface ModifyItemEventContract
 {
 }

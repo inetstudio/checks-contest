@@ -1,17 +1,17 @@
-require('./stores/products');
+require('./stores/receipts_contest_products');
 
 Vue.component(
-    'ProductsList',
-    require('./components/partials/ProductsList/ProductsList.vue').default,
+    'ReceiptsContestProductsList',
+    require('./components/partials/ReceiptsContestProductsList/ReceiptsContestProductsList.vue').default,
 );
 Vue.component(
-    'ProductsListItem',
-    require('./components/partials/ProductsList/ProductsListItem.vue').default,
+    'ReceiptsContestProductsListItem',
+    require('./components/partials/ReceiptsContestProductsList/ReceiptsContestProductsListItem.vue').default,
 );
 Vue.component(
-    'ProductsListItemForm',
-    require('./components/partials/ProductsList/ProductsListItemForm.vue').default,
+    'ReceiptsContestProductsListItemForm',
+    require('./components/partials/ReceiptsContestProductsList/ReceiptsContestProductsListItemForm.vue').default,
 );
 
-let products = require('./package/products');
+let products = require('./package/receipts_contest_products');
 products.init();

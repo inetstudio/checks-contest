@@ -1,12 +1,9 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Contracts\Services\Front;
+namespace InetStudio\ReceiptsContest\Statuses\Contracts\Services\Front;
 
-use InetStudio\AdminPanel\Base\Contracts\Services\BaseServiceContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\ItemsServiceContract as BaseItemsServiceContract;
 
-/**
- * Interface ItemsServiceContract.
- */
-interface ItemsServiceContract extends BaseServiceContract
+interface ItemsServiceContract extends BaseItemsServiceContract
 {
 }

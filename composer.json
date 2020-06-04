@@ -1,7 +1,7 @@
 {
-  "name": "inetstudio/checks-contest",
-  "description": "Package for checks contest",
-  "homepage": "https://github.com/inetstudio/checks-contest",
+  "name": "inetstudio/receipts-contest",
+  "description": "Package for receipts contest",
+  "homepage": "https://github.com/inetstudio/receipts-contest",
   "license": "MIT",
   "authors": [
     {
@@ -16,25 +16,25 @@
   },
   "autoload": {
     "psr-4": {
-      "InetStudio\\ChecksContest\\": "package/src",
-      "InetStudio\\ChecksContest\\Checks\\": "entities/checks/src",
-      "InetStudio\\ChecksContest\\Prizes\\": "entities/prizes/src",
-      "InetStudio\\ChecksContest\\Products\\": "entities/products/src",
-      "InetStudio\\ChecksContest\\Statuses\\": "entities/statuses/src"
+      "InetStudio\\ReceiptsContest\\": "package/src",
+      "InetStudio\\ReceiptsContest\\Prizes\\": "entities/prizes/src",
+      "InetStudio\\ReceiptsContest\\Products\\": "entities/products/src",
+      "InetStudio\\ReceiptsContest\\Receipts\\": "entities/receipts/src",
+      "InetStudio\\ReceiptsContest\\Statuses\\": "entities/statuses/src"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "InetStudio\\ChecksContest\\Providers\\ServiceProvider",
-        "InetStudio\\ChecksContest\\Checks\\Providers\\BindingsServiceProvider",
-        "InetStudio\\ChecksContest\\Checks\\Providers\\ServiceProvider",
-        "InetStudio\\ChecksContest\\Prizes\\Providers\\BindingsServiceProvider",
-        "InetStudio\\ChecksContest\\Prizes\\Providers\\ServiceProvider",
-        "InetStudio\\ChecksContest\\Products\\Providers\\BindingsServiceProvider",
-        "InetStudio\\ChecksContest\\Products\\Providers\\ServiceProvider",
-        "InetStudio\\ChecksContest\\Statuses\\Providers\\BindingsServiceProvider",
-        "InetStudio\\ChecksContest\\Statuses\\Providers\\ServiceProvider"
+        "InetStudio\\ReceiptsContest\\Providers\\ServiceProvider",
+        "InetStudio\\ReceiptsContest\\Prizes\\Providers\\BindingsServiceProvider",
+        "InetStudio\\ReceiptsContest\\Prizes\\Providers\\ServiceProvider",
+        "InetStudio\\ReceiptsContest\\Products\\Providers\\BindingsServiceProvider",
+        "InetStudio\\ReceiptsContest\\Products\\Providers\\ServiceProvider",
+        "InetStudio\\ReceiptsContest\\Receipts\\Providers\\BindingsServiceProvider",
+        "InetStudio\\ReceiptsContest\\Receipts\\Providers\\ServiceProvider",
+        "InetStudio\\ReceiptsContest\\Statuses\\Providers\\BindingsServiceProvider",
+        "InetStudio\\ReceiptsContest\\Statuses\\Providers\\ServiceProvider"
       ]
     }
   }

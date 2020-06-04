@@ -1,6 +1,6 @@
 <?php
 
-namespace InetStudio\ChecksContest\Providers;
+namespace InetStudio\ReceiptsContest\Providers;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
@@ -29,7 +29,7 @@ class ServiceProvider extends BaseServiceProvider
 
         $this->commands(
             [
-                'InetStudio\ChecksContest\Console\Commands\SetupCommand',
+                'InetStudio\ReceiptsContest\Console\Commands\SetupCommand',
             ]
         );
     }
@@ -39,6 +39,6 @@ class ServiceProvider extends BaseServiceProvider
      */
     protected function registerViews(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'admin.module.checks-contest');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'admin.module.receipts-contest');
     }
 }

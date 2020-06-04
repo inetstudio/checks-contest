@@ -1,17 +1,17 @@
-require('./stores/prizes');
+require('./stores/receipts_contest_prizes');
 
 Vue.component(
-    'ChecksContestPrizesList',
-    require('./components/partials/PrizesList/PrizesList.vue').default,
+    'ReceiptsContestPrizesList',
+    require('./components/partials/ReceiptsContestPrizesList/ReceiptsContestPrizesList.vue').default,
 );
 Vue.component(
-    'ChecksContestPrizesListItem',
-    require('./components/partials/PrizesList/PrizesListItem.vue').default,
+    'ReceiptsContestPrizesListItem',
+    require('./components/partials/ReceiptsContestPrizesList/ReceiptsContestPrizesListItem.vue').default,
 );
 Vue.component(
-    'ChecksContestPrizesListItemForm',
-    require('./components/partials/PrizesList/PrizesListItemForm.vue').default,
+    'ReceiptsContestPrizesListItemForm',
+    require('./components/partials/ReceiptsContestPrizesList/ReceiptsContestPrizesListItemForm.vue').default,
 );
 
-let prizes = require('./package/prizes');
+let prizes = require('./package/receipts_contest_prizes');
 prizes.init();

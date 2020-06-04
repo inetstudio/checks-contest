@@ -1,21 +1,11 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Contracts\Http\Controllers\Back;
+namespace InetStudio\ReceiptsContest\Statuses\Contracts\Http\Controllers\Back;
 
-use Illuminate\Http\JsonResponse;
-use InetStudio\ChecksContest\Statuses\Contracts\Services\Back\DataTableServiceContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Data\GetIndexDataRequestContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Data\GetIndexDataResponseContract;
 
-/**
- * Interface DataControllerContract.
- */
 interface DataControllerContract
 {
-    /**
-     * Получаем данные для отображения в таблице.
-     *
-     * @param  DataTableServiceContract  $dataTableService
-     *
-     * @return JsonResponse
-     */
-    public function data(DataTableServiceContract $dataTableService): JsonResponse;
+    public function getIndexData(GetIndexDataRequestContract $request, GetIndexDataResponseContract $response): GetIndexDataResponseContract;
 }

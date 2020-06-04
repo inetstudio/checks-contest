@@ -1,23 +1,12 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Services\Front;
+declare(strict_types=1);
 
-use InetStudio\AdminPanel\Base\Services\BaseService;
-use InetStudio\ChecksContest\Statuses\Contracts\Models\StatusModelContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Services\Front\ItemsServiceContract;
+namespace InetStudio\ReceiptsContest\Statuses\Services\Front;
 
-/**
- * Class ItemsService.
- */
-class ItemsService extends BaseService implements ItemsServiceContract
+use InetStudio\ReceiptsContest\Statuses\Services\ItemsService as BaseItemsService;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Front\ItemsServiceContract;
+
+class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
-    /**
-     * ItemsService constructor.
-     *
-     * @param  StatusModelContract  $model
-     */
-    public function __construct(StatusModelContract $model)
-    {
-        parent::__construct($model);
-    }
 }

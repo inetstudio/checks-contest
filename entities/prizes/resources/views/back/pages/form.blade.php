@@ -9,13 +9,13 @@
 @section('content')
 
     @push('breadcrumbs')
-        @include('admin.module.checks-contest.prizes::back.partials.breadcrumbs.form')
+        @include('admin.module.receipts-contest.prizes::back.partials.breadcrumbs.form')
     @endpush
 
     <div class="wrapper wrapper-content">
         <div class="ibox">
             <div class="ibox-title">
-                <a class="btn btn-sm btn-white" href="{{ route('back.checks-contest.prizes.index') }}">
+                <a class="btn btn-sm btn-white" href="{{ route('back.receipts-contest.prizes.index') }}">
                     <i class="fa fa-arrow-left"></i> Вернуться назад
                 </a>
             </div>
@@ -23,19 +23,19 @@
 
         {!! Form::info() !!}
 
-        {!! Form::open(['url' => (! $item['id']) ? route('back.checks-contest.prizes.store') : route('back.checks-contest.prizes.update', [$item['id']]), 'id' => 'mainForm', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['url' => (! $item['id']) ? route('back.receipts-contest.prizes.store') : route('back.receipts-contest.prizes.update', [$item['id']]), 'id' => 'mainForm', 'class' => 'form-horizontal']) !!}
 
         @if ($item['id'])
             {{ method_field('PUT') }}
         @endif
 
-        {!! Form::hidden('prize_id', (! $item['id']) ? '' : $item['id'], ['id' => 'object-id']) !!}
+        {!! Form::hidden('id', (! $item['id']) ? '' : $item['id'], ['id' => 'object-id']) !!}
 
-        {!! Form::hidden('prize_type', get_class($item), ['id' => 'object-type']) !!}
+        {!! Form::hidden('type', get_class($item), ['id' => 'object-type']) !!}
 
         <div class="ibox">
             <div class="ibox-title">
-                {!! Form::buttons('', '', ['back' => 'back.checks-contest.prizes.index']) !!}
+                {!! Form::buttons('', '', ['back' => 'back.receipts-contest.prizes.index']) !!}
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -75,7 +75,7 @@
                 </div>
             </div>
             <div class="ibox-footer">
-                {!! Form::buttons('', '', ['back' => 'back.checks-contest.prizes.index']) !!}
+                {!! Form::buttons('', '', ['back' => 'back.receipts-contest.prizes.index']) !!}
             </div>
         </div>
 

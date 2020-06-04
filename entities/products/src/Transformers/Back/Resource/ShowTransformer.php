@@ -1,10 +1,10 @@
 <?php
 
-namespace InetStudio\ChecksContest\Products\Transformers\Back\Resource;
+namespace InetStudio\ReceiptsContest\Products\Transformers\Back\Resource;
 
 use InetStudio\AdminPanel\Base\Transformers\BaseTransformer;
-use InetStudio\ChecksContest\Products\Contracts\Models\ProductModelContract;
-use InetStudio\ChecksContest\Products\Contracts\Transformers\Back\Resource\ShowTransformerContract;
+use InetStudio\ReceiptsContest\Products\Contracts\Models\ProductModelContract;
+use InetStudio\ReceiptsContest\Products\Contracts\Transformers\Back\Resource\ShowTransformerContract;
 
 /**
  * Class ShowTransformer.

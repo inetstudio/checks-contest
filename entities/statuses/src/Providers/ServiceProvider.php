@@ -1,18 +1,12 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Providers;
+namespace InetStudio\ReceiptsContest\Statuses\Providers;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-/**
- * Class ServiceProvider.
- */
 class ServiceProvider extends BaseServiceProvider
 {
-    /**
-     * Загрузка сервиса.
-     */
     public function boot(): void
     {
         $this->registerConsoleCommands();
@@ -21,9 +15,6 @@ class ServiceProvider extends BaseServiceProvider
         $this->registerViews();
     }
 
-    /**
-     * Регистрация команд.
-     */
     protected function registerConsoleCommands(): void
     {
         if (! $this->app->runningInConsole()) {
@@ -32,49 +23,40 @@ class ServiceProvider extends BaseServiceProvider
 
         $this->commands(
             [
-                'InetStudio\ChecksContest\Statuses\Console\Commands\SetupCommand',
-                'InetStudio\ChecksContest\Statuses\Console\Commands\StatusesSeedCommand',
+                'InetStudio\ReceiptsContest\Statuses\Console\Commands\SetupCommand',
+                'InetStudio\ReceiptsContest\Statuses\Console\Commands\StatusesSeedCommand',
             ]
         );
     }
 
-    /**
-     * Регистрация ресурсов.
-     */
     protected function registerPublishes(): void
     {
         if (! $this->app->runningInConsole()) {
             return;
         }
 
-        if (Schema::hasTable('checks_contest_statuses')) {
+        if (Schema::hasTable('receipts_contest_statuses')) {
             return;
         }
 
         $timestamp = date('Y_m_d_His', time());
         $this->publishes(
             [
-                __DIR__.'/../../database/migrations/create_checks_contest_statuses_tables.php.stub' => database_path(
-                    'migrations/'.$timestamp.'_create_checks_contest_statuses_tables.php'
+                __DIR__.'/../../database/migrations/create_receipts_contest_statuses_tables.php.stub' => database_path(
+                    'migrations/'.$timestamp.'_create_receipts_contest_statuses_tables.php'
                 ),
             ],
             'migrations'
         );
     }
 
-    /**
-     * Регистрация путей.
-     */
     protected function registerRoutes(): void
     {
         $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
     }
 
-    /**
-     * Регистрация представлений.
-     */
     protected function registerViews(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'admin.module.checks-contest.statuses');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'admin.module.receipts-contest.statuses');
     }
 }

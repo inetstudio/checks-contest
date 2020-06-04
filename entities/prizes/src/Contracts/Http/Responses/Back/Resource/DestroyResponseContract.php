@@ -1,6 +1,6 @@
 <?php
 
-namespace InetStudio\ChecksContest\Prizes\Contracts\Http\Responses\Back\Resource;
+namespace InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Resource;
 
 use Illuminate\Contracts\Support\Responsable;
 

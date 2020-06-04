@@ -1,42 +1,28 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Http\Responses\Back\Resource;
+namespace InetStudio\ReceiptsContest\Statuses\Http\Responses\Back\Resource;
 
-use Illuminate\Http\Request;
-use InetStudio\ChecksContest\Statuses\Contracts\Http\Responses\Back\Resource\DestroyResponseContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\DestroyResponseContract;
 
-/**
- * Class DestroyResponse.
- */
 class DestroyResponse implements DestroyResponseContract
 {
-    /**
-     * @var bool
-     */
-    protected $result;
+    protected ItemsServiceContract $resourceService;
 
-    /**
-     * DestroyResponse constructor.
-     *
-     * @param  bool  $result
-     */
-    public function __construct(bool $result)
+    public function __construct(ItemsServiceContract $resourceService)
     {
-        $this->result = $result;
+        $this->resourceService = $resourceService;
     }
 
-    /**
-     * Возвращаем ответ при удалении объекта.
-     *
-     * @param  Request  $request
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
-     */
     public function toResponse($request)
     {
+        $id = $request->route('status');
+
+        $count = $this->resourceService->destroy($id);
+
         return response()->json(
             [
-                'success' => $this->result,
+                'success' => ($count > 0),
             ]
         );
     }

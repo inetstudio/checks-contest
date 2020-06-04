@@ -1,78 +1,29 @@
 <?php
 
-namespace InetStudio\ChecksContest\Prizes\Http\Responses\Back\Utility;
+namespace InetStudio\ReceiptsContest\Prizes\Http\Responses\Back\Utility;
 
-use League\Fractal\Manager;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use InetStudio\ChecksContest\Prizes\Contracts\Http\Responses\Back\Utility\SuggestionsResponseContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back\UtilityServiceContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Utility\SuggestionsResponseContract;
 
-/**
- * Class SuggestionsResponse.
- */
 class SuggestionsResponse implements SuggestionsResponseContract
 {
-    /**
-     * @var Collection
-     */
-    protected $items;
+    protected UtilityServiceContract $utilityService;
 
-    /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * SuggestionsResponse constructor.
-     *
-     * @param  Collection  $items
-     * @param  string  $type
-     */
-    public function __construct(Collection $items, string $type = '')
+    public function __construct(UtilityServiceContract $utilityService)
     {
-        $this->items = $items;
-        $this->type = $type;
+        $this->utilityService = $utilityService;
     }
 
-    /**
-     * Возвращаем подсказки для поля.
-     *
-     * @param  Request  $request
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
-     *
-     * @throws BindingResolutionException
-     */
     public function toResponse($request)
     {
-        $transformer = app()->make(
-            'InetStudio\ChecksContest\Prizes\Contracts\Transformers\Back\Utility\SuggestionTransformerContract',
-            [
-                'type' => $this->type,
-            ]
+        $search = $request->get('q', '') ?? '';
+        $type = $request->get('type', '') ?? '';
+
+        $resource = $this->utilityService->getSuggestions($search);
+
+        return app()->make(
+            'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Resources\Back\Utility\Suggestions\ItemsCollectionContract',
+            compact('resource', 'type')
         );
-
-        $resource = $transformer->transformCollection($this->items);
-
-        $serializer = app()->make('InetStudio\AdminPanel\Base\Contracts\Serializers\SimpleDataArraySerializerContract');
-
-        $manager = new Manager();
-        $manager->setSerializer($serializer);
-
-        $transformation = $manager->createData($resource)->toArray();
-
-        $data = [
-            'suggestions' => [],
-            'items' => [],
-        ];
-
-        if ($this->type == 'autocomplete') {
-            $data['suggestions'] = $transformation;
-        } else {
-            $data['items'] = $transformation;
-        }
-
-        return response()->json($data);
     }
 }

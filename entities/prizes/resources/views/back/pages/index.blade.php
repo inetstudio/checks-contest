@@ -9,7 +9,7 @@
 @section('content')
 
     @push('breadcrumbs')
-        @include('admin.module.checks-contest.prizes::back.partials.breadcrumbs.index')
+        @include('admin.module.receipts-contest.prizes::back.partials.breadcrumbs.index')
     @endpush
 
     <div class="wrapper wrapper-content">
@@ -17,7 +17,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <a href="{{ route('back.checks-contest.prizes.create') }}"
+                        <a href="{{ route('back.receipts-contest.prizes.create') }}"
                            class="btn btn-sm btn-primary btn-lg">Создать</a>
                     </div>
                     <div class="ibox-content">
@@ -31,6 +31,6 @@
     </div>
 @endsection
 
-@pushonce('scripts:datatables_checks_prizes_index')
-{!! $table->scripts() !!}
+@pushonce('scripts:datatables_receipts_contest_prizes_index')
+    {!! $table->scripts() !!}
 @endpushonce

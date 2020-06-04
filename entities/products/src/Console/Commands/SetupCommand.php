@@ -1,31 +1,15 @@
 <?php
 
-namespace InetStudio\ChecksContest\Products\Console\Commands;
+namespace InetStudio\ReceiptsContest\Products\Console\Commands;
 
 use InetStudio\AdminPanel\Base\Console\Commands\BaseSetupCommand;
 
-/**
- * Class SetupCommand.
- */
 class SetupCommand extends BaseSetupCommand
 {
-    /**
-     * Имя команды.
-     *
-     * @var string
-     */
-    protected $name = 'inetstudio:checks-contest:products:setup';
+    protected $name = 'inetstudio:receipts-contest:products:setup';
 
-    /**
-     * Описание команды.
-     *
-     * @var string
-     */
-    protected $description = 'Setup checks contest products package';
+    protected $description = 'Setup receipts contest products package';
 
-    /**
-     * Инициализация команд.
-     */
     protected function initCommands(): void
     {
         $this->calls = [
@@ -34,7 +18,7 @@ class SetupCommand extends BaseSetupCommand
                 'description' => 'Publish migrations',
                 'command' => 'vendor:publish',
                 'params' => [
-                    '--provider' => 'InetStudio\ChecksContest\Products\Providers\ServiceProvider',
+                    '--provider' => 'InetStudio\ReceiptsContest\Products\Providers\ServiceProvider',
                     '--tag' => 'migrations',
                 ],
             ],

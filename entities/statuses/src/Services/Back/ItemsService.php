@@ -1,89 +1,41 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Services\Back;
+declare(strict_types=1);
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Database\Eloquent\Collection;
-use InetStudio\AdminPanel\Base\Services\BaseService;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use InetStudio\ChecksContest\Statuses\Contracts\Models\StatusModelContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Services\Back\ItemsServiceContract;
+namespace InetStudio\ReceiptsContest\Statuses\Services\Back;
 
-/**
- * Class ItemsService.
- */
-class ItemsService extends BaseService implements ItemsServiceContract
+use InetStudio\ReceiptsContest\Statuses\Contracts\DTO\ItemDataContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Models\StatusModelContract;
+use InetStudio\ReceiptsContest\Statuses\Services\ItemsService as BaseItemsService;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract;
+
+class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
-    /**
-     * ItemsService constructor.
-     *
-     * @param  StatusModelContract  $model
-     */
-    public function __construct(StatusModelContract $model)
+    public function save(ItemDataContract $data): StatusModelContract
     {
-        parent::__construct($model);
-    }
+        $item = $this->model::updateOrCreate(
+            [
+                'id' => $data->id,
+            ],
+            $data->except('id', 'classifiers')->toArray()
+        );
 
-    /**
-     * Сохраняем модель.
-     *
-     * @param  array  $data
-     * @param  int  $id
-     *
-     * @return StatusModelContract
-     *
-     * @throws BindingResolutionException
-     */
-    public function save(array $data, int $id): StatusModelContract
-    {
-        $action = ($id) ? 'отредактирован' : 'создан';
-
-        $itemData = Arr::only($data, $this->model->getFillable());
-        $item = $this->saveModel($itemData, $id);
-
-        $classifiersData = Arr::get($data, 'classifiers', []);
+        $classifiersData = $data->classifiers;
         app()->make('InetStudio\Classifiers\Entries\Contracts\Services\Back\ItemsServiceContract')
             ->attachToObject($classifiersData, $item);
 
         event(
             app()->make(
-                'InetStudio\ChecksContest\Statuses\Contracts\Events\Back\ModifyItemEventContract',
+                'InetStudio\ReceiptsContest\Statuses\Contracts\Events\Back\ModifyItemEventContract',
                 compact('item')
             )
         );
 
-        Session::flash('success', 'Статус «'.$item->name.'» успешно '.$action);
-
         return $item;
     }
 
-    /**
-     * Возвращаем статус по умолчанию.
-     *
-     * @return StatusModelContract|null
-     */
-    public function getDefaultStatus(): ?StatusModelContract
+    public function destroy($id): int
     {
-        $status = $this->getModel()->whereHas('classifiers', function ($classifiersQuery) {
-            $classifiersQuery->select(['classifiers_entries.id', 'classifiers_entries.alias'])
-                ->where('classifiers_entries.alias', 'checks_contest_status_default');
-        })->first();
-
-        if (! $status) {
-            $status = $this->getModel()->first();
-        }
-
-        return $status;
-    }
-
-    /**
-     * Возвращаем статусы, участвующие в розыгрыше призов.
-     *
-     * @return Collection
-     */
-    public function getParticipateInDrawStatuses(): Collection
-    {
-        return $this->getModel()->where('draw', 1)->get();
+        return $this->model::destroy($id);
     }
 }

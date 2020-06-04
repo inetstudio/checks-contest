@@ -1,99 +1,99 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Console\Commands;
+namespace InetStudio\ReceiptsContest\Statuses\Console\Commands;
 
 use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Container\BindingResolutionException;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
+use InetStudio\Classifiers\Groups\Contracts\Services\Back\ItemsServiceContract as ClassifiersGroupsServiceContract;
+use InetStudio\Classifiers\Entries\Contracts\Services\Back\ItemsServiceContract as ClassifiersEntriesServiceContract;
 
-/**
- * Class StatusesSeedCommand.
- */
 class StatusesSeedCommand extends Command
 {
-    /**
-     * Имя команды.
-     *
-     * @var string
-     */
-    protected $name = 'inetstudio:checks-contest:statuses:seed';
+    protected $name = 'inetstudio:receipts-contest:statuses:seed';
 
-    /**
-     * Описание команды.
-     *
-     * @var string
-     */
-    protected $description = 'Seed checks contest statuses';
+    protected $description = 'Seed receipts contest statuses';
 
-    /**
-     * Запуск команды.
-     *
-     * @throws BindingResolutionException
-     */
+    protected array $statuses = [
+        [
+            'name' => 'Модерация',
+            'alias' => 'moderation',
+            'description' => 'Посты, ожидающие модерацию',
+            'color_class' => 'warning',
+            'types' => [
+                'receipts_contest_status_default' => 'Статус по умолчанию',
+                'receipts_contest_status_check' => 'Проверка',
+            ],
+        ],
+        [
+            'name' => 'Предварительно одобрено',
+            'alias' => 'preliminarily_approved',
+            'description' => 'Предварительно одобренные посты',
+            'color_class' => 'default',
+            'types' => [
+                'receipts_contest_status_draw' => 'Участвует в розыгрыше призов',
+            ],
+        ],
+        [
+            'name' => 'Одобрено',
+            'alias' => 'approved',
+            'description' => 'Одобренные посты',
+            'color_class' => 'primary',
+            'types' => [
+                'receipts_contest_status_final' => 'Финальный статус',
+                'receipts_contest_status_draw' => 'Участвует в розыгрыше призов',
+            ],
+        ],
+        [
+            'name' => 'Отклонено',
+            'alias' => 'rejected',
+            'description' => 'Отклоненные посты',
+            'color_class' => 'danger',
+            'types' => [
+                'receipts_contest_status_reason' => 'Необходимо указать причину',
+            ],
+        ],
+    ];
+
+    protected ClassifiersGroupsServiceContract $groupsService;
+
+    protected ClassifiersEntriesServiceContract $entriesService;
+
+    protected StatusesServiceContract $statusesService;
+
+    public function __construct(
+        ClassifiersGroupsServiceContract $groupsService,
+        ClassifiersEntriesServiceContract $entriesService,
+        StatusesServiceContract $statusesService
+    ) {
+        parent::__construct();
+
+        $this->groupsService = $groupsService;
+        $this->entriesService = $entriesService;
+        $this->statusesService = $statusesService;
+    }
+
     public function handle(): void
     {
-        $classifiersGroupsService = app()->make(
-            'InetStudio\Classifiers\Groups\Contracts\Services\Back\ItemsServiceContract'
-        );
-
-        $classifiersEntriesService = app()->make(
-            'InetStudio\Classifiers\Entries\Contracts\Services\Back\ItemsServiceContract'
-        );
-
-        $statusesService = app()->make(
-            'InetStudio\ChecksContest\Statuses\Contracts\Services\Back\ItemsServiceContract'
-        );
-
-        $statuses = [
-            [
-                'name' => 'Модерация',
-                'alias' => 'moderation',
-                'description' => 'Чеки, ожидающие модерацию',
-                'color_class' => 'warning',
-                'types' => [
-                    'checks_contest_status_default' => 'Статус по умолчанию',
-                    'checks_contest_status_check' => 'Проверка',
-                ],
-                'fill_reason' => false,
-            ],
-            [
-                'name' => 'Одобрено',
-                'alias' => 'approved',
-                'description' => 'Одобренные чеки',
-                'color_class' => 'primary',
-                'types' => [
-                    'checks_contest_status_main' => 'Основной статус',
-                ],
-                'fill_reason' => false,
-            ],
-            [
-                'name' => 'Отклонено',
-                'alias' => 'rejected',
-                'description' => 'Отклоненные чеки',
-                'color_class' => 'danger',
-                'fill_reason' => true,
-            ],
-        ];
-
-        $group = $classifiersGroupsService->getModel()::updateOrCreate(
+        $group = $this->groupsService->getModel()::updateOrCreate(
             [
                 'name' => 'Тип статуса конкурсного чека',
             ],
             [
-                'alias' => 'checks_contest_status_type',
+                'alias' => 'receipts_contest_status_type',
             ]
         );
 
         $entriesIDs = [];
 
-        foreach ($statuses as $status) {
+        foreach ($this->statuses as $status) {
             $data = Arr::except($status, ['types']);
 
-            $statusObj = $statusesService->getModel()::updateOrCreate($data);
+            $statusObj = $this->statusesService->getModel()::updateOrCreate($data);
 
             $classifiers = [];
             foreach ($status['types'] ?? [] as $alias => $value) {
-                $entry = $classifiersEntriesService->getModel()::updateOrCreate(
+                $entry = $this->entriesService->getModel()::updateOrCreate(
                     [
                         'alias' => $alias,
                     ],

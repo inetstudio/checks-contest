@@ -1,14 +1,13 @@
 <?php
 
-namespace InetStudio\ChecksContest\Prizes\Contracts\Services\Back;
+namespace InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back;
 
 use Illuminate\Support\Collection;
-use InetStudio\AdminPanel\Base\Contracts\Services\BaseServiceContract;
 
 /**
  * Interface UtilityServiceContract.
  */
-interface UtilityServiceContract extends BaseServiceContract
+interface UtilityServiceContract
 {
     /**
      * Получаем подсказки.

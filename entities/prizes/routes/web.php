@@ -1,26 +1,25 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(
     [
-        'namespace' => 'InetStudio\ChecksContest\Prizes\Contracts\Http\Controllers\Back',
+        'namespace' => 'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Controllers\Back',
         'middleware' => ['web', 'back.auth'],
-        'prefix' => 'back/checks-contest',
+        'prefix' => 'back/receipts-contest',
     ],
     function () {
-        Route::any('prizes/data', 'DataControllerContract@data')
-            ->name('back.checks-contest.prizes.data.index');
+        Route::any('prizes/data', 'DataControllerContract@getIndexData')
+            ->name('back.receipts-contest.prizes.data.index');
 
         Route::post('prizes/suggestions', 'UtilityControllerContract@getSuggestions')
-            ->name('back.checks-contest.prizes.getSuggestions');
+            ->name('back.receipts-contest.prizes.utility.suggestions');
 
         Route::resource(
             'prizes',
             'ResourceControllerContract',
             [
-                'except' => [
-                    'show',
-                ],
-                'as' => 'back.checks-contest',
+                'as' => 'back.receipts-contest',
             ]
         );
     }

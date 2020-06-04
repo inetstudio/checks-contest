@@ -1,36 +1,16 @@
 <?php
 
-namespace InetStudio\ChecksContest\Statuses\Http\Controllers\Back;
+namespace InetStudio\ReceiptsContest\Statuses\Http\Controllers\Back;
 
-use Illuminate\Http\Request;
 use InetStudio\AdminPanel\Base\Http\Controllers\Controller;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use InetStudio\ChecksContest\Statuses\Contracts\Services\Back\UtilityServiceContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Http\Controllers\Back\UtilityControllerContract;
-use InetStudio\ChecksContest\Statuses\Contracts\Http\Responses\Back\Utility\SuggestionsResponseContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Controllers\Back\UtilityControllerContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Utility\SuggestionsRequestContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Utility\SuggestionsResponseContract;
 
-/**
- * Class UtilityController.
- */
 class UtilityController extends Controller implements UtilityControllerContract
 {
-    /**
-     * Возвращаем объекты для поля.
-     *
-     * @param  UtilityServiceContract  $utilityService
-     * @param  Request  $request
-     *
-     * @return SuggestionsResponseContract
-     *
-     * @throws BindingResolutionException
-     */
-    public function getSuggestions(UtilityServiceContract $utilityService, Request $request): SuggestionsResponseContract
+    public function getSuggestions(SuggestionsRequestContract $request, SuggestionsResponseContract $response): SuggestionsResponseContract
     {
-        $search = $request->get('q', '') ?? '';
-        $type = $request->get('type', '') ?? '';
-
-        $items = $utilityService->getSuggestions($search);
-
-        return $this->app->make(SuggestionsResponseContract::class, compact('items', 'type'));
+        return $response;
     }
 }
