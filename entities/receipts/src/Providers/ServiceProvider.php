@@ -43,6 +43,8 @@ class ServiceProvider extends BaseServiceProvider
             'config'
         );
 
+        $this->mergeConfigFrom(__DIR__.'/../../config/services.php', 'services');
+
         $this->mergeConfigFrom(__DIR__.'/../../config/filesystems.php', 'filesystems.disks');
 
         if (! $this->app->runningInConsole()) {

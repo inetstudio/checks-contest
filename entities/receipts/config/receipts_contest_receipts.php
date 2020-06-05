@@ -9,7 +9,7 @@ return [
     'images' => [
         'quality' => 75,
         'conversions' => [
-            'receipts' => [
+            'receipt' => [
                 'images' => [
                     'default' => [
                         [
