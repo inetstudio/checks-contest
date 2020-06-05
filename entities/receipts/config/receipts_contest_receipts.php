@@ -24,4 +24,24 @@ return [
             ],
         ],
     ],
+
+    'mails' => [
+        'status' => [
+            'moderation' => [
+                'subject' => 'Ваш чек отправлен на проверку',
+            ],
+            'approved' => [
+                'subject' => 'Ваш чек одобрен',
+            ],
+            'preliminarily_approved' => [
+                'subject' => 'Ваш чек одобрен',
+            ],
+            'rejected' => [
+                'subject' => 'Ваш чек отклонен',
+            ],
+        ],
+        'win' => [
+            'subject' => 'Вы выиграли приз',
+        ],
+    ],
 ];

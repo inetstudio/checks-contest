@@ -144,7 +144,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
 
         $winnersPhones = [];
         $winnersEmails = [];
-        $winnersChecks = collect();
+        $winnersReceipts = collect();
 
         foreach ($receipts as $index => $receipt) {
             if (in_array($index, $indexes)) {
@@ -154,12 +154,12 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
                     $winnersPhones[] = $data['phone'];
                     $winnersEmails[] = $data['email'];
 
-                    $winnersChecks->push($receipt);
+                    $winnersReceipts->push($receipt);
                 } elseif ($index == ($receipts->count() - 1)) {
                     $previousIndex = $this->getPreviousIndex($index, $indexes);
 
                     if (isset($receipts[$previousIndex])) {
-                        $winnersChecks->push($receipts[$previousIndex]);
+                        $winnersReceipts->push($receipts[$previousIndex]);
                     }
                 } else {
                     $indexes[] = $this->getNextIndex($index, $indexes);
@@ -167,7 +167,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
             }
         }
 
-        return $winnersChecks;
+        return $winnersReceipts;
     }
 
     protected function attachPrize(Collection $receipts, array $stageData): void

@@ -16,7 +16,7 @@ class SetWinnerListener implements SetWinnerListenerContract
         $email = $item->getJSONData('additional_info', 'email');
         $name = trim($item->getJSONData('additional_info', 'name').' '.$item->getJSONData('additional_info', 'surname'));
 
-        $subject = 'Вы выиграли приз';
+        $subject = config('receipts_contest_receipts.mails.win.subject', '');
 
         try {
             Mail::send(

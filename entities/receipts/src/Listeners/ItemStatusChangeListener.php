@@ -8,13 +8,6 @@ use InetStudio\ReceiptsContest\Receipts\Contracts\Listeners\ItemStatusChangeList
 
 class ItemStatusChangeListener implements ItemStatusChangeListenerContract
 {
-    protected array $mailsSubjects = [
-        'moderation' => 'Ваш чек отправлен на проверку',
-        'approved' => 'Ваш чек одобрен',
-        'preliminarily_approved' => 'Ваш чек одобрен',
-        'rejected' => 'Ваш чек отклонен',
-    ];
-
     public function handle($event): void
     {
         $item = $event->item;
@@ -23,7 +16,7 @@ class ItemStatusChangeListener implements ItemStatusChangeListenerContract
         $email = $item->getJSONData('additional_info', 'email');
         $name = trim($item->getJSONData('additional_info', 'name').' '.$item->getJSONData('additional_info', 'surname'));
 
-        $subject = $this->mailsSubjects[$statusAlias] ?? '';
+        $subject = config('receipts_contest_receipts.mails.status.'.$statusAlias.'.subject', '');
 
         try {
             Mail::send(
