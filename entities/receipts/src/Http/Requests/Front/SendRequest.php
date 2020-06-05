@@ -40,7 +40,6 @@ class SendRequest extends FormRequest implements SendRequestContract
             'additional_info.surname' => 'required|max:255',
             'additional_info.email' => 'required|max:255|email',
             'additional_info.phone' => 'required|max:255',
-            'additional_info.city' => 'required|max:255',
             'receipt_image' => 'required|image',
         ];
     }

@@ -3,9 +3,9 @@
 namespace InetStudio\ReceiptsContest\Receipts\Services\Front;
 
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use InetStudio\ReceiptsContest\Receipts\DTO\Front\SendItemData;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Receipts\Services\ItemsService as BaseItemsService;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract;
@@ -14,28 +14,19 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
     public array $stages = [];
 
-    public function send(array $data): ReceiptModelContract
+    public function send(SendItemData $data): ?ReceiptModelContract
     {
-        $statusesService = app()->make(
-            'InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract'
-        );
-
-        $status = $statusesService->getItemsByType('default')->first();
-
-        $itemData = Arr::get($data, 'additional_info');
-        $item = $this->saveModel(
+        $item = $this->model::updateOrCreate(
             [
-                'verify_hash' => md5(time().json_encode($data)),
-                'additional_info' => $itemData,
-                'status_id' => $status['id'] ?? 0,
+                'id' => $data->id,
             ],
-            0
+            $data->except('id', 'image')->toArray()
         );
 
-        if (isset($data['receipt_image'])) {
-            $name = Str::random(32).'.'.$data['receipt_image']->getClientOriginalExtension();
+        if ($item && $data->image) {
+            $name = Str::random(32).'.'.$data->image->getClientOriginalExtension();
 
-            $item->addMediaFromRequest('receipt_image')
+            $item->addMedia($data->image)
                 ->usingFileName($name)
                 ->toMediaCollection('images', 'receipts_contest_receipts');
         }

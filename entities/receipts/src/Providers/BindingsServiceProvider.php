@@ -14,6 +14,7 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\RecognizeCodesCommandContract' => 'InetStudio\ReceiptsContest\Receipts\Console\Commands\RecognizeCodesCommand',
 
         'InetStudio\ReceiptsContest\Receipts\Contracts\DTO\ItemDataContract' => 'InetStudio\ReceiptsContest\Receipts\DTO\ItemData',
+        'InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Front\SendItemDataContract' => 'InetStudio\ReceiptsContest\Receipts\DTO\Front\SendItemData',
 
         'InetStudio\ReceiptsContest\Receipts\Contracts\Events\Back\ModifyItemEventContract' => 'InetStudio\ReceiptsContest\Receipts\Events\Back\ModifyItemEvent',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Events\Back\ModerateItemEventContract' => 'InetStudio\ReceiptsContest\Receipts\Events\Back\ModerateItemEvent',
