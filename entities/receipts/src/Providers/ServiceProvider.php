@@ -67,6 +67,7 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function registerRoutes(): void
     {
+        $this->loadRoutesFrom(__DIR__.'/../../routes/api.php');
         $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
     }
 
