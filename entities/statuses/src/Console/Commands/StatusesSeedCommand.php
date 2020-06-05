@@ -18,7 +18,7 @@ class StatusesSeedCommand extends Command
         [
             'name' => 'Модерация',
             'alias' => 'moderation',
-            'description' => 'Посты, ожидающие модерацию',
+            'description' => 'Чеки, ожидающие модерацию',
             'color_class' => 'warning',
             'types' => [
                 'receipts_contest_status_default' => 'Статус по умолчанию',
@@ -28,7 +28,7 @@ class StatusesSeedCommand extends Command
         [
             'name' => 'Предварительно одобрено',
             'alias' => 'preliminarily_approved',
-            'description' => 'Предварительно одобренные посты',
+            'description' => 'Предварительно одобренные чеки',
             'color_class' => 'default',
             'types' => [
                 'receipts_contest_status_draw' => 'Участвует в розыгрыше призов',
@@ -37,7 +37,7 @@ class StatusesSeedCommand extends Command
         [
             'name' => 'Одобрено',
             'alias' => 'approved',
-            'description' => 'Одобренные посты',
+            'description' => 'Одобренные чеки',
             'color_class' => 'primary',
             'types' => [
                 'receipts_contest_status_final' => 'Финальный статус',
@@ -47,7 +47,7 @@ class StatusesSeedCommand extends Command
         [
             'name' => 'Отклонено',
             'alias' => 'rejected',
-            'description' => 'Отклоненные посты',
+            'description' => 'Отклоненные чеки',
             'color_class' => 'danger',
             'types' => [
                 'receipts_contest_status_reason' => 'Необходимо указать причину',

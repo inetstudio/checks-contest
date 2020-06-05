@@ -2,64 +2,81 @@
 
 namespace InetStudio\ReceiptsContest\Receipts\Console\Commands;
 
+use GuzzleHttp\Client;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\RecognizeCodesCommandContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract as ReceiptsServiceContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
 
-/**
- * Class RecognizeCodesCommand.
- */
 class RecognizeCodesCommand extends Command implements RecognizeCodesCommandContract
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'inetstudio:receipts-contest:receipts:recognize-codes';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Recognize QR codes';
 
-    /**
-     * Create a new command instance.
-     */
-    public function __construct()
+    protected bool $useExternalService = false;
+
+    protected StatusesServiceContract $statusesService;
+
+    protected ReceiptsServiceContract $receiptsService;
+
+    public function __construct(StatusesServiceContract $statusesService, ReceiptsServiceContract $receiptsService)
     {
         parent::__construct();
+
+        $this->statusesService = $statusesService;
+        $this->receiptsService = $receiptsService;
+
+        if (config('services.recognize_barcodes_api.url', '')) {
+            $this->useExternalService = true;
+        }
     }
 
-    /**
-     * Запуск команды.
-     *
-     * @throws BindingResolutionException
-     */
     public function handle()
     {
-        $checksService = app()->make('InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract');
-        $statusesService = app()->make('InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract');
+        $statuses = $this->statusesService->getItemsByType('default');
 
-        $status = $statusesService->getDefaultStatus();
+        $receipts = $this->receiptsService->getItemsByStatuses($statuses);
 
-        $checks = $checksService->getModel()->where([
-            ['status_id', '=', $status->id],
-        ])->get();
+        $bar = $this->output->createProgressBar(count($receipts));
 
-        $bar = $this->output->createProgressBar(count($checks));
+        foreach ($receipts as $receipt) {
+            if (! $receipt->hasJSONData('receipt_data', 'codes')) {
+                $imagePath = $receipt->getFirstMediaPath('images');
 
-        foreach ($checks as $check) {
-            if (! $check->hasJSONData('receipt_data', 'codes')) {
-                $imagePath = $check->getFirstMediaPath('images');
+                if (! $imagePath || ! file_exists($imagePath)) {
+                    continue;
+                }
 
-                $codes = DecodeBarcodeFile($imagePath, 0x4000000);
-                $codes = (is_array($codes)) ? $codes : [];
+                if ($this->useExternalService) {
+                    $client = new Client();
 
-                $check->setJSONData('receipt_data', 'codes', $codes);
-                $check->save();
+                    $response = $client->request(
+                        'POST',
+                        config('services.recognize_barcodes_api.url'),
+                        [
+                            'headers' => [
+                                'Authorization' => 'Bearer '.config('services.recognize_barcodes_api.token'),
+                                'Accept' => 'application/json',
+                            ],
+                            'multipart' => [
+                                [
+                                    'name' => 'image',
+                                    'contents' => file_get_contents($imagePath),
+                                    'filename' => $imagePath
+                                ],
+                            ],
+                        ]
+                    );
+
+                    $codes = json_decode($response->getBody()->getContents(), true);
+                } else {
+                    $codes = DecodeBarcodeFile($imagePath, 0x4000000);
+                    $codes = (is_array($codes)) ? $codes : [];
+                }
+
+                $receipt->setJSONData('receipt_data', 'codes', $codes);
+                $receipt->save();
             }
 
             $bar->advance();
