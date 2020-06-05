@@ -40,4 +40,14 @@ class ItemsService implements ItemsServiceContract
             ->whereIn('status_id', $statusesIds)
             ->get();
     }
+
+    public function getItemsWithoutFnsReceiptByStatuses(Collection $statuses): Collection
+    {
+        $statusesIds = $statuses->pluck('id')->toArray();
+
+        return $this->model::with('media', 'status', 'prizes', 'fnsReceipt', 'products')
+            ->whereIn('status_id', $statusesIds)
+            ->doesntHave('fnsReceipt')
+            ->get();
+    }
 }

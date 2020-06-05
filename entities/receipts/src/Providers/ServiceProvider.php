@@ -24,7 +24,6 @@ class ServiceProvider extends BaseServiceProvider
         $this->commands(
             [
                 'InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\AttachFnsReceiptsCommandContract',
-                'InetStudio\ReceiptsContest\Receipts\Console\Commands\AttachProductsCommand',
                 'InetStudio\ReceiptsContest\Receipts\Console\Commands\CreateFoldersCommand',
                 'InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\ModerateCommandContract',
                 'InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\RecognizeCodesCommandContract',

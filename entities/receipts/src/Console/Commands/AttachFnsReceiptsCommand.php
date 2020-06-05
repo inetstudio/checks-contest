@@ -2,59 +2,50 @@
 
 namespace InetStudio\ReceiptsContest\Receipts\Console\Commands;
 
-use Illuminate\Support\Arr;
+use GuzzleHttp\Client;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\AttachFnsReceiptsCommandContract;
+use InetStudio\Fns\Receipts\Contracts\Services\Back\ItemsServiceContract as FnsReceiptsServiceContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract as ReceiptsServiceContract;
 
-/**
- * Class AttachFnsReceiptsCommand.
- */
 class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsCommandContract
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'inetstudio:receipts-contest:receipts:fns';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Attach FNS receipts to contest receipts';
 
-    /**
-     * Create a new command instance.
-     */
-    public function __construct()
+    protected bool $useExternalService = false;
+
+    protected StatusesServiceContract $statusesService;
+
+    protected ReceiptsServiceContract $receiptsService;
+
+    protected FnsReceiptsServiceContract $fnsReceiptsService;
+
+    public function __construct(StatusesServiceContract $statusesService, ReceiptsServiceContract $receiptsService, FnsReceiptsServiceContract $fnsReceiptsService)
     {
         parent::__construct();
+
+        $this->statusesService = $statusesService;
+        $this->receiptsService = $receiptsService;
+        $this->fnsReceiptsService = $fnsReceiptsService;
+
+        if (config('services.fns_api.url', '')) {
+            $this->useExternalService = true;
+        }
     }
 
-    /**
-     * Запуск команды.
-     *
-     * @throws BindingResolutionException
-     */
     public function handle()
     {
-        $checksService = app()->make('InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract');
-        $statusesService = app()->make('InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract');
-        $receiptsService = app()->make('InetStudio\Fns\Receipts\Contracts\Services\Back\ItemsServiceContract');
+        $statuses = $this->statusesService->getItemsByType('default');
 
-        $status = $statusesService->getDefaultStatus();
+        $receipts = $this->receiptsService->getItemsWithoutFnsReceiptByStatuses($statuses);
 
-        $checks = $checksService->getModel()->where([
-            ['status_id', '=', $status->id],
-        ])->doesntHave('fnsReceipt')->get();
+        $bar = $this->output->createProgressBar(count($receipts));
 
-        $bar = $this->output->createProgressBar(count($checks));
-
-        foreach ($checks as $check) {
-            $codes = $check->getJSONData('receipt_data', 'codes', []);
+        foreach ($receipts as $receipt) {
+            $codes = $receipt->getJSONData('receipt_data', 'codes', []);
 
             $products = [];
 
@@ -67,14 +58,40 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
                     continue;
                 }
 
-                $fnsReceipt = $receiptsService->getReceiptByQrCode($code[1]);
+                $fnsReceipt = null;
+
+                if ($this->useExternalService) {
+                    $client = new Client();
+
+                    $response = $client->request(
+                        'POST',
+                        config('services.fns_api.url'),
+                        [
+                            'headers' => [
+                                'Authorization' => 'Bearer '.config('services.fns_api.token'),
+                                'Accept' => 'application/json',
+                            ],
+                            'form_params' => [
+                                'qr_code' => $code['value'],
+                            ]
+                        ]
+                    );
+
+                    $fnsReceiptData = json_decode($response->getBody()->getContents(), true);
+
+                    if (! empty($fnsReceiptData)) {
+                        $fnsReceipt = $this->fnsReceiptsService->save($fnsReceiptData, 0);
+                    }
+                } else {
+                    $fnsReceipt = $this->fnsReceiptsService->getReceiptByQrCode($code[1]);
+                }
 
                 if ($fnsReceipt) {
                     $fnsReceiptData = $fnsReceipt->receipt['document']['receipt'];
 
                     foreach ($fnsReceiptData['items'] ?? [] as $item) {
                         $products[] = [
-                            'receipt_id' => $check->id,
+                            'receipt_id' => $receipt->id,
                             'fns_receipt_id' => $fnsReceipt->id,
                             'name' => $item['name'],
                             'quantity' => $item['quantity'],
@@ -87,9 +104,9 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
                 }
             }
 
-            $check->fns_receipt_id = $fnsReceipt->id ?? 0;
-            $check->products()->createMany($products);
-            $check->save();
+            $receipt->fns_receipt_id = $fnsReceipt->id ?? 0;
+            $receipt->products()->createMany($products);
+            $receipt->save();
 
             $bar->advance();
         }

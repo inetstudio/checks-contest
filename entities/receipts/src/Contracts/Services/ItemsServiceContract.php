@@ -14,4 +14,6 @@ interface ItemsServiceContract
     public function getItemById($id = 0, bool $returnNew = true);
 
     public function getItemsByStatuses(Collection $statuses): Collection;
+
+    public function getItemsWithoutFnsReceiptByStatuses(Collection $statuses): Collection;
 }
