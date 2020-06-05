@@ -5,45 +5,37 @@ namespace InetStudio\ReceiptsContest\Receipts\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\SetWinnerCommandContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Front\ItemsServiceContract as PrizesServiceContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract as ReceiptsServiceContract;
 
-/**
- * Class SetWinnerCommand.
- */
 class SetWinnerCommand extends Command implements SetWinnerCommandContract
 {
-    /**
-     * Имя команды.
-     *
-     * @var string
-     */
     protected $name = 'inetstudio:receipts-contest:receipts:winners';
 
-    /**
-     * Описание команды.
-     *
-     * @var string
-     */
-    protected $description = 'Set checks contest winner';
+    protected $description = 'Set receipts contest winner';
 
-    /**
-     * Опции для определения победителей.
-     *
-     * @var array
-     */
-    protected $drawOptions = [];
+    protected array $drawOptions = [];
 
-    /**
-     * Запуск команды.
-     *
-     * @throws BindingResolutionException
-     */
+    protected ReceiptsServiceContract $receiptsService;
+
+    protected StatusesServiceContract $statusesService;
+
+    protected PrizesServiceContract $prizesService;
+
+    public function __construct(ReceiptsServiceContract $receiptsService, StatusesServiceContract $statusesService, PrizesServiceContract $prizesService)
+    {
+        parent::__construct();
+
+        $this->receiptsService = $receiptsService;
+        $this->statusesService = $statusesService;
+        $this->prizesService = $prizesService;
+    }
+
     public function handle(): void
     {
-        $checksService = app()->make('InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract');
-
-        $prizesData = $this->getPrizeData($checksService);
+        $prizesData = $this->getPrizeData();
 
         if (empty($prizesData)) {
             return;
@@ -52,37 +44,27 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
         $this->initOptions();
 
         foreach ($prizesData as $prizeData) {
-            $checks = $this->getReceipts($checksService, $prizeData);
+            $receipts = $this->getReceipts($prizeData);
 
-            if ($checks->count() == 0) {
+            if ($receipts->count() == 0) {
                 continue;
             }
 
-            $winnersReceipts = $this->getWinnersReceipts($checks, $prizeData);
+            $winnersReceipts = $this->getWinnersReceipts($receipts, $prizeData);
             $this->attachPrize($winnersReceipts, $prizeData);
         }
     }
 
-    /**
-     * Инициализируем необходимые опции.
-     */
     protected function initOptions(): void
     {
     }
 
-    /**
-     * Получаем данные по призу.
-     *
-     * @param $checksService
-     *
-     * @return array
-     */
-    protected function getPrizeData($checksService): array
+    protected function getPrizeData(): array
     {
         $prizesData = [];
 
         $nowDate = Carbon::now('Europe/Moscow')->format('d.m.y');
-        $stages = $checksService->stages;
+        $stages = $this->receiptsService->stages;
 
         foreach ($stages as $date => $prizes) {
             if ($date == $nowDate) {
@@ -95,27 +77,12 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
         return $prizesData;
     }
 
-    /**
-     * Получаем чеки, участвующие в розыгрыше.
-     *
-     * @param $checksService
-     * @param  array  $prizeData
-     *
-     * @return Collection
-     *
-     * @throws BindingResolutionException
-     */
-    protected function getReceipts($checksService, array $prizeData): Collection
+    protected function getReceipts(array $prizeData): Collection
     {
-        $statusesService = app()->make('InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract');
-        $prizesService = app()->make('InetStudio\ReceiptsContest\Prizes\Contracts\Services\Front\ItemsServiceContract');
+        $prize = $this->prizesService->getModel()->where('alias', $prizeData['prize'])->first();
+        $statuses = $this->statusesService->getItemsByType('draw');
 
-        $prize = $prizesService->getModel()->where('alias', $prizeData['prize'])->first();
-        $status = $statusesService->getModel()->where([
-            ['alias', '=', 'approved'],
-        ])->first();
-
-        if (! $prize || ! $status) {
+        if (! $prize || $statuses->count() === 0) {
             return collect([]);
         }
 
@@ -123,7 +90,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
 
         $winnersEmails = [];
         $winnersPhones = [];
-        $winnersReceipts = $checksService->getModel()->with('prizes')
+        $winnersReceipts = $this->receiptsService->getModel()->with('prizes')
             ->whereHas('prizes', function ($query) use ($prizeId) {
                 $query->where('prize_id', '=', $prizeId);
             })->get();
@@ -133,18 +100,19 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
             $winnersPhones[] = $winnerReceipt->getJSONData('additional_info', 'phone');
         }
 
-        $checks = $checksService->getModel()->with('prizes')->where([
-            ['status_id', '=', $status->id],
-            ['created_at', '>=', Carbon::createFromFormat('d.m.y', $prizeData['start'])->setTime(0, 0, 0)],
-            ['created_at', '<=', Carbon::createFromFormat('d.m.y', $prizeData['end'])->setTime(23, 59, 59)],
-        ])->where(function ($query) use ($prizeId) {
-            $query->doesntHave('prizes')
-                ->orWhereDoesntHave('prizes', function ($prizesQuery) use ($prizeId) {
-                    $prizesQuery->where('prize_id', '=', $prizeId);
-                });
-        })->get();
+        $receipts = $this->receiptsService->getModel()->with('prizes')
+            ->whereIn('status_id', $statuses->pluck('id')->toArray())
+            ->where([
+                ['created_at', '>=', Carbon::createFromFormat('d.m.y', $prizeData['start'])->setTime(0, 0, 0)],
+                ['created_at', '<=', Carbon::createFromFormat('d.m.y', $prizeData['end'])->setTime(23, 59, 59)],
+            ])->where(function ($query) use ($prizeId) {
+                $query->doesntHave('prizes')
+                    ->orWhereDoesntHave('prizes', function ($prizesQuery) use ($prizeId) {
+                        $prizesQuery->where('prize_id', '=', $prizeId);
+                    });
+            })->get();
 
-        $checks = $checks->filter(function ($check) use ($winnersEmails, $winnersPhones) {
+        $receipts = $receipts->filter(function ($check) use ($winnersEmails, $winnersPhones) {
             $email = $check->getJSONData('additional_info', 'email');
             $phone = $check->getJSONData('additional_info', 'phone');
 
@@ -159,46 +127,52 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
             return true;
         })->values();
 
-        return $checks;
+        return $receipts;
     }
 
-    /**
-     * Получаем чеки победителей.
-     *
-     * @param  Collection  $checks
-     * @param  array  $prizeData
-     *
-     * @return Collection
-     */
-    protected function getWinnersReceipts(Collection $checks, array $prizeData): Collection
+    protected function getWinnersReceipts(Collection $receipts, array $prizeData): Collection
     {
-        if ($checks <= $prizeData['count']) {
-            return $checks;
-        }
-
         $indexes = [];
 
-        for ($i = 1; $i <= $prizeData['count']; $i++) {
-            $indexes[] = $i * floor($checks->count() / $prizeData['count']);
+        if ($receipts->count() <= $prizeData['count']) {
+            $indexes = range(0, $receipts->count() - 1);
+        } else {
+            for ($i = 1; $i <= $prizeData['count']; $i++) {
+                $indexes[] = (int) ($i * floor($receipts->count() / $prizeData['count'])) - 1;
+            }
         }
 
-        return $checks->filter(function ($value, $key) use ($indexes) {
-            return in_array($key, $indexes);
-        });
+        $winnersPhones = [];
+        $winnersEmails = [];
+        $winnersChecks = collect();
+
+        foreach ($receipts as $index => $receipt) {
+            if (in_array($index, $indexes)) {
+                $data = $receipt->additional_info;
+
+                if (! (in_array($data['phone'], $winnersPhones)) && ! (in_array($data['email'], $winnersEmails))) {
+                    $winnersPhones[] = $data['phone'];
+                    $winnersEmails[] = $data['email'];
+
+                    $winnersChecks->push($receipt);
+                } elseif ($index == ($receipts->count() - 1)) {
+                    $previousIndex = $this->getPreviousIndex($index, $indexes);
+
+                    if (isset($receipts[$previousIndex])) {
+                        $winnersChecks->push($receipts[$previousIndex]);
+                    }
+                } else {
+                    $indexes[] = $this->getNextIndex($index, $indexes);
+                }
+            }
+        }
+
+        return $winnersChecks;
     }
 
-    /**
-     * Присваиваем приз победителю.
-     *
-     * @param  Collection  $checks
-     * @param  array  $stageData
-     *
-     * @throws BindingResolutionException
-     */
-    protected function attachPrize(Collection $checks, array $stageData): void
+    protected function attachPrize(Collection $receipts, array $stageData): void
     {
-        $prizesService = app()->make('InetStudio\ReceiptsContest\Prizes\Contracts\Services\Front\ItemsServiceContract');
-        $prize = $prizesService->getModel()->where('alias', $stageData['prize'])->first();
+        $prize = $this->prizesService->getModel()->where('alias', $stageData['prize'])->first();
 
         if (! $prize) {
             return;
@@ -214,8 +188,26 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
             ],
         ];
 
-        $checks->each(function ($check) use ($prizeData) {
+        $receipts->each(function ($check) use ($prizeData) {
             $check->prizes()->attach($prizeData);
         });
+    }
+
+    protected function getNextIndex(int $index, array $indexes): int
+    {
+        while (in_array($index, $indexes)) {
+            $index++;
+        }
+
+        return $index;
+    }
+
+    protected function getPreviousIndex(int $index, array $indexes): int
+    {
+        while (in_array($index, $indexes)) {
+            $index--;
+        }
+
+        return $index;
     }
 }
