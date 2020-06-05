@@ -20,7 +20,7 @@ class ItemStatusChangeListener implements ItemStatusChangeListenerContract
 
         try {
             Mail::send(
-                'admin.module.receipts-contest.receipts::mails.'.$statusAlias, compact('name'),
+                'admin.module.receipts-contest.receipts::mails.status.'.$statusAlias, compact('name'),
                 function ($m) use ($email, $name, $subject) {
                     $m->from(config('mail.from.address'), config('mail.from.name'));
 
