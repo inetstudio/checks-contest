@@ -6,23 +6,12 @@ use Illuminate\Queue\SerializesModels;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Events\Back\ModifyItemEventContract;
 
-/**
- * Class ModifyItemEvent.
- */
 class ModifyItemEvent implements ModifyItemEventContract
 {
     use SerializesModels;
 
-    /**
-     * @var ReceiptModelContract
-     */
-    public $item;
+    public ReceiptModelContract $item;
 
-    /**
-     * ModifyItemEvent constructor.
-     *
-     * @param  ReceiptModelContract  $item
-     */
     public function __construct(ReceiptModelContract $item)
     {
         $this->item = $item;

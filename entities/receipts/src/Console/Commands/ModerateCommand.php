@@ -6,9 +6,8 @@ use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Statuses\Contracts\Models\StatusModelContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\ModerateCommandContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract as ReceiptsServiceContract;
 use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
@@ -38,11 +37,6 @@ class ModerateCommand extends Command implements ModerateCommandContract
         $this->contestEndDate = Carbon::createFromDate(2020, 6, 22, 'Europe/Moscow')->setTime(0, 0, 0);
     }
 
-    /**
-     * Запуск команды.
-     *
-     * @throws BindingResolutionException
-     */
     public function handle()
     {
         $this->checkQrDuplicates();
@@ -50,31 +44,17 @@ class ModerateCommand extends Command implements ModerateCommandContract
         $this->moderate();
     }
 
-    /**
-     * Получаем чеки для модерации.
-     *
-     * @return Collection
-     */
     protected function getItems(): Collection
     {
-        $status = $this->statusesService->getDefaultStatus();
+        $statuses = $this->statusesService->getItemsByType('default');
 
-        if (! $status) {
+        if ($statuses->count() === 0) {
             return collect([]);
         }
 
-        return $this->receiptsService->getModel()->where(
-            [
-                ['status_id', '=', $status->id],
-            ]
-        )->get();
+        return $this->receiptsService->getItemsByStatuses($statuses);;
     }
 
-    /**
-     * Модерируем чеки.
-     *
-     * @throws BindingResolutionException
-     */
     protected function moderate(): void
     {
         $items = $this->getItems();
@@ -142,11 +122,6 @@ class ModerateCommand extends Command implements ModerateCommandContract
         }
     }
 
-    /**
-     * Проверка чеков на дубли qr кодов.
-     *
-     * @throws BindingResolutionException
-     */
     protected function checkQrDuplicates(): void
     {
         $items = $this->getItems();
@@ -191,11 +166,6 @@ class ModerateCommand extends Command implements ModerateCommandContract
         $bar->finish();
     }
 
-    /**
-     * Проверка чеков на дубли fns.
-     *
-     * @throws BindingResolutionException
-     */
     protected function checkFnsDuplicates(): void
     {
         $items = $this->getItems();
@@ -238,17 +208,6 @@ class ModerateCommand extends Command implements ModerateCommandContract
         $bar->finish();
     }
 
-    /**
-     * Переводим чек на нужный статус.
-     *
-     * @param  ReceiptModelContract  $item
-     * @param  StatusModelContract  $status
-     * @param  string  $reason
-     *
-     * @return ReceiptModelContract
-     *
-     * @throws BindingResolutionException
-     */
     protected function moderateItem(ReceiptModelContract $item, StatusModelContract $status, string $reason = ''): ReceiptModelContract
     {
         $item->status_id = $status['id'];
@@ -269,13 +228,6 @@ class ModerateCommand extends Command implements ModerateCommandContract
         return $item;
     }
 
-    /**
-     * Проверяем, что продукт соответствует условиям.
-     *
-     * @param  array  $product
-     *
-     * @return bool
-     */
     protected function checkReceiptProduct(array $product): bool
     {
         return (mb_strpos(mb_strtolower($product['name']), 'cast') !== false && mb_strpos(mb_strtolower($product['name']), 'краск') !== false) ||

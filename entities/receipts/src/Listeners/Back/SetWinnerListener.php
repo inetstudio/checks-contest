@@ -6,23 +6,15 @@ use Illuminate\Support\Facades\Mail;
 use GuzzleHttp\Exception\BadResponseException;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Listeners\Back\SetWinnerListenerContract;
 
-/**
- * Class SetWinnerListener.
- */
 class SetWinnerListener implements SetWinnerListenerContract
 {
-    /**
-     * Handle the event.
-     *
-     * @param  object  $event
-     */
     public function handle($event): void
     {
-        $item = $event->check;
+        $item = $event->item;
         $prize = $event->prize;
 
         $email = $item->getJSONData('additional_info', 'email');
-        $name = $item->getJSONData('additional_info', 'name').' '.$item->getJSONData('additional_info', 'surname');
+        $name = trim($item->getJSONData('additional_info', 'name').' '.$item->getJSONData('additional_info', 'surname'));
 
         $subject = 'Вы выиграли приз';
 

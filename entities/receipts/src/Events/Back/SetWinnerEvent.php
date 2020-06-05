@@ -3,36 +3,21 @@
 namespace InetStudio\ReceiptsContest\Receipts\Events\Back;
 
 use Illuminate\Queue\SerializesModels;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Prizes\Contracts\Models\PrizeModelContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Events\Back\SetWinnerEventContract;
 
-/**
- * Class SetWinnerEvent.
- */
 class SetWinnerEvent implements SetWinnerEventContract
 {
     use SerializesModels;
 
-    /**
-     * @var ReceiptModelContract
-     */
-    public $check;
+    public ReceiptModelContract $item;
 
-    /**
-     * @var
-     */
-    public $prize;
+    public PrizeModelContract $prize;
 
-    /**
-     * SetWinnerEvent constructor.
-     *
-     * @param  ReceiptModelContract  $check
-     * @param  PrizeModelContract  $prize
-     */
-    public function __construct(ReceiptModelContract $check, PrizeModelContract $prize)
+    public function __construct(ReceiptModelContract $item, PrizeModelContract $prize)
     {
-        $this->check = $check;
+        $this->item = $item;
         $this->prize = $prize;
     }
 }
