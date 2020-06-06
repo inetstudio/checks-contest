@@ -20,12 +20,11 @@ class ModerateService extends ItemsService implements ModerateServiceContract
 
     public function moderate(ModerateItemData $data): ReceiptModelContract
     {
-        $item = $this->model::updateOrCreate(
-            [
-                'id' => $data->id,
-            ],
-            $data->except('id')->toArray()
-        );
+        $item = $this->model::where('id', $data->id)->first();
+
+        $item->status_id = $data->status_id;
+        $item->setJSONData('receipt_data', 'statusReason', $data->receipt_data['statusReason'] ?? '');
+        $item->save();
 
         event(
             app()->make(

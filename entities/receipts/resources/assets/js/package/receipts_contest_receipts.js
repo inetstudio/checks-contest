@@ -13,6 +13,11 @@ receipts.init = function () {
 
       $('#receipts_contest_receipts .ibox-content').toggleClass('sk-loading');
 
+      let data = {
+        id: button.data('id'),
+        status_id: button.data('status_id'),
+      };
+
       if (typeof reason !== typeof undefined && reason !== false) {
         swal.fire({
           title: 'Введите причину изменения статуса',
@@ -29,10 +34,8 @@ receipts.init = function () {
               };
             }
 
-            let data = {
-              additional_info: {
-                statusReason: inputReason
-              }
+            data.receipt_data = {
+              statusReason: inputReason
             };
 
             return moderate(url, data);
@@ -43,7 +46,7 @@ receipts.init = function () {
         });
       } else {
         new Promise(function(resolve, reject) {
-          let result = moderate(url, {});
+          let result = moderate(url, data);
 
           resolve(result);
         }).then((result) => {

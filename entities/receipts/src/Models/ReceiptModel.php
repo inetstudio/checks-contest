@@ -57,13 +57,6 @@ class ReceiptModel extends Model implements ReceiptModelContract
         return self::ENTITY_TYPE;
     }
 
-    public function scopeWin($query)
-    {
-        return $query->whereHas('prizes', function ($prizesQuery) {
-            $prizesQuery->where('receipts_contest_receipts_prizes.confirmed', 1);
-        });
-    }
-
     use HasStatus;
     use HasUser;
 

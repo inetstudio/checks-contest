@@ -1,17 +1,19 @@
 @inject('statusesService', 'InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract')
 
 @php
-    $statuses = $statusesService->getModel()->all()->pluck('name', 'alias')->toArray();
+    $statuses = $statusesService->getModel()->all();
     $setReasonStatuses = $statusesService->getItemsByType('reason');
 @endphp
 
 <div class="btn-group">
     <button data-toggle="dropdown" class="btn btn-xs btn-default dropdown-toggle" aria-expanded="false">Статус</button>
     <ul class="dropdown-menu">
-        @foreach ($statuses as $statusAlias => $statusName)
-            @if ($statusAlias != $item['status']['alias'])
+        @foreach ($statuses as $status)
+            @if ($status['alias'] != $item['status']['alias'])
                 <li>
-                    <a class="receipt-moderate" href="{{ route('back.receipts-contest.receipts.moderate', ['id' => $item['id'], 'statusAlias' => $statusAlias]) }}" {{ ($setReasonStatuses->keyBy('alias')->has($statusAlias)) ? 'data-reason' : '' }}>{{ $statusName }}</a>
+                    <a class="receipt-moderate" href="{{ route('back.receipts-contest.receipts.moderate') }}" data-id="{{ $item['id'] }}" data-status_id="{{ $status['id'] }}" {{ ($setReasonStatuses->keyBy('alias')->has($status['alias'])) ? 'data-reason' : '' }}>
+                        {{ $status['name'] }}
+                    </a>
                 </li>
             @endif
         @endforeach

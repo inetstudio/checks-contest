@@ -12,7 +12,7 @@ Route::group(
         Route::any('receipts/data', 'DataControllerContract@getIndexData')
             ->name('back.receipts-contest.receipts.data.index');
 
-        Route::post('receipts/moderate/{id}/{statusAlias}', 'ModerateControllerContract@moderate')
+        Route::post('receipts/moderate/', 'ModerateControllerContract@moderate')
             ->name('back.receipts-contest.receipts.moderate');
 
         Route::get('receipts/export/default', 'ExportControllerContract@exportItems')
