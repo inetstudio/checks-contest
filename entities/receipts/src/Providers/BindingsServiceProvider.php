@@ -71,9 +71,6 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ModerateServiceContract' => 'InetStudio\ReceiptsContest\Receipts\Services\Back\ModerateService',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract' => 'InetStudio\ReceiptsContest\Receipts\Services\Front\ItemsService',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Services\ItemsServiceContract' => 'InetStudio\ReceiptsContest\Receipts\Services\ItemsService',
-
-        'InetStudio\ReceiptsContest\Receipts\Contracts\Transformers\Back\Common\PreviewTransformerContract' => 'InetStudio\ReceiptsContest\Receipts\Transformers\Back\Common\PreviewTransformer',
-        'InetStudio\ReceiptsContest\Receipts\Contracts\Transformers\Back\Resource\ShowTransformerContract' => 'InetStudio\ReceiptsContest\Receipts\Transformers\Back\Resource\ShowTransformer',
     ];
 
     public function provides()

@@ -16,12 +16,14 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
 
     public function send(SendItemData $data): ?ReceiptModelContract
     {
-        $item = $this->model::updateOrCreate(
-            [
-                'id' => $data->id,
-            ],
-            $data->except('id', 'image')->toArray()
-        );
+        $item = $this->create();
+
+        $item->verify_hash = $data->verify_hash;
+        $item->additional_info = $data->additional_info;
+        $item->user_id = $data->user_id;
+        $item->status_id = $data->status_id;
+
+        $item->save();
 
         if ($item && $data->image) {
             $name = Str::random(32).'.'.$data->image->getClientOriginalExtension();
@@ -70,8 +72,8 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
             'relations' => ['prizes'],
         ])->get();
 
-        foreach ($winnersReceipts as $check) {
-            foreach ($check->prizes as $prize) {
+        foreach ($winnersReceipts as $receipt) {
+            foreach ($receipt->prizes as $prize) {
                 if (isset($stages['prizes'][$prize['alias']]) && $prize->pivot->confirmed == 1) {
                     $key = '';
                     $key .= ($prize->pivot['date_start']) ? Carbon::createFromFormat('Y-m-d H:i:s', $prize->pivot['date_start'])->format('d.m.y') : '';
@@ -79,10 +81,10 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
                     $key = md5($key);
 
                     $stages['prizes'][$prize['alias']]['stages'][$key]['winners'][] = [
-                        'id' => $check->id,
-                        'name' => $check->getJSONData('additional_info', 'name', '').' '.$check->getJSONData('additional_info', 'surname', ''),
-                        'email' => Str::hideEmail($check->getJSONData('additional_info', 'email', '')),
-                        'phone' => $this->hidePhone($check->getJSONData('additional_info', 'phone', '')),
+                        'id' => $receipt->id,
+                        'name' => $receipt->getJSONData('additional_info', 'name', '').' '.$receipt->getJSONData('additional_info', 'surname', ''),
+                        'email' => Str::hideEmail($receipt->getJSONData('additional_info', 'email', '')),
+                        'phone' => $this->hidePhone($receipt->getJSONData('additional_info', 'phone', '')),
                     ];
 
                     $stages['prizes'][$prize['alias']]['totalWinners'] += 1;

@@ -12,13 +12,7 @@ use InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Front\SendItemDataContract
 
 class SendItemData extends FlexibleDataTransferObject implements SendItemDataContract
 {
-    public int $id = 0;
-
-    public int $fns_receipt_id = 0;
-
     public string $verify_hash;
-
-    public array $receipt_data = [];
 
     public array $additional_info;
 

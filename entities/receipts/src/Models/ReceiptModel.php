@@ -32,15 +32,6 @@ class ReceiptModel extends Model implements ReceiptModelContract
 
     protected $table = 'receipts_contest_receipts';
 
-    protected $fillable = [
-        'fns_receipt_id',
-        'verify_hash',
-        'receipt_data',
-        'additional_info',
-        'user_id',
-        'status_id',
-    ];
-
     protected $dates = [
         'created_at',
         'updated_at',

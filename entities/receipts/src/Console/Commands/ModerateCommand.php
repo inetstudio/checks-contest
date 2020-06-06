@@ -6,8 +6,10 @@ use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use InetStudio\ReceiptsContest\Receipts\DTO\Back\Moderation\ModerateItemData;
 use InetStudio\ReceiptsContest\Statuses\Contracts\Models\StatusModelContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ModerateServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\ModerateCommandContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract as ReceiptsServiceContract;
 use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
@@ -22,16 +24,19 @@ class ModerateCommand extends Command implements ModerateCommandContract
 
     protected StatusesServiceContract $statusesService;
 
+    protected ModerateServiceContract $moderateService;
+
     protected CarbonInterface $contestStartDate;
 
     protected CarbonInterface $contestEndDate;
 
-    public function __construct(ReceiptsServiceContract $receiptsService, StatusesServiceContract $statusesService)
+    public function __construct(ReceiptsServiceContract $receiptsService, StatusesServiceContract $statusesService, ModerateServiceContract $moderateService)
     {
         parent::__construct();
 
         $this->receiptsService = $receiptsService;
         $this->statusesService = $statusesService;
+        $this->moderateService = $moderateService;
 
         $this->contestStartDate = Carbon::createFromDate(2020, 5, 1, 'Europe/Moscow')->setTime(0, 0, 0);
         $this->contestEndDate = Carbon::createFromDate(2020, 6, 22, 'Europe/Moscow')->setTime(0, 0, 0);
@@ -208,24 +213,19 @@ class ModerateCommand extends Command implements ModerateCommandContract
         $bar->finish();
     }
 
-    protected function moderateItem(ReceiptModelContract $item, StatusModelContract $status, string $reason = ''): ReceiptModelContract
+    protected function moderateItem(ReceiptModelContract $item, StatusModelContract $status, string $reason = ''): void
     {
-        $item->status_id = $status['id'];
-
-        if ($reason) {
-            $item->setJSONData('receipt_data', 'statusReason', $reason);
-        }
-
-        $item->save();
-
-        event(
-            app()->make(
-                'InetStudio\ReceiptsContest\Receipts\Contracts\Events\Back\ModerateItemEventContract',
-                compact('item')
-            )
+        $data = new ModerateItemData(
+            [
+                'id' => $item['id'],
+                'status_id' => $status['id'],
+                'receipt_data' => [
+                    'statusReason' => $reason,
+                ],
+            ]
         );
 
-        return $item;
+        $this->moderateService->moderate($data);
     }
 
     protected function checkReceiptProduct(array $product): bool
