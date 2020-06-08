@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="receipts_contest_products-package">
         <a href="#" class="btn btn-xs btn-primary btn-xs m-b-lg" v-on:click.prevent="add">Добавить</a>
         <table class="table table-hover">
             <tbody>
