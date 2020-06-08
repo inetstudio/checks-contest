@@ -4,6 +4,7 @@ namespace InetStudio\ReceiptsContest\Receipts\Console\Commands;
 
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
+use InetStudio\ReceiptsContest\Receipts\DTO\Back\Items\AddBarcodes\ItemData as AddBarcodesData;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\RecognizeCodesCommandContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract as ReceiptsServiceContract;
 use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
@@ -75,8 +76,16 @@ class RecognizeCodesCommand extends Command implements RecognizeCodesCommandCont
                     $codes = (is_array($codes)) ? $codes : [];
                 }
 
-                $receipt->setJSONData('receipt_data', 'codes', $codes);
-                $receipt->save();
+                $data = new AddBarcodesData(
+                    [
+                        'id' => $receipt['id'],
+                        'receipt_data' => [
+                            'codes' => $codes,
+                        ],
+                    ]
+                );
+
+                $this->receiptsService->addBarcodes($data);
             }
 
             $bar->advance();

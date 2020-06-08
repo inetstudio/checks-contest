@@ -25,12 +25,10 @@ class ResourceService extends BaseItemsService implements ResourceServiceContrac
 
     public function save(ItemDataContract $data): PrizeModelContract
     {
-        $item = $this->model::updateOrCreate(
-            [
-                'id' => $data->id,
-            ],
-            $data->except('id')->toArray()
-        );
+        $item = $this->model::find($data->id) ?? new $this->model;
+
+        $item->name = $data->name;
+        $item->alias = $data->alias;
 
         event(
             resolve(

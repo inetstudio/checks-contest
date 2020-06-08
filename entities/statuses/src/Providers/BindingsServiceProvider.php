@@ -24,7 +24,7 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Resource\ShowRequestContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Requests\Back\Resource\ShowRequest',
         'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Resource\StoreRequestContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Requests\Back\Resource\StoreRequest',
         'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Resource\UpdateRequestContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Requests\Back\Resource\UpdateRequest',
-        'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Utility\SuggestionsRequestContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Requests\Back\Utility\SuggestionsRequest',
+        'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Requests\Back\Utility\GetSuggestionsRequestContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Requests\Back\Utility\GetSuggestionsRequest',
 
         'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Resources\Back\Resource\Index\ItemResourceContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Resources\Back\Resource\Index\ItemResource',
         'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Resources\Back\Resource\Show\ItemResourceContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Resources\Back\Resource\Show\ItemResource',
@@ -40,7 +40,7 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\ShowResponseContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Responses\Back\Resource\ShowResponse',
         'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\StoreResponseContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Responses\Back\Resource\StoreResponse',
         'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\UpdateResponseContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Responses\Back\Resource\UpdateResponse',
-        'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Utility\SuggestionsResponseContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Responses\Back\Utility\SuggestionsResponse',
+        'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Utility\GetSuggestionsResponseContract' => 'InetStudio\ReceiptsContest\Statuses\Http\Responses\Back\Utility\GetSuggestionsResponse',
 
         'InetStudio\ReceiptsContest\Statuses\Contracts\Models\StatusModelContract' => 'InetStudio\ReceiptsContest\Statuses\Models\StatusModel',
 

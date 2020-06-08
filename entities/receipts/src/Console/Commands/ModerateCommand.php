@@ -6,9 +6,9 @@ use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use InetStudio\ReceiptsContest\Receipts\DTO\Back\Moderation\ModerateItemData;
 use InetStudio\ReceiptsContest\Statuses\Contracts\Models\StatusModelContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
+use InetStudio\ReceiptsContest\Receipts\DTO\Back\Moderation\Moderate\ItemData;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ModerateServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\ModerateCommandContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract as ReceiptsServiceContract;
@@ -80,13 +80,25 @@ class ModerateCommand extends Command implements ModerateCommandContract
 
         foreach ($items as $item) {
             if (! $item->created_at->greaterThanOrEqualTo($this->contestStartDate)) {
-                $this->moderateItem($item, $rejectedStatus, 'Загрузка до начала конкурса');
+                $this->moderateItem(
+                    $item,
+                    $rejectedStatus,
+                    [
+                        'statusReason' => 'Загрузка до начала конкурса',
+                    ]
+                );
 
                 continue;
             }
 
             if ($item->created_at->greaterThanOrEqualTo($this->contestEndDate)) {
-                $this->moderateItem($item, $rejectedStatus, 'Загрузка после окончания конкурса');
+                $this->moderateItem(
+                    $item,
+                    $rejectedStatus,
+                    [
+                        'statusReason' => 'Загрузка после окончания конкурса',
+                    ]
+                );
 
                 continue;
             }
@@ -100,13 +112,25 @@ class ModerateCommand extends Command implements ModerateCommandContract
             $receiptDate = Carbon::parse($receipt['receipt']['document']['receipt']['dateTime']);
 
             if (! $receiptDate->greaterThanOrEqualTo($this->contestStartDate)) {
-                $this->moderateItem($item, $rejectedStatus, 'Покупка до начала конкурса');
+                $this->moderateItem(
+                    $item,
+                    $rejectedStatus,
+                    [
+                        'statusReason' => 'Покупка до начала конкурса',
+                    ]
+                );
 
                 continue;
             }
 
             if ($receiptDate->greaterThanOrEqualTo($this->contestEndDate)) {
-                $this->moderateItem($item, $rejectedStatus, 'Покупка после окончания конкурса');
+                $this->moderateItem(
+                    $item,
+                    $rejectedStatus,
+                    [
+                        'statusReason' => 'Покупка после окончания конкурса',
+                    ]
+                );
 
                 continue;
             }
@@ -148,7 +172,7 @@ class ModerateCommand extends Command implements ModerateCommandContract
             }
 
             foreach ($receiptCodes as $receiptCode) {
-                if (($receiptCode['type'] ?? '') == 'QR_CODE') {
+                if (($receiptCode['type'] ?? '') === 'QR_CODE') {
                     $codeValue = trim($receiptCode['value'] ?? '');
 
                     if (! $codeValue) {
@@ -156,9 +180,14 @@ class ModerateCommand extends Command implements ModerateCommandContract
                     }
 
                     if (! $item->hasJSONData('receipt_data', 'duplicate') && isset($codes[$codeValue])) {
-                        $item->setJSONData('receipt_data', 'duplicate', true);
-
-                        $this->moderateItem($item, $rejectedStatus, 'Дубликат');
+                        $this->moderateItem(
+                            $item,
+                            $rejectedStatus,
+                            [
+                                'statusReason' => 'Дубликат',
+                                'duplicate' => true
+                            ]
+                        );
                     } else {
                         $codes[$codeValue] = $item->id;
                     }
@@ -199,9 +228,14 @@ class ModerateCommand extends Command implements ModerateCommandContract
                 }
 
                 if (! $item->hasJSONData('receipt_data', 'duplicate') && isset($fnsData[$rawData])) {
-                    $item->setJSONData('receipt_data', 'duplicate', true);
-
-                    $this->moderateItem($item, $rejectedStatus, 'Дубликат');
+                    $this->moderateItem(
+                        $item,
+                        $rejectedStatus,
+                        [
+                            'statusReason' => 'Дубликат',
+                            'duplicate' => true
+                        ]
+                    );
                 } else {
                     $fnsData[$rawData] = $item->id;
                 }
@@ -213,15 +247,13 @@ class ModerateCommand extends Command implements ModerateCommandContract
         $bar->finish();
     }
 
-    protected function moderateItem(ReceiptModelContract $item, StatusModelContract $status, string $reason = ''): void
+    protected function moderateItem(ReceiptModelContract $item, StatusModelContract $status, array $receiptData = []): void
     {
-        $data = new ModerateItemData(
+        $data = new ItemData(
             [
                 'id' => $item['id'],
                 'status_id' => $status['id'],
-                'receipt_data' => [
-                    'statusReason' => $reason,
-                ],
+                'receipt_data' => $receiptData,
             ]
         );
 

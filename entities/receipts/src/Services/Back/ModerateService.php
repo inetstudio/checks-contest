@@ -15,6 +15,7 @@ class ModerateService extends BaseItemsService implements ModerateServiceContrac
 
         $item->status_id = $data->status_id;
         $item->setJSONData('receipt_data', 'statusReason', $data->receipt_data['statusReason'] ?? '');
+        $item->setJSONData('receipt_data', 'duplicate', $data->receipt_data['duplicate'] ?? false);
 
         $item->save();
 

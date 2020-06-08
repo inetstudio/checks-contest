@@ -9,7 +9,14 @@ class ItemsCollection extends ResourceCollection implements ItemsCollectionContr
 {
     public function __construct($resource)
     {
-        $this->collects = 'InetStudio\ReceiptsContest\Products\Http\Resources\Back\Resource\Show\ItemResource';
+        $itemResource = resolve(
+            'InetStudio\ReceiptsContest\Products\Contracts\Http\Resources\Back\Resource\Show\ItemResourceContract',
+            [
+                'resource' => null,
+            ]
+        );
+
+        $this->collects = get_class($itemResource);
 
         parent::__construct($resource);
     }

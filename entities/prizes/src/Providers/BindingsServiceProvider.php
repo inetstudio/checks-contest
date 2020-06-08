@@ -27,7 +27,7 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Requests\Back\Resource\ShowRequestContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Requests\Back\Resource\ShowRequest',
         'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Requests\Back\Resource\StoreRequestContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Requests\Back\Resource\StoreRequest',
         'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Requests\Back\Resource\UpdateRequestContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Requests\Back\Resource\UpdateRequest',
-        'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Requests\Back\Utility\SuggestionsRequestContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Requests\Back\Utility\SuggestionsRequest',
+        'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Requests\Back\Utility\GetSuggestionsRequestContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Requests\Back\Utility\GetSuggestionsRequest',
 
         'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Resources\Back\Resource\Index\ItemResourceContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Resources\Back\Resource\Index\ItemResource',
         'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Resources\Back\Resource\Show\ItemResourceContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Resources\Back\Resource\Show\ItemResource',
@@ -44,7 +44,7 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Resource\ShowResponseContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Responses\Back\Resource\ShowResponse',
         'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Resource\StoreResponseContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Responses\Back\Resource\StoreResponse',
         'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Resource\UpdateResponseContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Responses\Back\Resource\UpdateResponse',
-        'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Utility\SuggestionsResponseContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Responses\Back\Utility\SuggestionsResponse',
+        'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Utility\GetSuggestionsResponseContract' => 'InetStudio\ReceiptsContest\Prizes\Http\Responses\Back\Utility\GetSuggestionsResponse',
 
         'InetStudio\ReceiptsContest\Prizes\Contracts\Models\PrizeModelContract' => 'InetStudio\ReceiptsContest\Prizes\Models\PrizeModel',
 

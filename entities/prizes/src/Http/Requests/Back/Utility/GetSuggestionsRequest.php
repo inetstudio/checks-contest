@@ -3,9 +3,9 @@
 namespace InetStudio\ReceiptsContest\Prizes\Http\Requests\Back\Utility;
 
 use Illuminate\Foundation\Http\FormRequest;
-use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Requests\Back\Utility\SuggestionsRequestContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Requests\Back\Utility\GetSuggestionsRequestContract;
 
-class SuggestionsRequest extends FormRequest implements SuggestionsRequestContract
+class GetSuggestionsRequest extends FormRequest implements GetSuggestionsRequestContract
 {
     public function authorize(): bool
     {

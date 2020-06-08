@@ -32,6 +32,10 @@ class ProductModel extends Model implements ProductModelContract
         'product_data' => 'array',
     ];
 
+    protected $appends = [
+        'sum',
+    ];
+
     public function getSumAttribute(): float
     {
         return (float) number_format($this->getAttribute('quantity') * ($this->getAttribute('price') / 100), 2, '.', '');

@@ -8,19 +8,20 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Http\JsonResponse;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Services\DataTable;
-use InetStudio\ReceiptsContest\Prizes\Contracts\Models\PrizeModelContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Services\ItemsServiceContract;
 use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back\DataTables\IndexServiceContract;
 use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Resources\Back\Resource\Index\ItemResourceContract;
 
 class IndexService extends DataTable implements IndexServiceContract
 {
-    protected PrizeModelContract $model;
+    protected ItemsServiceContract $itemsService;
 
     protected $resource;
 
-    public function __construct(PrizeModelContract $model)
+    public function __construct(ItemsServiceContract $itemsService)
     {
-        $this->model = $model;
+        $this->itemsService = $itemsService;
+
         $this->resource = resolve(
             ItemResourceContract::class,
             [
@@ -41,7 +42,7 @@ class IndexService extends DataTable implements IndexServiceContract
 
     public function query()
     {
-        return $this->model->query();
+        return $this->itemsService->getModel()->query();
     }
 
     public function html(): Builder

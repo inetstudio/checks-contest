@@ -55,7 +55,7 @@ class ItemsExport implements ItemsExportContract, FromQuery, WithMapping, WithHe
 
         $confirmed = '';
         foreach ($item->prizes as $prize) {
-            $confirmed .= ', '.(($prize->pivot['confirmed'] == 1) ? 'Да' : 'Нет');
+            $confirmed .= ', '.(($prize->pivot['confirmed'] === 1) ? 'Да' : 'Нет');
         }
 
         $itemData = $item->additional_info;

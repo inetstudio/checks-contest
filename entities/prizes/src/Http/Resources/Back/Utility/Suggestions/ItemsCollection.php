@@ -13,21 +13,12 @@ class ItemsCollection extends ResourceCollection implements ItemsCollectionContr
     {
         $this->type = $type;
 
-        if ($type == 'autocomplete') {
-            $itemResource = resolve(
-                'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Resources\Back\Utility\Suggestions\AutocompleteItemResourceContract',
-                [
-                    'resource' => null,
-                ]
-            );
-        } else {
-            $itemResource = resolve(
-                'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Resources\Back\Utility\Suggestions\ItemResourceContract',
-                [
-                    'resource' => null,
-                ]
-            );
-        }
+        $itemResource = resolve(
+            'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Resources\Back\Utility\Suggestions\\'.($type === 'autocomplete' ? 'Autocomplete' : '').'ItemResourceContract',
+            [
+                'resource' => null,
+            ]
+        );
 
         $this->collects = get_class($itemResource);
 
@@ -37,7 +28,7 @@ class ItemsCollection extends ResourceCollection implements ItemsCollectionContr
     public function toArray($request)
     {
         return [
-            ($this->type == 'autocomplete') ? 'suggestions' : 'items' => $this->collection,
+            ($this->type === 'autocomplete') ? 'suggestions' : 'items' => $this->collection,
         ];
     }
 }

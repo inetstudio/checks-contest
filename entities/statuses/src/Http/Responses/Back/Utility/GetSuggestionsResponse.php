@@ -1,11 +1,11 @@
 <?php
 
-namespace InetStudio\ReceiptsContest\Prizes\Http\Responses\Back\Utility;
+namespace InetStudio\ReceiptsContest\Statuses\Http\Responses\Back\Utility;
 
-use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back\UtilityServiceContract;
-use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Utility\SuggestionsResponseContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\UtilityServiceContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Utility\GetSuggestionsResponseContract;
 
-class SuggestionsResponse implements SuggestionsResponseContract
+class GetSuggestionsResponse implements GetSuggestionsResponseContract
 {
     protected UtilityServiceContract $utilityService;
 
@@ -22,7 +22,7 @@ class SuggestionsResponse implements SuggestionsResponseContract
         $resource = $this->utilityService->getSuggestions($search);
 
         return resolve(
-            'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Resources\Back\Utility\Suggestions\ItemsCollectionContract',
+            'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Resources\Back\Utility\Suggestions\ItemsCollectionContract',
             compact('resource', 'type')
         );
     }

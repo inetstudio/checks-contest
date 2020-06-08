@@ -2,10 +2,10 @@
 
 namespace InetStudio\ReceiptsContest\Prizes\Contracts\Http\Controllers\Back;
 
-use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Requests\Back\Utility\SuggestionsRequestContract;
-use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Utility\SuggestionsResponseContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Requests\Back\Utility\GetSuggestionsRequestContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Utility\GetSuggestionsResponseContract;
 
 interface UtilityControllerContract
 {
-    public function getSuggestions(SuggestionsRequestContract $request, SuggestionsResponseContract $response): SuggestionsResponseContract;
+    public function getSuggestions(GetSuggestionsRequestContract $request, GetSuggestionsResponseContract $response): GetSuggestionsResponseContract;
 }

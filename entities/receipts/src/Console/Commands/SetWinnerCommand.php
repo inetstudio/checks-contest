@@ -5,8 +5,11 @@ namespace InetStudio\ReceiptsContest\Receipts\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\ItemData as PrizeData;
+use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\PivotData as PrizePivotData;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\SetWinnerCommandContract;
-use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Front\ItemsServiceContract as PrizesServiceContract;
+use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\ItemsCollection as PrizesCollection;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back\ItemsServiceContract as PrizesServiceContract;
 use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract as ReceiptsServiceContract;
 
@@ -46,7 +49,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
         foreach ($prizesData as $prizeData) {
             $receipts = $this->getReceipts($prizeData);
 
-            if ($receipts->count() == 0) {
+            if ($receipts->count() === 0) {
                 continue;
             }
 
@@ -67,7 +70,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
         $stages = $this->receiptsService->stages;
 
         foreach ($stages as $date => $prizes) {
-            if ($date == $nowDate) {
+            if ($date === $nowDate) {
                 $prizesData = $prizes;
 
                 break;
@@ -112,9 +115,9 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
                     });
             })->get();
 
-        $receipts = $receipts->filter(function ($check) use ($winnersEmails, $winnersPhones) {
-            $email = $check->getJSONData('additional_info', 'email');
-            $phone = $check->getJSONData('additional_info', 'phone');
+        $receipts = $receipts->filter(function ($receipt) use ($winnersEmails, $winnersPhones) {
+            $email = $receipt->getJSONData('additional_info', 'email');
+            $phone = $receipt->getJSONData('additional_info', 'phone');
 
             if ($email && in_array($email, $winnersEmails)) {
                 return false;
@@ -155,7 +158,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
                     $winnersEmails[] = $data['email'];
 
                     $winnersReceipts->push($receipt);
-                } elseif ($index == ($receipts->count() - 1)) {
+                } elseif ($index === ($receipts->count() - 1)) {
                     $previousIndex = $this->getPreviousIndex($index, $indexes);
 
                     if (isset($receipts[$previousIndex])) {
@@ -178,18 +181,24 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
             return;
         }
 
-        $prizeData = [
-            $prize->id => [
-                'date_start' => Carbon::createFromFormat('d.m.y', $stageData['start'])->format('Y-m-d H:i:s'),
-                'date_end' => ($stageData['end'] != $stageData['start'])
-                    ? Carbon::createFromFormat('d.m.y', $stageData['end'])->format('Y-m-d H:i:s')
-                    : null,
-                'confirmed' => $stageData['confirmed'] ?? 0,
-            ],
-        ];
+        $prizesCollection = new PrizesCollection();
+        $prizesCollection[] = new PrizeData(
+            [
+                'id' => $prize['id'],
+                'pivot' => PrizePivotData::prepareData(
+                    [
+                        'date_start' => Carbon::createFromFormat('d.m.y', $stageData['start'])->format('Y-m-d H:i:s'),
+                        'date_end' => ($stageData['end'] !== $stageData['start'])
+                            ? Carbon::createFromFormat('d.m.y', $stageData['end'])->format('Y-m-d H:i:s')
+                            : null,
+                        'confirmed' => $stageData['confirmed'] ?? 0,
+                    ]
+                )
+            ]
+        );
 
-        $receipts->each(function ($check) use ($prizeData) {
-            $check->prizes()->attach($prizeData);
+        $receipts->each(function ($receipt) use ($prizesCollection) {
+            $this->prizesService->attach($receipt, $prizesCollection);
         });
     }
 

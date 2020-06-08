@@ -14,19 +14,21 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
     public function attach(ReceiptModelContract $item, ItemsCollectionContract $prizes): void
     {
-        $oldPrizes = $item->prizes;
-
-        if (! empty($prizes)) {
-            $prizes = collect($prizes)->mapWithKeys(function ($prize) {
-                return [
-                    $prize->id => $prize->pivot->toArray(),
-                ];
-            })->toArray();
-
-            $item->prizes()->sync($prizes);
-        } else {
+        if (count($prizes) === 0) {
             $item->prizes()->detach();
+
+            return;
         }
+
+        $oldPrizes = $item['prizes'];
+
+        $prizes = collect($prizes)->mapWithKeys(function ($prize) {
+            return [
+                $prize->id => $prize->pivot->toArray(),
+            ];
+        })->toArray();
+
+        $item->prizes()->sync($prizes);
 
         $newPrizes = $item->fresh()->prizes;
 
@@ -42,17 +44,19 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
         });
 
         foreach ($newPrizes as $prize) {
-            if ($prize->pivot->confirmed == 1 && ($oldConfirmed[$prize->id] ?? 0) === 0) {
-                event(
-                    resolve(
-                        'InetStudio\ReceiptsContest\Receipts\Contracts\Events\Back\SetWinnerEventContract',
-                        [
-                            'item' => $receipt,
-                            'prize' => $prize,
-                        ]
-                    )
-                );
+            if (! ($prize->pivot->confirmed === 1 && ($oldConfirmed[$prize->id] ?? 0) === 0)) {
+                continue;
             }
+
+            event(
+                resolve(
+                    'InetStudio\ReceiptsContest\Receipts\Contracts\Events\Back\SetWinnerEventContract',
+                    [
+                        'item' => $receipt,
+                        'prize' => $prize,
+                    ]
+                )
+            );
         }
     }
 }

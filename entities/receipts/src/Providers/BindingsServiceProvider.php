@@ -13,6 +13,8 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\SetWinnerCommandContract' => 'InetStudio\ReceiptsContest\Receipts\Console\Commands\SetWinnerCommand',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\RecognizeCodesCommandContract' => 'InetStudio\ReceiptsContest\Receipts\Console\Commands\RecognizeCodesCommand',
 
+        'InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Back\Items\AddBarcodes\ItemDataContract' => 'InetStudio\ReceiptsContest\Receipts\DTO\Back\Items\AddBarcodes\ItemData',
+        'InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Back\Items\AttachFnsReceipt\ItemDataContract' => 'InetStudio\ReceiptsContest\Receipts\DTO\Back\Items\AttachFnsReceipt\ItemData',
         'InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Back\Moderation\Moderate\ItemDataContract' => 'InetStudio\ReceiptsContest\Receipts\DTO\Back\Moderation\Moderate\ItemData',
         'InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Back\Moderation\Moderate\ItemsCollectionContract' => 'InetStudio\ReceiptsContest\Receipts\DTO\Back\Moderation\Moderate\ItemsCollection',
         'InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Back\Resource\Update\ItemDataContract' => 'InetStudio\ReceiptsContest\Receipts\DTO\Back\Resource\Update\ItemData',

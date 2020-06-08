@@ -21,8 +21,7 @@ class ItemsService implements ItemsServiceContract
     {
         $id = is_string($data->id) ? 0 : $data->id;
 
-        $item = $this->model::find($id);
-        $item = $item ?? new $this->model;
+        $item = $this->model::find($id) ?? new $this->model;
 
         $item->fns_receipt_id = $data->fns_receipt_id;
         $item->receipt_id = $data->receipt_id;
@@ -45,15 +44,17 @@ class ItemsService implements ItemsServiceContract
 
     public function attach(ReceiptModelContract $item, ItemsCollectionContract $products): void
     {
-        if (! empty($products)) {
-            $productsIds = collect($products->toArray())->pluck('id')->toArray();
-            $item->products()->whereNotIn('id', $productsIds)->delete();
-
-            foreach ($products as $product) {
-                $this->save($product);
-            }
-        } else {
+        if (count($products) === 0) {
             $item->products()->delete();
+
+            return;
+        }
+
+        $productsIds = collect($products->toArray())->pluck('id')->toArray();
+        $item->products()->whereNotIn('id', $productsIds)->delete();
+
+        foreach ($products as $product) {
+            $this->save($product);
         }
     }
 }

@@ -18,8 +18,11 @@ class ShowResponse implements ShowResponseContract
     {
         $id = $request->route('prize');
 
-        $item = $this->resourceService->show($id);
+        $resource = $this->resourceService->show($id);
 
-        return response()->json($item->toArray());
+        return resolve(
+            'InetStudio\ReceiptsContest\Prizes\Contracts\Http\Resources\Back\Resource\Show\ItemResourceContract',
+            compact('resource')
+        );
     }
 }

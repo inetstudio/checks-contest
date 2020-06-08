@@ -4,6 +4,6 @@ namespace InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Util
 
 use Illuminate\Contracts\Support\Responsable;
 
-interface SuggestionsResponseContract extends Responsable
+interface GetSuggestionsResponseContract extends Responsable
 {
 }

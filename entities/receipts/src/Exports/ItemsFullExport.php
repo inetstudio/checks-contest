@@ -55,7 +55,7 @@ class ItemsFullExport implements ItemsFullExportContract, FromQuery, WithMapping
 
         $confirmed = '';
         foreach ($item->prizes as $prize) {
-            $confirmed .= ', '.(($prize->pivot['confirmed'] == 1) ? 'Да' : 'Нет');
+            $confirmed .= ', '.(($prize->pivot['confirmed'] === 1) ? 'Да' : 'Нет');
         }
 
         $products = $item->products;
@@ -65,7 +65,7 @@ class ItemsFullExport implements ItemsFullExportContract, FromQuery, WithMapping
         if (count($products) > 0) {
             foreach ($products ?? [] as $index => $product) {
                 $rowData = array_fill(0, 18, '');
-                if ($index == 0) {
+                if ($index === 0) {
                     $discount = $item->getJSONData('receipt_data', 'discountSum', 0);
                     $discount = str_replace(',', '.', $discount);
                     $discount = (! is_numeric($discount)) ? 0 : $discount;
@@ -73,7 +73,7 @@ class ItemsFullExport implements ItemsFullExportContract, FromQuery, WithMapping
 
                     $rowData[0] = $item->id;
                     $rowData[1] = $status;
-                    $rowData[2] = ($item->getJSONData('receipt_data', 'duplicate', '') == 'true') ? 'Дубликат' : $item->getJSONData('receipt_data', 'denyReason', '');
+                    $rowData[2] = ($item->getJSONData('receipt_data', 'duplicate', '') === 'true') ? 'Дубликат' : $item->getJSONData('receipt_data', 'denyReason', '');
                     $rowData[3] = $prizes;
                     $rowData[4] = trim($prizesDates, ', ');
                     $rowData[5] = trim($confirmed, ', ');
@@ -98,7 +98,7 @@ class ItemsFullExport implements ItemsFullExportContract, FromQuery, WithMapping
             $rowData = array_fill(0, 18, '');
             $rowData[0] = $item->id;
             $rowData[1] = $status;
-            $rowData[2] = ($item->getJSONData('receipt_data', 'duplicate', '') == 'true') ? 'Дубликат' : $item->getJSONData('receipt_data', 'denyReason', '');
+            $rowData[2] = ($item->getJSONData('receipt_data', 'duplicate', '') === 'true') ? 'Дубликат' : $item->getJSONData('receipt_data', 'denyReason', '');
             $rowData[3] = $prizes;
             $rowData[4] = trim($prizesDates, ', ');
             $rowData[5] = trim($confirmed, ', ');
