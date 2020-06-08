@@ -16,10 +16,6 @@
   export default {
     name: 'ReceiptsContestPrizesList',
     props: {
-      receiptIdProp: {
-        type: [Number, String],
-        required: true
-      },
       prizesProp: {
         type: Array,
         default: function() {
@@ -69,12 +65,10 @@
     },
     methods: {
       add() {
-        let component = this;
-
         window.Admin.vue.helpers.initComponent('receipts_contest_prizes', 'ReceiptsContestPrizesListItemForm', {});
 
         window.Admin.vue.stores['receipts_contest_prizes'].commit('setMode', 'add_list_item');
-        window.Admin.vue.stores['receipts_contest_prizes'].commit('newPrize', component.receiptIdProp);
+        window.Admin.vue.stores['receipts_contest_prizes'].commit('newPrize');
 
         window.waitForElement('#receipts_contest_prizes_list_item_form_modal', function () {
           $('#receipts_contest_prizes_list_item_form_modal').modal();

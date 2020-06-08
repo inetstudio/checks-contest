@@ -9,9 +9,5 @@ interface ItemsServiceContract
 {
     public function getModel(): StatusModelContract;
 
-    public function create(): StatusModelContract;
-
-    public function getItemById($id = 0, bool $returnNew = true);
-
     public function getItemsByType(string $type): Collection;
 }

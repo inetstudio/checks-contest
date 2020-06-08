@@ -2,64 +2,55 @@
 
 namespace InetStudio\ReceiptsContest\Products\Services\Back;
 
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use InetStudio\AdminPanel\Base\Services\BaseService;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use InetStudio\ReceiptsContest\Products\Contracts\Models\ProductModelContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Products\Contracts\Services\Back\ItemsServiceContract;
+use InetStudio\ReceiptsContest\Products\Contracts\DTO\Back\Items\Attach\ItemDataContract;
+use InetStudio\ReceiptsContest\Products\Contracts\DTO\Back\Items\Attach\ItemsCollectionContract;
 
-class ItemsService extends BaseService implements ItemsServiceContract
+class ItemsService implements ItemsServiceContract
 {
+    protected ProductModelContract $model;
+
     public function __construct(ProductModelContract $model)
     {
-        parent::__construct($model);
+        $this->model = $model;
     }
 
-    public function save(array $data, int $id): ProductModelContract
+    public function save(ItemDataContract $data): ProductModelContract
     {
-        $action = ($id) ? 'отредактирован' : 'создан';
+        $id = is_string($data->id) ? 0 : $data->id;
 
-        $itemData = Arr::only($data, $this->model->getFillable());
-        $item = $this->saveModel($itemData, $id);
+        $item = $this->model::find($id);
+        $item = $item ?? new $this->model;
+
+        $item->fns_receipt_id = $data->fns_receipt_id;
+        $item->receipt_id = $data->receipt_id;
+        $item->name = $data->name;
+        $item->quantity = $data->quantity;
+        $item->price = $data->price;
+        $item->product_data = $data->product_data;
+
+        $item->save();
 
         event(
-            app()->make(
+            resolve(
                 'InetStudio\ReceiptsContest\Products\Contracts\Events\Back\ModifyItemEventContract',
                 compact('item')
             )
         );
 
-        Session::flash('success', 'Продукт «'.$item['name'].'» успешно '.$action);
-
         return $item;
     }
 
-    public function attachToObject($products, $item): void
+    public function attach(ReceiptModelContract $item, ItemsCollectionContract $products): void
     {
-        if (! $products) {
-            return;
-        }
-
-        if ($products instanceof Request) {
-            $products = $products->get('products');
-
-            if (! $products) {
-                return;
-            }
-        }
-
-        if (is_string($products)) {
-            $products = json_decode($products, true);
-        }
-
         if (! empty($products)) {
-            $productsIds = collect($products)->pluck('id')->toArray();
+            $productsIds = collect($products->toArray())->pluck('id')->toArray();
             $item->products()->whereNotIn('id', $productsIds)->delete();
 
             foreach ($products as $product) {
-                $this->save($product, is_numeric($product['id']) ? (int) $product['id'] : 0);
+                $this->save($product);
             }
         } else {
             $item->products()->delete();

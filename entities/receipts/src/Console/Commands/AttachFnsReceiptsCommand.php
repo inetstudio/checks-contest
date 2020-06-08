@@ -6,8 +6,8 @@ use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\AttachFnsReceiptsCommandContract;
 use InetStudio\Fns\Receipts\Contracts\Services\Back\ItemsServiceContract as FnsReceiptsServiceContract;
-use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract as ReceiptsServiceContract;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
 
 class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsCommandContract
 {

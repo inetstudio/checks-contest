@@ -22,16 +22,6 @@ class ItemsService implements ItemsServiceContract
         return $this->model;
     }
 
-    public function create(): StatusModelContract
-    {
-        return new $this->model;
-    }
-
-    public function getItemById($id = 0, bool $returnNew = true)
-    {
-        return $this->model::find($id) ?? (($returnNew) ? $this->create() : null);
-    }
-
     public function getItemsByType(string $type): Collection
     {
         return $this->model::whereHas(

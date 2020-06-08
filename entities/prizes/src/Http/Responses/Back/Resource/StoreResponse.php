@@ -3,15 +3,15 @@
 namespace InetStudio\ReceiptsContest\Prizes\Http\Responses\Back\Resource;
 
 use Illuminate\Support\Facades\Session;
-use InetStudio\ReceiptsContest\Prizes\DTO\ItemData;
-use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back\ItemsServiceContract;
+use InetStudio\ReceiptsContest\Prizes\DTO\Back\Resource\Save\ItemData;
+use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back\ResourceServiceContract;
 use InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Resource\StoreResponseContract;
 
 class StoreResponse implements StoreResponseContract
 {
-    protected ItemsServiceContract $resourceService;
+    protected ResourceServiceContract $resourceService;
 
-    public function __construct(ItemsServiceContract $resourceService)
+    public function __construct(ResourceServiceContract $resourceService)
     {
         $this->resourceService = $resourceService;
     }

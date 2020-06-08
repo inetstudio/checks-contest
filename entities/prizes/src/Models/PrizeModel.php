@@ -19,11 +19,6 @@ class PrizeModel extends Model implements PrizeModelContract
 
     protected $table = 'receipts_contest_prizes';
 
-    protected $fillable = [
-        'name',
-        'alias',
-    ];
-
     protected $dates = [
         'created_at',
         'updated_at',
@@ -37,14 +32,14 @@ class PrizeModel extends Model implements PrizeModelContract
 
     public function receipts(): BelongsToMany
     {
-        $receiptModel = app()->make('InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract');
+        $receiptModel = resolve('InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract');
 
         return $this->belongsToMany(
-            get_class($receiptModel),
-            'receipts_contest_receipts_prizes',
-            'prize_id',
-            'receipt_id'
-        )
+                get_class($receiptModel),
+                'receipts_contest_receipts_prizes',
+                'prize_id',
+                'receipt_id'
+            )
             ->withPivot(['confirmed', 'date_start', 'date_end'])
             ->withTimestamps();
     }

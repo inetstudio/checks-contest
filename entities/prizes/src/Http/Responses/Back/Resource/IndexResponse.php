@@ -18,6 +18,9 @@ class IndexResponse implements IndexResponseContract
     {
         $table = $this->datatableService->html();
 
-        return view('admin.module.receipts-contest.prizes::back.pages.index', compact('table'));
+        return view(
+            'admin.module.receipts-contest.prizes::back.pages.index',
+            compact('table')
+        );
     }
 }

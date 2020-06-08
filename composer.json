@@ -1,7 +1,7 @@
 {
-  "name": "inetstudio/receipts-contest",
+  "name": "inetstudio/checks-contest",
   "description": "Package for receipts contest",
-  "homepage": "https://github.com/inetstudio/receipts-contest",
+  "homepage": "https://github.com/inetstudio/checks-contest",
   "license": "MIT",
   "authors": [
     {

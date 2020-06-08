@@ -66,7 +66,7 @@
           total += (product.model.quantity * product.model.price / 100);
         });
 
-        return total.toFixed(2);
+        return Number(total.toFixed(2));
       }
     },
     watch: {

@@ -2,21 +2,14 @@
 
 namespace InetStudio\ReceiptsContest\Products\Contracts\Services\Back;
 
-use InetStudio\AdminPanel\Base\Contracts\Services\BaseServiceContract;
 use InetStudio\ReceiptsContest\Products\Contracts\Models\ProductModelContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
+use InetStudio\ReceiptsContest\Products\Contracts\DTO\Back\Items\Attach\ItemDataContract;
+use InetStudio\ReceiptsContest\Products\Contracts\DTO\Back\Items\Attach\ItemsCollectionContract;
 
-/**
- * Interface ItemsServiceContract.
- */
-interface ItemsServiceContract extends BaseServiceContract
+interface ItemsServiceContract
 {
-    /**
-     * Сохраняем модель.
-     *
-     * @param  array  $data
-     * @param  int  $id
-     *
-     * @return ProductModelContract
-     */
-    public function save(array $data, int $id): ProductModelContract;
+    public function save(ItemDataContract $data): ProductModelContract;
+
+    public function attach(ReceiptModelContract $item, ItemsCollectionContract $products): void;
 }

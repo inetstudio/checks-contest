@@ -150,7 +150,6 @@
 
           if (prizeIndex > -1) {
             component.prize.model = _.merge(component.prize.model, component.options.prizes[prizeIndex]);
-            component.prize.model.pivot.prize_id = component.options.prizes[prizeIndex].id;
           }
         }
       },

@@ -2,11 +2,12 @@
 
 namespace InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back;
 
-use InetStudio\ReceiptsContest\Receipts\Contracts\DTO\ItemDataContract;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
+use Illuminate\Support\Collection;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\ItemsServiceContract as BaseItemsServiceContract;
 
 interface ItemsServiceContract extends BaseItemsServiceContract
 {
-    public function save(ItemDataContract $data): ReceiptModelContract;
+    public function getItemsByStatuses(Collection $statuses): Collection;
+
+    public function getItemsWithoutFnsReceiptByStatuses(Collection $statuses): Collection;
 }

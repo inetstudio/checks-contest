@@ -4,9 +4,6 @@ namespace InetStudio\ReceiptsContest\Prizes\Contracts\Http\Responses\Back\Resour
 
 use Illuminate\Contracts\Support\Responsable;
 
-/**
- * Interface StoreResponseContract.
- */
 interface StoreResponseContract extends Responsable
 {
 }

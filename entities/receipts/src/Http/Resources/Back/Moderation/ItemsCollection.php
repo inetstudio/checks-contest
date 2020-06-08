@@ -9,7 +9,7 @@ class ItemsCollection extends ResourceCollection implements ItemsCollectionContr
 {
     public function __construct($resource)
     {
-        $itemResource = app()->make(
+        $itemResource = resolve(
             'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Resources\Back\Moderation\ItemResourceContract',
             [
                 'resource' => null,

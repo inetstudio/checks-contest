@@ -28,6 +28,7 @@ Route::group(
                 'except' => [
                     'create',
                     'edit',
+                    'store',
                 ],
                 'as' => 'back.receipts-contest',
             ]

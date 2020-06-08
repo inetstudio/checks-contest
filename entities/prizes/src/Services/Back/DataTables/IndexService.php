@@ -21,7 +21,7 @@ class IndexService extends DataTable implements IndexServiceContract
     public function __construct(PrizeModelContract $model)
     {
         $this->model = $model;
-        $this->resource = app()->make(
+        $this->resource = resolve(
             ItemResourceContract::class,
             [
                 'resource' => null,

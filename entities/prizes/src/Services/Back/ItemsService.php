@@ -5,50 +5,21 @@ declare(strict_types=1);
 namespace InetStudio\ReceiptsContest\Prizes\Services\Back;
 
 use Illuminate\Support\Collection;
-use InetStudio\ReceiptsContest\Prizes\Contracts\DTO\ItemDataContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
-use InetStudio\ReceiptsContest\Prizes\Contracts\Models\PrizeModelContract;
 use InetStudio\ReceiptsContest\Prizes\Services\ItemsService as BaseItemsService;
 use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back\ItemsServiceContract;
+use InetStudio\ReceiptsContest\Prizes\Contracts\DTO\Back\Items\Attach\ItemsCollectionContract;
 
 class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
-    public function save(ItemDataContract $data): PrizeModelContract
+    public function attach(ReceiptModelContract $item, ItemsCollectionContract $prizes): void
     {
-        $item = $this->model::updateOrCreate(
-            [
-                'id' => $data->id,
-            ],
-            $data->except('id')->toArray()
-        );
-
-        event(
-            app()->make(
-                'InetStudio\ReceiptsContest\Prizes\Contracts\Events\Back\ModifyItemEventContract',
-                compact('item')
-            )
-        );
-
-        return $item;
-    }
-
-    public function destroy($id): int
-    {
-        return $this->model::destroy($id);
-    }
-
-    public function attachToObject($prizes, $item): void
-    {
-        if ($prizes === null) {
-            return;
-        }
-
         $oldPrizes = $item->prizes;
 
         if (! empty($prizes)) {
-            $prizes = collect($prizes)->mapWithKeys(function ($item) {
+            $prizes = collect($prizes)->mapWithKeys(function ($prize) {
                 return [
-                    $item->id => $item->pivot->except('created_at', 'updated_at')->toArray(),
+                    $prize->id => $prize->pivot->toArray(),
                 ];
             })->toArray();
 
@@ -71,11 +42,14 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
         });
 
         foreach ($newPrizes as $prize) {
-            if ($prize->pivot->confirmed == 1 && (isset($oldConfirmed[$prize->id]) && $oldConfirmed[$prize->id] == 0 || ! isset($oldConfirmed[$prize->id]))) {
+            if ($prize->pivot->confirmed == 1 && ($oldConfirmed[$prize->id] ?? 0) === 0) {
                 event(
-                    app()->make(
+                    resolve(
                         'InetStudio\ReceiptsContest\Receipts\Contracts\Events\Back\SetWinnerEventContract',
-                        compact('receipt', 'prize')
+                        [
+                            'item' => $receipt,
+                            'prize' => $prize,
+                        ]
                     )
                 );
             }

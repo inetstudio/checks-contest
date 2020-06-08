@@ -3,13 +3,12 @@
 namespace InetStudio\ReceiptsContest\Prizes\Models\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Contracts\Container\BindingResolutionException;
 
 trait HasPrizes
 {
     public function prizes(): BelongsToMany
     {
-        $prizeModel = app()->make('InetStudio\ReceiptsContest\Prizes\Contracts\Models\PrizeModelContract');
+        $prizeModel = resolve('InetStudio\ReceiptsContest\Prizes\Contracts\Models\PrizeModelContract');
 
         return $this->belongsToMany(
                 get_class($prizeModel),

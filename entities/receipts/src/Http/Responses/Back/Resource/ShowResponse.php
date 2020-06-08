@@ -2,14 +2,14 @@
 
 namespace InetStudio\ReceiptsContest\Receipts\Http\Responses\Back\Resource;
 
-use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ResourceServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\ShowResponseContract;
 
 class ShowResponse implements ShowResponseContract
 {
-    protected ItemsServiceContract $resourceService;
+    protected ResourceServiceContract $resourceService;
 
-    public function __construct(ItemsServiceContract $resourceService)
+    public function __construct(ResourceServiceContract $resourceService)
     {
         $this->resourceService = $resourceService;
     }
@@ -18,9 +18,9 @@ class ShowResponse implements ShowResponseContract
     {
         $id = $request->route('receipt');
 
-        $resource = $this->resourceService->getItemById($id);
+        $resource = $this->resourceService->show($id);
 
-        return app()->make(
+        return resolve(
             'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Resources\Back\Resource\Show\ItemResourceContract',
             compact('resource')
         );

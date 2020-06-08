@@ -131,7 +131,7 @@
         }
 
         component.product.model.quantity = component.formatNumber(component.product.model.quantity, 3)
-        component.product.model.price = parseInt(component.prepareNumber(component.product.model.price)) * 100
+        component.product.model.price = Number((component.prepareNumber(component.product.model.price) * 100).toFixed(2))
 
         window.Admin.vue.stores['receipts_contest_products'].commit('setProduct', JSON.parse(JSON.stringify(component.product.model)));
         window.Admin.vue.stores['receipts_contest_products'].commit('setMode', 'save_list_item');
@@ -147,12 +147,12 @@
 
         number = number.replace(/[^0-9.]/g, '');
 
-        return number;
+        return Number(number);
       },
       formatNumber(number, fractionDigits) {
         number = this.prepareNumber(number);
 
-        return parseFloat(number).toFixed(fractionDigits);
+        return Number(parseFloat(number).toFixed(fractionDigits));
       }
     },
     created: function() {

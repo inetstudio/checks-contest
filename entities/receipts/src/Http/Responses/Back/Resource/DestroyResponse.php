@@ -2,14 +2,14 @@
 
 namespace InetStudio\ReceiptsContest\Receipts\Http\Responses\Back\Resource;
 
-use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ResourceServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\DestroyResponseContract;
 
 class DestroyResponse implements DestroyResponseContract
 {
-    protected ItemsServiceContract $resourceService;
+    protected ResourceServiceContract $resourceService;
 
-    public function __construct(ItemsServiceContract $resourceService)
+    public function __construct(ResourceServiceContract $resourceService)
     {
         $this->resourceService = $resourceService;
     }

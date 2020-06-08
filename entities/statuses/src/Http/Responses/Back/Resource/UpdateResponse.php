@@ -3,15 +3,15 @@
 namespace InetStudio\ReceiptsContest\Statuses\Http\Responses\Back\Resource;
 
 use Illuminate\Support\Facades\Session;
-use InetStudio\ReceiptsContest\Statuses\DTO\ItemData;
-use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract;
+use InetStudio\ReceiptsContest\Statuses\DTO\Back\Resource\Save\ItemData;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ResourceServiceContract;
 use InetStudio\ReceiptsContest\Statuses\Contracts\Http\Responses\Back\Resource\UpdateResponseContract;
 
 class UpdateResponse implements UpdateResponseContract
 {
-    protected ItemsServiceContract $resourceService;
+    protected ResourceServiceContract $resourceService;
 
-    public function __construct(ItemsServiceContract $resourceService)
+    public function __construct(ResourceServiceContract $resourceService)
     {
         $this->resourceService = $resourceService;
     }

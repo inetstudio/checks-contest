@@ -2,25 +2,28 @@
 
 namespace InetStudio\ReceiptsContest\Receipts\Http\Responses\Back\Resource;
 
-use InetStudio\ReceiptsContest\Receipts\DTO\ItemData;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract;
+use InetStudio\ReceiptsContest\Receipts\DTO\Back\Resource\Update\ItemData;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ResourceServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\UpdateResponseContract;
 
 class UpdateResponse implements UpdateResponseContract
 {
-    protected ItemsServiceContract $resourceService;
+    protected ResourceServiceContract $resourceService;
 
-    public function __construct(ItemsServiceContract $resourceService)
+    public function __construct(ResourceServiceContract $resourceService)
     {
         $this->resourceService = $resourceService;
     }
 
     public function toResponse($request)
     {
-        $data = ItemData::prepareData($request->all());
+        $data = ItemData::fromRequest($request);
 
-        $item = $this->resourceService->save($data);
+        $resource = $this->resourceService->update($data);
 
-        return response()->json($item);
+        return resolve(
+            'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Resources\Back\Resource\Update\ItemResourceContract',
+            compact('resource')
+        );
     }
 }

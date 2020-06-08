@@ -21,7 +21,7 @@ class SuggestionsResponse implements SuggestionsResponseContract
 
         $resource = $this->utilityService->getSuggestions($search);
 
-        return app()->make(
+        return resolve(
             'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Resources\Back\Utility\Suggestions\ItemsCollectionContract',
             compact('resource', 'type')
         );

@@ -6,12 +6,10 @@ use InetStudio\AdminPanel\Base\Http\Controllers\Controller;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Back\Resource\ShowRequestContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Controllers\Back\ResourceControllerContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Back\Resource\IndexRequestContract;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Back\Resource\StoreRequestContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\ShowResponseContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Back\Resource\UpdateRequestContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\IndexResponseContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Back\Resource\DestroyRequestContract;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\StoreResponseContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\UpdateResponseContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Back\Resource\DestroyResponseContract;
 
@@ -23,11 +21,6 @@ class ResourceController extends Controller implements ResourceControllerContrac
     }
 
     public function show(ShowRequestContract $request, ShowResponseContract $response): ShowResponseContract
-    {
-        return $response;
-    }
-
-    public function store(StoreRequestContract $request, StoreResponseContract $response): StoreResponseContract
     {
         return $response;
     }

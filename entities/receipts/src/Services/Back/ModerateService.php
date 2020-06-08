@@ -2,32 +2,24 @@
 
 namespace InetStudio\ReceiptsContest\Receipts\Services\Back;
 
-use InetStudio\ReceiptsContest\Receipts\DTO\Back\Moderation\ModerateItemData;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
+use InetStudio\ReceiptsContest\Receipts\Services\ItemsService as BaseItemsService;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ModerateServiceContract;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Back\Moderation\Moderate\ItemDataContract;
 
-class ModerateService extends ItemsService implements ModerateServiceContract
+class ModerateService extends BaseItemsService implements ModerateServiceContract
 {
-    protected StatusesServiceContract $statusesService;
-
-    public function __construct(StatusesServiceContract $statusesService, ReceiptModelContract $model)
+    public function moderate(ItemDataContract $data): ReceiptModelContract
     {
-        parent::__construct($model);
-
-        $this->statusesService = $statusesService;
-    }
-
-    public function moderate(ModerateItemData $data): ReceiptModelContract
-    {
-        $item = $this->model::where('id', $data->id)->first();
+        $item = $this->model::find($data->id);
 
         $item->status_id = $data->status_id;
         $item->setJSONData('receipt_data', 'statusReason', $data->receipt_data['statusReason'] ?? '');
+
         $item->save();
 
         event(
-            app()->make(
+            resolve(
                 'InetStudio\ReceiptsContest\Receipts\Contracts\Events\Back\ModerateItemEventContract',
                 compact('item')
             )

@@ -139,7 +139,6 @@
                                         <div class="ibox-content" style="display: none;">
                                             <div>
                                                 <receipts-contest-prizes-list
-                                                    v-bind:receipt-id-prop="_.get(receipt, 'model.id', '')"
                                                     v-bind:prizes-prop="_.get(receipt, 'model.prizes', [])"
                                                     v-on:update:prizes="updatePrizes($event)"
                                                 />
@@ -236,7 +235,7 @@
               data._method = 'PUT';
             }
 
-            axios.receipt(url, data)
+            axios.post(url, data)
               .then(response => {
                 container.removeClass('sk-loading');
 

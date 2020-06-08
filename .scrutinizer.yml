@@ -9,7 +9,7 @@ build:
           - phpcs-run
 filter:
   excluded_paths:
-    - 'entities/checks/resources/'
+    - 'entities/receipts/resources/'
     - 'entities/prizes/resources/'
     - 'entities/statuses/resources/'
     - 'package/resources/'

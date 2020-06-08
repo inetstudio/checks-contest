@@ -8,7 +8,7 @@ trait HasStatus
 {
     public function status(): HasOne
     {
-        $statusModel = app()->make('InetStudio\ReceiptsContest\Statuses\Contracts\Models\StatusModelContract');
+        $statusModel = resolve('InetStudio\ReceiptsContest\Statuses\Contracts\Models\StatusModelContract');
 
         return $this->hasOne(
             get_class($statusModel),

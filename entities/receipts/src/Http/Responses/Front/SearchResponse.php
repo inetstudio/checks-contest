@@ -22,7 +22,7 @@ class SearchResponse implements SearchResponseContract
 
         $resource = $this->itemsService->search($field, $query, $type);
 
-        return app()->make(
+        return resolve(
             'InetStudio\ReceiptsContest\Receipts\Contracts\Http\Resources\Front\Search\ItemsCollectionContract',
             compact('resource')
         );

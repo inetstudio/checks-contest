@@ -53,7 +53,7 @@ class ReceiptModel extends Model implements ReceiptModelContract
 
     public function prizes(): BelongsToMany
     {
-        $prizeModel = app()->make('InetStudio\ReceiptsContest\Prizes\Contracts\Models\PrizeModelContract');
+        $prizeModel = resolve('InetStudio\ReceiptsContest\Prizes\Contracts\Models\PrizeModelContract');
 
         return $this->belongsToMany(
                 get_class($prizeModel),
@@ -67,7 +67,7 @@ class ReceiptModel extends Model implements ReceiptModelContract
 
     public function products(): HasMany
     {
-        $productModel = app()->make('InetStudio\ReceiptsContest\Products\Contracts\Models\ProductModelContract');
+        $productModel = resolve('InetStudio\ReceiptsContest\Products\Contracts\Models\ProductModelContract');
 
         return $this->hasMany(
             get_class($productModel),
@@ -78,7 +78,7 @@ class ReceiptModel extends Model implements ReceiptModelContract
 
     public function fnsReceipt(): HasOne
     {
-        $fnsReceiptModel = app()->make('InetStudio\Fns\Receipts\Contracts\Models\ReceiptModelContract');
+        $fnsReceiptModel = resolve('InetStudio\Fns\Receipts\Contracts\Models\ReceiptModelContract');
 
         return $this->hasOne(
             get_class($fnsReceiptModel),

@@ -58,7 +58,7 @@
         return _.get(product, 'model.product_data.category', null);
       },
       getSum(product) {
-        return (product.quantity * product.price / 100).toFixed(2);
+        return Number((product.quantity * product.price / 100).toFixed(2));
       }
     },
   };

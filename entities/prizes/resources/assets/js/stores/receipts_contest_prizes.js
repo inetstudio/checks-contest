@@ -15,14 +15,12 @@ window.Admin.vue.stores['receipts_contest_prizes'] = new Vuex.Store({
       state.prize.model = (prizeCopy.hasOwnProperty('model')) ? prizeCopy.model : prizeCopy;
       state.prize.hash = window.hash(state.prize.model);
     },
-    newPrize(state, receiptId) {
+    newPrize(state) {
       let prizeId = UUID.generate();
 
       let prize = {
         id: prizeId,
         pivot: {
-          receipt_id: receiptId,
-          prize_id: prizeId,
           confirmed: 0,
           date_start: null,
           date_end: null

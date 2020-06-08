@@ -21,13 +21,6 @@ class StatusModel extends Model implements StatusModelContract
 
     protected $table = 'receipts_contest_statuses';
 
-    protected $fillable = [
-        'name',
-        'alias',
-        'description',
-        'color_class',
-    ];
-
     protected $dates = [
         'created_at',
         'updated_at',
@@ -39,12 +32,12 @@ class StatusModel extends Model implements StatusModelContract
         return self::ENTITY_TYPE;
     }
 
-    public function posts(): HasMany
+    public function receipts(): HasMany
     {
-        $postModel = app()->make('InetStudio\ReceiptsContest\Posts\Contracts\Models\PostModelContract');
+        $receiptModel = resolve('InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract');
 
         return $this->hasMany(
-            get_class($postModel),
+            get_class($receiptModel),
             'status_id',
             'id'
         );

@@ -16,7 +16,7 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
 
     public function send(SendItemData $data): ?ReceiptModelContract
     {
-        $item = $this->create();
+        $item = new $this->model;
 
         $item->verify_hash = $data->verify_hash;
         $item->additional_info = $data->additional_info;
@@ -34,7 +34,7 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
         }
 
         event(
-            app()->make(
+            resolve(
                 'InetStudio\ReceiptsContest\Receipts\Contracts\Events\Front\SendItemEventContract',
                 compact('item')
             )
@@ -68,9 +68,9 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
             }
         }
 
-        $winnersReceipts = $this->getModel()->win([
-            'relations' => ['prizes'],
-        ])->get();
+        $winnersReceipts = $this->getModel()->whereHas('prizes', function ($prizesQuery) {
+            $prizesQuery->where('receipts_contest_receipts_prizes.confirmed', 1);
+        })->get();
 
         foreach ($winnersReceipts as $receipt) {
             foreach ($receipt->prizes as $prize) {

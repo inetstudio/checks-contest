@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use InetStudio\AdminPanel\Models\Traits\HasJSONColumns;
-use InetStudio\AdminPanel\Base\Models\Traits\Scopes\BuildQueryScopeTrait;
 use InetStudio\ReceiptsContest\Products\Contracts\Models\ProductModelContract;
 
 class ProductModel extends Model implements ProductModelContract
@@ -15,22 +14,12 @@ class ProductModel extends Model implements ProductModelContract
     use Auditable;
     use SoftDeletes;
     use HasJSONColumns;
-    use BuildQueryScopeTrait;
 
     const ENTITY_TYPE = 'receipts_contest_product';
 
     protected bool $auditTimestamps = true;
 
     protected $table = 'receipts_contest_products';
-
-    protected $fillable = [
-        'fns_receipt_id',
-        'receipt_id',
-        'name',
-        'quantity',
-        'price',
-        'product_data',
-    ];
 
     protected $dates = [
         'created_at',
@@ -39,6 +28,7 @@ class ProductModel extends Model implements ProductModelContract
     ];
 
     protected $casts = [
+        'quantity' => 'float',
         'product_data' => 'array',
     ];
 
@@ -54,7 +44,7 @@ class ProductModel extends Model implements ProductModelContract
 
     public function fnsReceipt(): BelongsTo
     {
-        $fnsReceiptModel = app()->make('InetStudio\Fns\Receipts\Contracts\Models\ReceiptModelContract');
+        $fnsReceiptModel = resolve('InetStudio\Fns\Receipts\Contracts\Models\ReceiptModelContract');
 
         return $this->belongsTo(
             get_class($fnsReceiptModel),
@@ -65,7 +55,7 @@ class ProductModel extends Model implements ProductModelContract
 
     public function receipt(): BelongsTo
     {
-        $receiptModel = app()->make('InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract');
+        $receiptModel = resolve('InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract');
 
         return $this->belongsTo(
             get_class($receiptModel),

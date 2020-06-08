@@ -14,14 +14,14 @@ class ItemsCollection extends ResourceCollection implements ItemsCollectionContr
         $this->type = $type;
 
         if ($type == 'autocomplete') {
-            $itemResource = app()->make(
+            $itemResource = resolve(
                 'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Resources\Back\Utility\Suggestions\AutocompleteItemResourceContract',
                 [
                     'resource' => null,
                 ]
             );
         } else {
-            $itemResource = app()->make(
+            $itemResource = resolve(
                 'InetStudio\ReceiptsContest\Statuses\Contracts\Http\Resources\Back\Utility\Suggestions\ItemResourceContract',
                 [
                     'resource' => null,

@@ -24,7 +24,7 @@ class SendItemData extends FlexibleDataTransferObject implements SendItemDataCon
 
     public static function fromRequest(Request $request): self
     {
-        $statusesService = app()->make(
+        $statusesService = resolve(
             'InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract'
         );
 

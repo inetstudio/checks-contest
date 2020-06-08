@@ -20,14 +20,4 @@ class ItemsService implements ItemsServiceContract
     {
         return $this->model;
     }
-
-    public function create(): PrizeModelContract
-    {
-        return new $this->model;
-    }
-
-    public function getItemById($id = 0, bool $returnNew = true)
-    {
-        return $this->model::find($id) ?? (($returnNew) ? $this->create() : null);
-    }
 }
