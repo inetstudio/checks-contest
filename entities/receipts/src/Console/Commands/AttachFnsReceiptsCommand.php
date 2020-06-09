@@ -60,6 +60,11 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
 
             $products = new ProductsCollection();
 
+            $fnsReceipt = null;
+            if (empty($codes)) {
+                continue;
+            }
+
             foreach ($codes as $code) {
                 if (! (($code['type'] ?? '') === 'QR_CODE')) {
                     continue;
