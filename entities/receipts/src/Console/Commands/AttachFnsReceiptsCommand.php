@@ -94,7 +94,7 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
                         $fnsReceipt = $this->fnsReceiptsService->save($fnsReceiptData, 0);
                     }
                 } else {
-                    $fnsReceipt = $this->fnsReceiptsService->getReceiptByQrCode($code[1]);
+                    $fnsReceipt = $this->fnsReceiptsService->getReceiptByQrCode($code['value']);
                 }
 
                 if ($fnsReceipt) {
@@ -120,7 +120,7 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
             $data = new AttachFnsReceiptData(
                 [
                     'id' => $receipt['id'],
-                    'receipt_id' => $fnsReceipt->id ?? 0
+                    'fns_receipt_id' => $fnsReceipt->id ?? 0
                 ]
             );
 

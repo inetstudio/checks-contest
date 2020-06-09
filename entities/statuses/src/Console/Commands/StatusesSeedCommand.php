@@ -4,7 +4,8 @@ namespace InetStudio\ReceiptsContest\Statuses\Console\Commands;
 
 use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
-use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
+use InetStudio\ReceiptsContest\Statuses\DTO\Back\Resource\Save\ItemData;
+use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ResourceServiceContract as ResourceServiceContract;
 use InetStudio\Classifiers\Groups\Contracts\Services\Back\ItemsServiceContract as ClassifiersGroupsServiceContract;
 use InetStudio\Classifiers\Entries\Contracts\Services\Back\ItemsServiceContract as ClassifiersEntriesServiceContract;
 
@@ -59,12 +60,12 @@ class StatusesSeedCommand extends Command
 
     protected ClassifiersEntriesServiceContract $entriesService;
 
-    protected StatusesServiceContract $statusesService;
+    protected ResourceServiceContract $statusesService;
 
     public function __construct(
         ClassifiersGroupsServiceContract $groupsService,
         ClassifiersEntriesServiceContract $entriesService,
-        StatusesServiceContract $statusesService
+        ResourceServiceContract $statusesService
     ) {
         parent::__construct();
 
@@ -87,9 +88,10 @@ class StatusesSeedCommand extends Command
         $entriesIDs = [];
 
         foreach ($this->statuses as $status) {
-            $data = Arr::except($status, ['types']);
-
-            $statusObj = $this->statusesService->getModel()::updateOrCreate($data);
+            $data = new ItemData(
+                Arr::except($status, ['types'])
+            );
+            $statusObj = $this->statusesService->save($data);
 
             $classifiers = [];
             foreach ($status['types'] ?? [] as $alias => $value) {

@@ -11,5 +11,5 @@ class ItemData extends FlexibleDataTransferObject implements ItemDataContract
 {
     public int $id;
 
-    public int $receipt_id = 0;
+    public int $fns_receipt_id = 0;
 }

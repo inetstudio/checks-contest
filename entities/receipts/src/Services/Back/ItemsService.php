@@ -15,7 +15,7 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
     {
         $item = $this->model::find($data->id);
 
-        $item->receipt_id = $data->receipt_id;
+        $item->fns_receipt_id = $data->fns_receipt_id;
 
         $item->save();
 
