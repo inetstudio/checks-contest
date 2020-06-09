@@ -30,6 +30,8 @@ class ResourceService extends BaseItemsService implements ResourceServiceContrac
         $item->name = $data->name;
         $item->alias = $data->alias;
 
+        $item->save();
+
         event(
             resolve(
                 'InetStudio\ReceiptsContest\Prizes\Contracts\Events\Back\ModifyItemEventContract',

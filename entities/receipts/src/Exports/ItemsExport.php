@@ -3,17 +3,13 @@
 namespace InetStudio\ReceiptsContest\Receipts\Exports;
 
 use Illuminate\Support\Carbon;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Exports\ItemsExportContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract;
 
-class ItemsExport implements ItemsExportContract, FromQuery, WithMapping, WithHeadings, WithColumnFormatting
+class ItemsExport implements ItemsExportContract
 {
     use Exportable;
 

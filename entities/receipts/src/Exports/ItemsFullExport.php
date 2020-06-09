@@ -3,17 +3,13 @@
 namespace InetStudio\ReceiptsContest\Receipts\Exports;
 
 use Illuminate\Support\Carbon;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Exports\ItemsFullExportContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract;
 
-class ItemsFullExport implements ItemsFullExportContract, FromQuery, WithMapping, WithHeadings, WithColumnFormatting
+class ItemsFullExport implements ItemsFullExportContract
 {
     use Exportable;
 
@@ -73,7 +69,7 @@ class ItemsFullExport implements ItemsFullExportContract, FromQuery, WithMapping
 
                     $rowData[0] = $item->id;
                     $rowData[1] = $status;
-                    $rowData[2] = ($item->getJSONData('receipt_data', 'duplicate', '') === 'true') ? 'Дубликат' : $item->getJSONData('receipt_data', 'denyReason', '');
+                    $rowData[2] = $item->getJSONData('receipt_data', 'statusReason', '');
                     $rowData[3] = $prizes;
                     $rowData[4] = trim($prizesDates, ', ');
                     $rowData[5] = trim($confirmed, ', ');
@@ -81,7 +77,7 @@ class ItemsFullExport implements ItemsFullExportContract, FromQuery, WithMapping
                     $rowData[7] = $item->getJSONData('additional_info', 'phone', '');
                     $rowData[8] = $item->getJSONData('receipt_data', 'cityName', '');
                     $rowData[9] = Date::dateTimeToExcel($item['created_at']);
-                    $rowData[10] = url($fileUrl);
+                    $rowData[10] = ($fileUrl) ? url($fileUrl) : '';
                     $rowData[11] = $item->getJSONData('receipt_data', 'retailName', '');
                     $rowData[16] = $discount;
                     $rowData[17] = $products->sum('sum') - $discount;
@@ -98,7 +94,7 @@ class ItemsFullExport implements ItemsFullExportContract, FromQuery, WithMapping
             $rowData = array_fill(0, 18, '');
             $rowData[0] = $item->id;
             $rowData[1] = $status;
-            $rowData[2] = ($item->getJSONData('receipt_data', 'duplicate', '') === 'true') ? 'Дубликат' : $item->getJSONData('receipt_data', 'denyReason', '');
+            $rowData[2] = $item->getJSONData('receipt_data', 'statusReason', '');
             $rowData[3] = $prizes;
             $rowData[4] = trim($prizesDates, ', ');
             $rowData[5] = trim($confirmed, ', ');
@@ -106,7 +102,7 @@ class ItemsFullExport implements ItemsFullExportContract, FromQuery, WithMapping
             $rowData[7] = $item->getJSONData('additional_info', 'phone', '');
             $rowData[8] = $item->getJSONData('receipt_data', 'cityName', '');
             $rowData[9] = Date::dateTimeToExcel($item['created_at']);
-            $rowData[10] = url($fileUrl);
+            $rowData[10] = ($fileUrl) ? url($fileUrl) : '';
             $rowData[11] = $item->getJSONData('receipt_data', 'retailName', '');
             $rowData[16] = $item->getJSONData('receipt_data', 'discountSum', 0);
             $rowData[17] = $products->sum('sum') - $item->getJSONData('receipt_data', 'discountSum', 0);
