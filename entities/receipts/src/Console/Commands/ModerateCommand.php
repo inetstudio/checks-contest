@@ -11,7 +11,7 @@ use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Receipts\DTO\Back\Moderation\Moderate\ItemData;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ModerateServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\ModerateCommandContract;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract as ReceiptsServiceContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract as ReceiptsServiceContract;
 use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
 
 class ModerateCommand extends Command implements ModerateCommandContract
@@ -57,7 +57,7 @@ class ModerateCommand extends Command implements ModerateCommandContract
             return collect([]);
         }
 
-        return $this->receiptsService->getItemsByStatuses($statuses);;
+        return $this->receiptsService->getItemsByStatuses($statuses);
     }
 
     protected function moderate(): void
