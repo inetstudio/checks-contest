@@ -18,6 +18,12 @@ class ItemResource extends JsonResource implements ItemResourceContract
             'quantity' => $this['quantity'],
             'price' => $this['price'],
             'product_data' => (empty($this['product_data'])) ? new stdClass() : $this['product_data'],
+            'highlight' => $this->highlightProduct($this['name']),
         ];
+    }
+
+    protected function highlightProduct(string $name): bool
+    {
+        return (mb_strpos(mb_strtolower($name), 'l.p.') !== false);
     }
 }

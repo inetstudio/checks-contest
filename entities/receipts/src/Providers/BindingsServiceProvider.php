@@ -67,7 +67,13 @@ class BindingsServiceProvider extends BaseServiceProvider implements DeferrableP
         'InetStudio\ReceiptsContest\Receipts\Contracts\Listeners\Back\SetWinnerListenerContract' => 'InetStudio\ReceiptsContest\Receipts\Listeners\Back\SetWinnerListener',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Listeners\ItemStatusChangeListenerContract' => 'InetStudio\ReceiptsContest\Receipts\Listeners\ItemStatusChangeListener',
 
+        'InetStudio\ReceiptsContest\Receipts\Contracts\Mail\Back\WinMailContract' => 'InetStudio\ReceiptsContest\Receipts\Mail\Back\WinMail',
+        'InetStudio\ReceiptsContest\Receipts\Contracts\Mail\StatusChangeMailContract' => 'InetStudio\ReceiptsContest\Receipts\Mail\StatusChangeMail',
+
         'InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract' => 'InetStudio\ReceiptsContest\Receipts\Models\ReceiptModel',
+
+        'InetStudio\ReceiptsContest\Receipts\Contracts\Notifications\Back\WinNotificationContract' => 'InetStudio\ReceiptsContest\Receipts\Notifications\Back\WinNotification',
+        'InetStudio\ReceiptsContest\Receipts\Contracts\Notifications\StatusChangeNotificationContract' => 'InetStudio\ReceiptsContest\Receipts\Notifications\StatusChangeNotification',
 
         'InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\DataTables\IndexServiceContract' => 'InetStudio\ReceiptsContest\Receipts\Services\Back\DataTables\IndexService',
         'InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract' => 'InetStudio\ReceiptsContest\Receipts\Services\Back\ItemsService',

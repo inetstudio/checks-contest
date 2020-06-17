@@ -262,9 +262,6 @@ class ModerateCommand extends Command implements ModerateCommandContract
 
     protected function checkReceiptProduct(array $product): bool
     {
-        return (mb_strpos(mb_strtolower($product['name']), 'cast') !== false && mb_strpos(mb_strtolower($product['name']), 'краск') !== false) ||
-            (mb_strpos(mb_strtolower($product['name']), 'каст') !== false && mb_strpos(mb_strtolower($product['name']), 'краск') !== false) ||
-            (mb_strpos(mb_strtolower($product['name']), 'casting') !== false && mb_strpos(mb_strtolower($product['name']), 'д/в') !== false) ||
-            (mb_strpos(mb_strtolower($product['name']), 'casting') !== false && mb_strpos(mb_strtolower($product['name']), 'крас') !== false);
+        return (mb_strpos(mb_strtolower($product['name']), 'l.p.') !== false);
     }
 }

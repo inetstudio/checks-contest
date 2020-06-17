@@ -1,5 +1,5 @@
 <template>
-    <tr v-bind:style="{ 'background-color': (product.model.highlight ? 'rgba(66, 234, 57, 0.275)' : '') }">
+    <tr v-bind:class="{highlight: product.model.highlight}">
         <td><span class="label label-default" v-if="getProductCategory(product)">{{ getProductCategory(product) }}</span></td>
         <td>{{ product.model.name }}</td>
         <td>{{ product.model.quantity }}</td>

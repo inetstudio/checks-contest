@@ -3,14 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-/**
- * Class CreateReceiptsContestReceiptsTables.
- */
 class CreateReceiptsContestReceiptsTables extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('receipts_contest_receipts', function (Blueprint $table) {
@@ -35,9 +29,6 @@ class CreateReceiptsContestReceiptsTables extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down()
     {
         Schema::drop('receipts_contest_receipts_prizes');

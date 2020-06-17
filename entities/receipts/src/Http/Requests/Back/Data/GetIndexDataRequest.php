@@ -5,9 +5,6 @@ namespace InetStudio\ReceiptsContest\Receipts\Http\Requests\Back\Data;
 use Illuminate\Foundation\Http\FormRequest;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Back\Data\GetIndexDataRequestContract;
 
-/**
- * Class GetIndexDataRequest.
- */
 class GetIndexDataRequest extends FormRequest implements GetIndexDataRequestContract
 {
     public function authorize(): bool
