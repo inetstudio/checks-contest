@@ -25,7 +25,7 @@ class WinNotification extends Notification implements WinNotificationContract
 
     public function toMail($notifiable): WinMailContract
     {
-        $mail = resolve(WinMailContract::class, $this->data);
+        $mail = resolve(WinMailContract::class, ['data' => $this->data]);
 
         return $mail->to($notifiable->routeNotificationFor('mail'));
     }

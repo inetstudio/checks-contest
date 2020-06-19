@@ -25,7 +25,7 @@ class StatusChangeNotification extends Notification implements StatusChangeNotif
 
     public function toMail($notifiable): StatusChangeMailContract
     {
-        $mail = resolve(StatusChangeMailContract::class, $this->data);
+        $mail = resolve(StatusChangeMailContract::class, ['data' => $this->data]);
 
         return $mail->to($notifiable->routeNotificationFor('mail'));
     }
