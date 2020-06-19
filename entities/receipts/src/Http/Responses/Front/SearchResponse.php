@@ -17,8 +17,8 @@ class SearchResponse implements SearchResponseContract
     public function toResponse($request)
     {
         $field = $request->route('field', 'email');
-        $type = $request->route('type', '');
-        $query = $request->input('query', '');
+        $type = $request->route('type') ?? '';
+        $query = $request->input('query') ?? '';
 
         $resource = $this->itemsService->search($field, $query, $type);
 
