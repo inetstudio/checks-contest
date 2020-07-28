@@ -13,6 +13,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->registerPublishes();
         $this->registerRoutes();
         $this->registerViews();
+        $this->registerTranslations();
     }
 
     protected function registerConsoleCommands(): void
@@ -74,5 +75,10 @@ class ServiceProvider extends BaseServiceProvider
     protected function registerViews(): void
     {
         $this->loadViewsFrom(__DIR__.'/../../resources/views', 'admin.module.receipts-contest.receipts');
+    }
+
+    protected function registerTranslations(): void
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'receipts-contest.receipts');
     }
 }

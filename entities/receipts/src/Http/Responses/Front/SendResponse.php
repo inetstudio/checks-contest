@@ -24,7 +24,9 @@ class SendResponse implements SendResponseContract
         return response()->json(
             [
                 'success' => isset($item),
-                'message' => 'Ваш чек отправлен на модерацию.',
+                'message' => (isset($item))
+                    ? trans('receipts-contest.receipts::messages.send_success')
+                    : trans('receipts-contest.receipts::messages.send_fail'),
             ]
         );
     }
