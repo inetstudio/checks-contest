@@ -16,49 +16,51 @@
                             <div class="sk-double-bounce2"></div>
                         </div>
 
-                        <base-dropdown
-                                label="Приз"
-                                v-bind:attributes="{
-                                    label: 'name',
-                                    placeholder: 'Выберите приз',
-                                    disabled: (mode === 'edit_list_item'),
-                                    clearable: false,
-                                    reduce: option => option.id
-                                }"
-                                v-bind:options="options.prizes"
-                                v-bind:selected="(mode === 'edit_list_item') ? _.get(prize, 'model.id', null) : null"
-                                v-on:update:selected="selectPrize($event)"
-                        />
+                        <template v-if="options.ready">
+                            <base-dropdown
+                                    label="Приз"
+                                    v-bind:attributes="{
+                                      label: 'name',
+                                      placeholder: 'Выберите приз',
+                                      disabled: (mode === 'edit_list_item'),
+                                      clearable: false,
+                                      reduce: option => option.id
+                                  }"
+                                    v-bind:options="options.prizes"
+                                    v-bind:selected=selectedPrize
+                                    v-on:update:selected="selectPrize($event)"
+                            />
 
-                        <base-date
-                                label="Дата"
-                                v-bind:dates="[
-                                    {
-                                      name: 'date_start',
-                                      value: formatDate(_.get(prize, 'model.pivot.date_start', null), 'Z', 'd.m.Y')
-                                    },
-                                    {
-                                      name: 'date_end',
-                                      value: formatDate(_.get(prize, 'model.pivot.date_end', null), 'Z', 'd.m.Y')
-                                    }
-                                ]"
-                                v-bind:options="options.dates"
-                                v-on:update:date_start="prize.model.pivot.date_start = formatDate($event, 'd.m.Y', 'Z')"
-                                v-on:update:date_end="prize.model.pivot.date_end = formatDate($event, 'd.m.Y', 'Z')"
-                        />
+                            <base-date
+                                    label="Дата"
+                                    v-bind:dates="[
+                                      {
+                                        name: 'date_start',
+                                        value: formatDate(_.get(prize, 'model.pivot.date_start', null), 'Z', 'd.m.Y')
+                                      },
+                                      {
+                                        name: 'date_end',
+                                        value: formatDate(_.get(prize, 'model.pivot.date_end', null), 'Z', 'd.m.Y')
+                                      }
+                                  ]"
+                                    v-bind:options="options.dates"
+                                    v-on:update:date_start="prize.model.pivot.date_start = formatDate($event, 'd.m.Y', 'Z')"
+                                    v-on:update:date_end="prize.model.pivot.date_end = formatDate($event, 'd.m.Y', 'Z')"
+                            />
 
-                        <base-checkboxes
-                                label="Подтвердить"
-                                name="confirmed"
-                                v-bind:checkboxes="[
-                                    {
-                                        value: 1,
-                                        label: ''
-                                    }
-                                ]"
-                                v-bind:selected="_.get(prize, 'model.pivot.confirmed', 0)"
-                                v-on:update:selected="prize.model.pivot.confirmed = (parseInt($event[0]) || 0)"
-                        />
+                            <base-checkboxes
+                                    label="Подтвердить"
+                                    name="confirmed"
+                                    v-bind:checkboxes="[
+                                      {
+                                          value: 1,
+                                          label: ''
+                                      }
+                                  ]"
+                                    v-bind:selected="_.get(prize, 'model.pivot.confirmed', 0)"
+                                    v-on:update:selected="prize.model.pivot.confirmed = (parseInt($event[0]) || 0)"
+                            />
+                        </template>
                     </div>
                 </div>
 
@@ -78,6 +80,7 @@
       return {
         options: {
           loading: true,
+          ready: false,
           prizes: [],
           dates: {
             dateFormat: 'd.m.Y',
@@ -93,6 +96,17 @@
       },
       mode() {
         return window.Admin.vue.stores['receipts_contest_prizes'].state.mode;
+      },
+      selectedPrize() {
+        let component = this;
+
+        let prizeIndex = _.findIndex(component.options.prizes, function (prize) {
+          return prize.id === parseInt(component.prize.model.id);
+        });
+
+        if (prizeIndex > -1) {
+          return component.options.prizes[prizeIndex].id;
+        }
       }
     },
     watch: {
@@ -115,6 +129,7 @@
           component.options.prizes = response.data.items;
 
           component.options.loading = false;
+          component.options.ready = true;
         });
       },
       loadPrize() {
