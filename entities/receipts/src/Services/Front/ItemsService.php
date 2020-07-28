@@ -77,7 +77,7 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
                 if (isset($stages['prizes'][$prize['alias']]) && $prize->pivot->confirmed === 1) {
                     $key = '';
                     $key .= ($prize->pivot['date_start']) ? Carbon::createFromFormat('Y-m-d H:i:s', $prize->pivot['date_start'])->format('d.m.y') : '';
-                    $key .= ($prize->pivot['date_end']) ? Carbon::createFromFormat('Y-m-d H:i:s', $prize->pivot['date_end'])->format('d.m.y') : '';
+                    $key .= ($prize->pivot['date_end'] != $prize->pivot['date_start']) ? Carbon::createFromFormat('Y-m-d H:i:s', $prize->pivot['date_end'])->format('d.m.y') : '';
                     $key = md5($key);
 
                     $stages['prizes'][$prize['alias']]['stages'][$key]['winners'][] = [
