@@ -123,14 +123,18 @@
       initComponent: function() {
         let component = this;
 
-        let url = route('back.receipts-contest.prizes.utility.suggestions');
+        component.loadPrize();
 
-        axios.post(url).then(response => {
-          component.options.prizes = response.data.items;
+        if (! component.options.ready ) {
+          let url = route('back.receipts-contest.prizes.utility.suggestions');
 
-          component.options.loading = false;
-          component.options.ready = true;
-        });
+          axios.post(url).then(response => {
+            component.options.prizes = response.data.items;
+
+            component.options.loading = false;
+            component.options.ready = true;
+          });
+        }
       },
       loadPrize() {
         let component = this;
