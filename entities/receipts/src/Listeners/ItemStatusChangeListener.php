@@ -16,7 +16,7 @@ class ItemStatusChangeListener implements ItemStatusChangeListenerContract
         $name = trim($item->getJSONData('additional_info', 'name').' '.$item->getJSONData('additional_info', 'surname'));
         $subject = config('receipts_contest_receipts.mails.status.'.$statusAlias.'.subject', '');
 
-        $data = compact('subject', 'name', 'prize');
+        $data = compact('subject', 'name');
 
         $notification = Notification::route('mail', $email);
         $notification->notify(resolve('InetStudio\ReceiptsContest\Receipts\Contracts\Notifications\StatusChangeNotificationContract', compact('data')));
