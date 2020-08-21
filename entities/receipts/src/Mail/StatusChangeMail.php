@@ -21,6 +21,6 @@ class StatusChangeMail extends Mailable implements StatusChangeMailContract
     {
         return $this->from(config('mail.from.address'), config('mail.from.name'))
             ->subject($this->data['subject'])
-            ->view('admin.module.checks-contest.checks::mails.moderation.'.$this->data['statusAlias'], $this->data);
+            ->view('admin.module.receipts-contest.receipts::mails.status.'.$this->data['statusAlias'], $this->data);
     }
 }
