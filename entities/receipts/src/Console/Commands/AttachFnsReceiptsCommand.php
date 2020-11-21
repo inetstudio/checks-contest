@@ -95,8 +95,8 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
 
                     $fnsReceiptData = json_decode($response->getBody()->getContents(), true);
 
-                    if (! empty($fnsReceiptData)) {
-                        $fnsReceipt = $this->fnsReceiptsService->save($fnsReceiptData, 0);
+                    if (isset($fnsReceiptData['receipt'])) {
+                        $fnsReceipt = $this->fnsReceiptsService->save($fnsReceiptData['receipt'], 0);
                     }
                 } else {
                     $fnsReceipt = $this->fnsReceiptsService->getReceiptByQrCode($code['value']);
