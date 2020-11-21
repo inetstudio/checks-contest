@@ -63,26 +63,26 @@
                         <div class="col-lg-10">
                             @if (! empty($item['fnsReceipt']))
                                 <div class="m-b-lg">
-                                    @if (isset($item['fnsReceipt']['receipt']['document']['receipt']['user']))
-                                        <p><strong>Юридическое лицо: </strong>{{ $item['fnsReceipt']['receipt']['document']['receipt']['user'] }}</p>
+                                    @if (isset($item['fnsReceipt']['data']['content']['user']))
+                                        <p><strong>Юридическое лицо: </strong>{{ $item['fnsReceipt']['data']['content']['user'] }}</p>
                                     @endif
 
-                                    @if (isset($item['fnsReceipt']['receipt']['document']['receipt']['userInn']))
-                                        <p><strong>ИНН: </strong>{{ $item['fnsReceipt']['receipt']['document']['receipt']['userInn'] }}</p>
+                                    @if (isset($item['fnsReceipt']['data']['content']['userInn']))
+                                        <p><strong>ИНН: </strong>{{ $item['fnsReceipt']['data']['content']['userInn'] }}</p>
                                     @endif
 
-                                    @if (isset($item['fnsReceipt']['receipt']['document']['receipt']['retailPlace']))
-                                        <p><strong>Место покупки: </strong>{{ $item['fnsReceipt']['receipt']['document']['receipt']['retailPlace'] }}</p>
+                                    @if (isset($item['fnsReceipt']['data']['content']['retailPlace']))
+                                        <p><strong>Место покупки: </strong>{{ $item['fnsReceipt']['data']['content']['retailPlace'] }}</p>
                                     @endif
 
-                                    @if (isset($item['fnsReceipt']['receipt']['document']['receipt']['retailPlaceAddress']))
-                                        <p><strong>Адрес: </strong>{{ $item['fnsReceipt']['receipt']['document']['receipt']['retailPlaceAddress'] }}</p>
+                                    @if (isset($item['fnsReceipt']['data']['content']['retailPlaceAddress']))
+                                        <p><strong>Адрес: </strong>{{ $item['fnsReceipt']['data']['content']['retailPlaceAddress'] }}</p>
                                     @endif
                                 </div>
 
-                                @if (isset($item['fnsReceipt']['receipt']['document']['receipt']['dateTime']))
+                                @if (isset($item['fnsReceipt']['data']['content']['dateTime']))
                                     @php
-                                        $receiptDate = \Illuminate\Support\Carbon::parse($item['fnsReceipt']['receipt']['document']['receipt']['dateTime']);
+                                        $receiptDate = \Illuminate\Support\Carbon::parse($item['fnsReceipt']['data']['content']['dateTime']);
                                     @endphp
                                     <div class="m-b-lg">
                                         <p><strong>Дата покупки: </strong>{{ $receiptDate->format('d.m.Y') }}</p>

@@ -109,7 +109,7 @@ class ModerateCommand extends Command implements ModerateCommandContract
                 continue;
             }
 
-            $receiptDate = Carbon::parse($receipt['receipt']['document']['receipt']['dateTime']);
+            $receiptDate = Carbon::parse($receipt['data']['content']['dateTime']);
 
             if (! $receiptDate->greaterThanOrEqualTo($this->contestStartDate)) {
                 $this->moderateItem(
@@ -137,7 +137,7 @@ class ModerateCommand extends Command implements ModerateCommandContract
 
             $hasProduct = false;
 
-            foreach ($receipt['receipt']['document']['receipt']['items'] ?? [] as $productItem) {
+            foreach ($receipt['data']['content']['items'] ?? [] as $productItem) {
                 if ($this->checkReceiptProduct($productItem)) {
                     $hasProduct = true;
                 }
@@ -220,8 +220,8 @@ class ModerateCommand extends Command implements ModerateCommandContract
                 continue;
             }
 
-            if (($receipt['receipt']['document']['receipt']['rawData'] ?? '')) {
-                $rawData = trim($receipt['receipt']['document']['receipt']['rawData']);
+            if (($receipt['data']['content']['rawData'] ?? '')) {
+                $rawData = trim($receipt['data']['content']['rawData']);
 
                 if (! $rawData) {
                     continue;

@@ -79,14 +79,14 @@
                                             <div class="row">
                                                 <div class="col-lg-10" v-if="_.has(receipt, 'model.fns_receipt')">
                                                         <div class="m-b-lg">
-                                                            <p v-if="_.has(receipt, 'model.fns_receipt.receipt.document.receipt.user')"><strong>Юридическое лицо: </strong>{{ _.get(receipt, 'model.fns_receipt.receipt.document.receipt.user') }}</p>
-                                                            <p v-if="_.has(receipt, 'model.fns_receipt.receipt.document.receipt.userInn')"><strong>ИНН: </strong>{{ _.get(receipt, 'model.fns_receipt.receipt.document.receipt.userInn') }}</p>
-                                                            <p v-if="_.has(receipt, 'model.fns_receipt.receipt.document.receipt.retailPlace')"><strong>Место покупки: </strong>{{ _.get(receipt, 'model.fns_receipt.receipt.document.receipt.retailPlace') }}</p>
-                                                            <p v-if="_.has(receipt, 'model.fns_receipt.receipt.document.receipt.retailPlaceAddress')"><strong>Адрес: </strong>{{ _.get(receipt, 'model.fns_receipt.receipt.document.receipt.retailPlaceAddress') }}</p>
+                                                            <p v-if="_.has(receipt, 'model.fns_receipt.data.content.user')"><strong>Юридическое лицо: </strong>{{ _.get(receipt, 'model.fns_receipt.data.content.user') }}</p>
+                                                            <p v-if="_.has(receipt, 'model.fns_receipt.data.content.userInn')"><strong>ИНН: </strong>{{ _.get(receipt, 'model.fns_receipt.data.content.userInn') }}</p>
+                                                            <p v-if="_.has(receipt, 'model.fns_receipt.data.content.retailPlace')"><strong>Место покупки: </strong>{{ _.get(receipt, 'model.fns_receipt.data.content.retailPlace') }}</p>
+                                                            <p v-if="_.has(receipt, 'model.fns_receipt.data.content.retailPlaceAddress')"><strong>Адрес: </strong>{{ _.get(receipt, 'model.fns_receipt.data.content.retailPlaceAddress') }}</p>
                                                         </div>
 
-                                                        <div class="m-b-lg" v-if="_.has(receipt, 'model.fns_receipt.receipt.document.receipt.dateTime')">
-                                                            <p><strong>Дата покупки: </strong>{{ formatDate(_.get(receipt, 'model.fns_receipt.receipt.document.receipt.dateTime'), 'Z', 'd.m.Y') }}</p>
+                                                        <div class="m-b-lg" v-if="_.has(receipt, 'model.fns_receipt.data.content.dateTime')">
+                                                            <p><strong>Дата покупки: </strong>{{ formatDate(_.get(receipt, 'model.fns_receipt.data.content.dateTime'), 'Z', 'd.m.Y') }}</p>
                                                         </div>
                                                 </div>
                                                 <div class="col-lg-2">

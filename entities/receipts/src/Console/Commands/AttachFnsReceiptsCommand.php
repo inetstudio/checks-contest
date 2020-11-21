@@ -103,7 +103,7 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
                 }
 
                 if ($fnsReceipt) {
-                    $fnsReceiptData = $fnsReceipt->receipt['document']['receipt'];
+                    $fnsReceiptData = $fnsReceipt->data['content'];
 
                     foreach ($fnsReceiptData['items'] ?? [] as $item) {
                         $products[] = new ProductData(
