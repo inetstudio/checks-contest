@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemData as ProductData;
 use InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemsCollection as ProductsCollection;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\AttachFnsReceiptsCommandContract;
-use InetStudio\Fns\Receipts\Contracts\Services\Back\ItemsServiceContract as FnsReceiptsServiceContract;
+use InetStudio\Fns\Receipts\Contracts\Services\ItemsServiceContract as FnsReceiptsServiceContract;
 use InetStudio\ReceiptsContest\Receipts\DTO\Back\Items\AttachFnsReceipt\ItemData as AttachFnsReceiptData;
 use InetStudio\ReceiptsContest\Products\Contracts\Services\Back\ItemsServiceContract as ProductsServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract as ReceiptsServiceContract;
@@ -96,7 +96,17 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
                     $fnsReceiptData = json_decode($response->getBody()->getContents(), true);
 
                     if (isset($fnsReceiptData['receipt'])) {
-                        $fnsReceipt = $this->fnsReceiptsService->save($fnsReceiptData['receipt'], 0);
+                        $data = resolve(
+                            'InetStudio\Fns\Receipts\Contracts\DTO\ItemDataContract',
+                            [
+                                'parameters' => [
+                                    'qr_code' => $fnsReceiptData['receipt']['qr_code'],
+                                    'data' => $fnsReceiptData['receipt']['data'],
+                                ]
+                            ]
+                        );
+
+                        $fnsReceipt = $this->fnsReceiptsService->save($data);
                     }
                 } else {
                     $fnsReceipt = $this->fnsReceiptsService->getReceiptByQrCode($code['value']);
@@ -125,7 +135,7 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
             $data = new AttachFnsReceiptData(
                 [
                     'id' => $receipt['id'],
-                    'fns_receipt_id' => $fnsReceipt->id ?? 0
+                    'fns_receipt_id' => $fnsReceipt->id ?? null
                 ]
             );
 

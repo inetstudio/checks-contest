@@ -34,7 +34,7 @@
                             label="Название"
                             name="name"
                             v-bind:attributes="{
-                                disabled: mode === 'edit_list_item' && _.get(product, 'model.fns_receipt_id', 0) !== 0
+                                disabled: mode === 'edit_list_item' && _.get(product, 'model.fns_receipt_id', null) !== null
                             }"
                             v-bind:value="_.get(product, 'model.name', '')"
                             v-on:update:value="_.set(product, 'model.name', $event)"
@@ -44,7 +44,7 @@
                             label="Количество"
                             name="quantity"
                             v-bind:attributes="{
-                                disabled: mode === 'edit_list_item' && _.get(product, 'model.fns_receipt_id', 0) !== 0
+                                disabled: mode === 'edit_list_item' && _.get(product, 'model.fns_receipt_id', null) !== null
                             }"
                             v-bind:value="_.get(product, 'model.quantity', 0)"
                             v-on:update:value="_.set(product, 'model.quantity', $event)"
@@ -54,7 +54,7 @@
                             label="Стоимость единицы товара"
                             name="price"
                             v-bind:attributes="{
-                                disabled: mode === 'edit_list_item' && _.get(product, 'model.fns_receipt_id', 0) !== 0
+                                disabled: mode === 'edit_list_item' && _.get(product, 'model.fns_receipt_id', null) !== null
                             }"
                             v-bind:value="_.get(product, 'model.price', 0)"
                             v-on:update:value="_.set(product, 'model.price', $event)"

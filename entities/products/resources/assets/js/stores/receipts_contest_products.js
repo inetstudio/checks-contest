@@ -21,7 +21,7 @@ window.Admin.vue.stores['receipts_contest_products'] = new Vuex.Store({
       let product = {
         id: productId,
         receipt_id: receiptId,
-        fns_receipt_id: 0
+        fns_receipt_id: null
       };
 
       this.commit('setProduct', product);
