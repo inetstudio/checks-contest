@@ -86,7 +86,7 @@
                                                         </div>
 
                                                         <div class="m-b-lg" v-if="_.has(receipt, 'model.fns_receipt.data.content.dateTime')">
-                                                            <p><strong>Дата покупки: </strong>{{ formatDate(_.get(receipt, 'model.fns_receipt.data.content.dateTime'), 'Z', 'd.m.Y') }}</p>
+                                                            <p><strong>Дата покупки: </strong>{{ formatDate(_.get(receipt, 'model.fns_receipt.data.content.dateTime'), 'd.m.Y') }}</p>
                                                         </div>
                                                 </div>
                                                 <div class="col-lg-2">
@@ -265,8 +265,10 @@
                 });
               });
         },
-        formatDate(dateTime, fromFormat, toFormat) {
-            return dateTime ? flatpickr.formatDate(flatpickr.parseDate(dateTime, fromFormat), toFormat) : null;
+        formatDate(dateTime, toFormat) {
+          dateTime = new Date(dateTime * 1000);
+
+          return dateTime ? flatpickr.formatDate(dateTime, toFormat) : null;
         }
     }
   };
