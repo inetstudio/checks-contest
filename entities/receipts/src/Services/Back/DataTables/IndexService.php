@@ -68,7 +68,7 @@ class IndexService extends DataTable implements IndexServiceContract
             ],
             [
                 'data' => 'fnsReceipt',
-                'name' => 'fnsReceipt.receipt',
+                'name' => 'fnsReceipt.data',
                 'title' => 'Чек ФНС',
                 'orderable' => false,
                 'visible' => false,

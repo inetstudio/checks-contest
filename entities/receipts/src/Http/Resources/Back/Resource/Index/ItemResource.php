@@ -15,7 +15,7 @@ class ItemResource extends JsonResource implements ItemResourceContract
             'DT_RowId' => 'receipt_row_'.$this['id'],
             'id' => $this['id'],
             'receipt_data' => $this['receipt_data'],
-            'fnsReceipt' => $this['fnsReceipt']['receipt'] ?? '',
+            'fnsReceipt' => $this['fnsReceipt']['data'] ?? '',
             'additional_info' => $userData,
             'status' => view(
                 'admin.module.receipts-contest.receipts::back.partials.datatables.status',
