@@ -44,7 +44,7 @@ class ItemsService implements ItemsServiceContract
 
     public function attach(ReceiptModelContract $item, ItemsCollectionContract $products): void
     {
-        if (count($products) === 0) {
+        if ($products->count() === 0) {
             $item->products()->delete();
 
             return;
@@ -53,7 +53,7 @@ class ItemsService implements ItemsServiceContract
         $productsIds = collect($products->toArray())->pluck('id')->toArray();
         $item->products()->whereNotIn('id', $productsIds)->delete();
 
-        foreach ($products as $product) {
+        foreach ($products->items() as $product) {
             $this->save($product);
         }
     }
