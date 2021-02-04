@@ -11,6 +11,7 @@
   ],
   "require": {
     "inetstudio/admin-panel": "^8.0",
+    "inetstudio/captcha": "^8.0",
     "inetstudio/classifiers": "^8.0",
     "inetstudio/fns": "^8.0"
   },

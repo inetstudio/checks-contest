@@ -3,6 +3,7 @@
 namespace InetStudio\ReceiptsContest\Receipts\Http\Requests\Front;
 
 use Illuminate\Foundation\Http\FormRequest;
+use InetStudio\CaptchaPackage\Captcha\Validation\Rules\CaptchaRule;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Front\SendRequestContract;
 
 class SendRequest extends FormRequest implements SendRequestContract
@@ -30,6 +31,9 @@ class SendRequest extends FormRequest implements SendRequestContract
 
             'receipt_image.required' => 'Поле «Фотография чека» обязательно для заполнения',
             'receipt_image.image' => 'Поле «Фотография чека» должно быть изображением',
+
+            'g-recaptcha-response.required' => 'Поле «Капча» обязательно для заполнения',
+            'g-recaptcha-response.captcha' => 'Неверный код капча',
         ];
     }
 
@@ -41,6 +45,10 @@ class SendRequest extends FormRequest implements SendRequestContract
             'additional_info.email' => 'required|max:255|email',
             'additional_info.phone' => 'required|max:255',
             'receipt_image' => 'required|image',
+            'g-recaptcha-response' => [
+                'required',
+                new CaptchaRule,
+            ],
         ];
     }
 }
