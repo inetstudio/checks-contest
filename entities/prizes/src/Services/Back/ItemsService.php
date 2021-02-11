@@ -14,7 +14,7 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
     public function attach(ReceiptModelContract $item, ItemsCollectionContract $prizes): void
     {
-        if (count($prizes) === 0) {
+        if ($prizes->count() === 0) {
             $item->prizes()->detach();
 
             return;
@@ -22,7 +22,7 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
 
         $oldPrizes = $item['prizes'];
 
-        $prizes = collect($prizes)->mapWithKeys(function ($prize) {
+        $prizes = collect($prizes->items())->mapWithKeys(function ($prize) {
             return [
                 $prize->id => $prize->pivot->toArray(),
             ];
