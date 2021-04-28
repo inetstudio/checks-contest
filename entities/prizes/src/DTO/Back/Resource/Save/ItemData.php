@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace InetStudio\ReceiptsContest\Prizes\DTO\Back\Resource\Save;
 
 use Illuminate\Http\Request;
-use Spatie\DataTransferObject\FlexibleDataTransferObject;
+use Spatie\DataTransferObject\DataTransferObject;
 use InetStudio\ReceiptsContest\Prizes\Contracts\DTO\Back\Resource\Save\ItemDataContract;
 
-class ItemData extends FlexibleDataTransferObject implements ItemDataContract
+class ItemData extends DataTransferObject implements ItemDataContract
 {
     public int $id = 0;
 

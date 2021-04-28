@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach;
 
-use Spatie\DataTransferObject\FlexibleDataTransferObject;
+use Spatie\DataTransferObject\DataTransferObject;
 use InetStudio\ReceiptsContest\Products\Contracts\DTO\Back\Items\Attach\ItemDataContract;
 
-class ItemData extends FlexibleDataTransferObject implements ItemDataContract
+class ItemData extends DataTransferObject implements ItemDataContract
 {
     /**
      * @var int|string

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace InetStudio\ReceiptsContest\Receipts\DTO\Back\Resource\Update;
 
 use Illuminate\Http\Request;
-use Spatie\DataTransferObject\FlexibleDataTransferObject;
+use Spatie\DataTransferObject\DataTransferObject;
 use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\ItemData as PrizeData;
 use InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemData as ProductData;
 use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\PivotData as PrizePivotData;
@@ -13,7 +13,7 @@ use InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Back\Resource\Update\ItemD
 use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\ItemsCollection as PrizesCollection;
 use InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemsCollection as ProductsCollection;
 
-class ItemData extends FlexibleDataTransferObject implements ItemDataContract
+class ItemData extends DataTransferObject implements ItemDataContract
 {
     public int $id;
 

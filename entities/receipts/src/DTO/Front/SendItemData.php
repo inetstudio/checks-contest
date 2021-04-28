@@ -7,10 +7,10 @@ namespace InetStudio\ReceiptsContest\Receipts\DTO\Front;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Spatie\DataTransferObject\FlexibleDataTransferObject;
+use Spatie\DataTransferObject\DataTransferObject;
 use InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Front\SendItemDataContract;
 
-class SendItemData extends FlexibleDataTransferObject implements SendItemDataContract
+class SendItemData extends DataTransferObject implements SendItemDataContract
 {
     public string $verify_hash;
 

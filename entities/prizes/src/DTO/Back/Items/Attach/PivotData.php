@@ -6,10 +6,10 @@ namespace InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
-use Spatie\DataTransferObject\FlexibleDataTransferObject;
+use Spatie\DataTransferObject\DataTransferObject;
 use InetStudio\ReceiptsContest\Prizes\Contracts\DTO\Back\Items\Attach\PivotDataContract;
 
-class PivotData extends FlexibleDataTransferObject implements PivotDataContract
+class PivotData extends DataTransferObject implements PivotDataContract
 {
     public int $confirmed;
 
