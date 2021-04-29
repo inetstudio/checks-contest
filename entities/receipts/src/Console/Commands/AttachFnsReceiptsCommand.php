@@ -99,7 +99,7 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
                         $data = resolve(
                             'InetStudio\Fns\Receipts\Contracts\DTO\ItemDataContract',
                             [
-                                'parameters' => [
+                                'args' => [
                                     'qr_code' => $fnsReceiptData['receipt']['qr_code'],
                                     'data' => $fnsReceiptData['receipt']['data'],
                                 ]
