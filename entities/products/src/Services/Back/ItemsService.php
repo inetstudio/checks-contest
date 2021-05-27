@@ -50,7 +50,7 @@ class ItemsService implements ItemsServiceContract
         }
 
         $productsIds = collect($products)->filter(function ($productItem) {
-            return ! is_string($productItem['id']);
+            return ! is_string($productItem->id);
         })->pluck('id')->toArray();
         $item->products()->whereNotIn('id', $productsIds)->delete();
 
