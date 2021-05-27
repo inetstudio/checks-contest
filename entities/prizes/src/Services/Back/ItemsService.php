@@ -8,13 +8,12 @@ use Illuminate\Support\Collection;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Prizes\Services\ItemsService as BaseItemsService;
 use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back\ItemsServiceContract;
-use InetStudio\ReceiptsContest\Prizes\Contracts\DTO\Back\Items\Attach\ItemsCollectionContract;
 
 class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
-    public function attach(ReceiptModelContract $item, ItemsCollectionContract $prizes): void
+    public function attach(ReceiptModelContract $item, array $prizes): void
     {
-        if ($prizes->count() === 0) {
+        if (count($prizes) === 0) {
             $item->prizes()->detach();
 
             return;
@@ -22,7 +21,7 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
 
         $oldPrizes = $item['prizes'];
 
-        $prizes = collect($prizes->items())->mapWithKeys(function ($prize) {
+        $prizes = collect($prizes)->mapWithKeys(function ($prize) {
             return [
                 $prize->id => $prize->pivot->toArray(),
             ];

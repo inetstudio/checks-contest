@@ -8,7 +8,6 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 class BindingsServiceProvider extends BaseServiceProvider implements DeferrableProvider
 {
     public array $bindings = [
-        'InetStudio\ReceiptsContest\Products\Contracts\DTO\Back\Items\Attach\ItemsCollectionContract' => 'InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemsCollection',
         'InetStudio\ReceiptsContest\Products\Contracts\DTO\Back\Items\Attach\ItemDataContract' => 'InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemData',
 
         'InetStudio\ReceiptsContest\Products\Contracts\Events\Back\ModifyItemEventContract' => 'InetStudio\ReceiptsContest\Products\Events\Back\ModifyItemEvent',

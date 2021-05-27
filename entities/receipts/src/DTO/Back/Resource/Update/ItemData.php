@@ -21,9 +21,13 @@ class ItemData extends DataTransferObject implements ItemDataContract
 
     public array $receipt_data;
 
-    public ProductsCollection $products;
+    /** @var \InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemData[] */
+    #[CastWith(ArrayCaster::class, itemType: ProductData::class)]
+    public array $products;
 
-    public PrizesCollection $prizes;
+    /** @var \InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\ItemData[] */
+    #[CastWith(ArrayCaster::class, itemType: PrizeData::class)]
+    public array $prizes;
 
     public static function fromRequest(Request $request): self
     {
@@ -31,8 +35,8 @@ class ItemData extends DataTransferObject implements ItemDataContract
             'id' => $request->input('id'),
             'additional_info' => $request->input('additional_info', []),
             'receipt_data' => $request->input('receipt_data', []),
-            'products' => new ProductsCollection(),
-            'prizes' => new PrizesCollection(),
+            'products' => [],
+            'prizes' => [],
         ];
 
         foreach ($request->input('products', []) as $product) {

@@ -6,7 +6,6 @@ use InetStudio\ReceiptsContest\Products\Contracts\Models\ProductModelContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 use InetStudio\ReceiptsContest\Products\Contracts\Services\Back\ItemsServiceContract;
 use InetStudio\ReceiptsContest\Products\Contracts\DTO\Back\Items\Attach\ItemDataContract;
-use InetStudio\ReceiptsContest\Products\Contracts\DTO\Back\Items\Attach\ItemsCollectionContract;
 
 class ItemsService implements ItemsServiceContract
 {
@@ -42,20 +41,20 @@ class ItemsService implements ItemsServiceContract
         return $item;
     }
 
-    public function attach(ReceiptModelContract $item, ItemsCollectionContract $products): void
+    public function attach(ReceiptModelContract $item, array $products): void
     {
-        if ($products->count() === 0) {
+        if (count($products) === 0) {
             $item->products()->delete();
 
             return;
         }
 
-        $productsIds = collect($products->toArray())->filter(function ($productItem) {
+        $productsIds = collect($products)->filter(function ($productItem) {
             return ! is_string($productItem['id']);
         })->pluck('id')->toArray();
         $item->products()->whereNotIn('id', $productsIds)->delete();
 
-        foreach ($products->items() as $product) {
+        foreach ($products as $product) {
             $this->save($product);
         }
     }
