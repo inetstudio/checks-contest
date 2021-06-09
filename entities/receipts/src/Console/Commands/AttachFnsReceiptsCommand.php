@@ -5,9 +5,8 @@ namespace InetStudio\ReceiptsContest\Receipts\Console\Commands;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemData as ProductData;
-use InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemsCollection as ProductsCollection;
-use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\AttachFnsReceiptsCommandContract;
 use InetStudio\Fns\Receipts\Contracts\Services\ItemsServiceContract as FnsReceiptsServiceContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\AttachFnsReceiptsCommandContract;
 use InetStudio\ReceiptsContest\Receipts\DTO\Back\Items\AttachFnsReceipt\ItemData as AttachFnsReceiptData;
 use InetStudio\ReceiptsContest\Products\Contracts\Services\Back\ItemsServiceContract as ProductsServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Back\ItemsServiceContract as ReceiptsServiceContract;
@@ -58,7 +57,7 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
         foreach ($receipts as $receipt) {
             $codes = $receipt->getJSONData('receipt_data', 'codes', []);
 
-            $products = new ProductsCollection();
+            $products = [];
 
             $fnsReceipt = null;
             if (empty($codes)) {
