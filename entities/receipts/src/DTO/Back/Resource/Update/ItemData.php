@@ -10,8 +10,6 @@ use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\ItemData as PrizeDat
 use InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemData as ProductData;
 use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\PivotData as PrizePivotData;
 use InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Back\Resource\Update\ItemDataContract;
-use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\ItemsCollection as PrizesCollection;
-use InetStudio\ReceiptsContest\Products\DTO\Back\Items\Attach\ItemsCollection as ProductsCollection;
 
 class ItemData extends DataTransferObject implements ItemDataContract
 {
