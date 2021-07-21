@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\ItemData as PrizeData;
 use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\PivotData as PrizePivotData;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Console\Commands\SetWinnerCommandContract;
-use InetStudio\ReceiptsContest\Prizes\DTO\Back\Items\Attach\ItemsCollection as PrizesCollection;
 use InetStudio\ReceiptsContest\Prizes\Contracts\Services\Back\ItemsServiceContract as PrizesServiceContract;
 use InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract as StatusesServiceContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract as ReceiptsServiceContract;
@@ -181,7 +180,7 @@ class SetWinnerCommand extends Command implements SetWinnerCommandContract
             return;
         }
 
-        $prizesCollection = new PrizesCollection();
+        $prizesCollection = [];
         $prizesCollection[] = new PrizeData(
             [
                 'id' => $prize['id'],
