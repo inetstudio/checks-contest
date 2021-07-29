@@ -67,6 +67,12 @@
                                             ],
                                         ]) !!}
 
+                                        {!! Form::string('limit', $item['limit'], [
+                                            'label' => [
+                                                'title' => 'Лимит призов',
+                                            ],
+                                        ]) !!}
+
                                     </div>
                                 </div>
                             </div>

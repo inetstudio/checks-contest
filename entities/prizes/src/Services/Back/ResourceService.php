@@ -29,6 +29,7 @@ class ResourceService extends BaseItemsService implements ResourceServiceContrac
 
         $item->name = $data->name;
         $item->alias = $data->alias;
+        $item->limit = $data->limit;
 
         $item->save();
 

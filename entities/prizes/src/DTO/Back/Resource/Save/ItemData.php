@@ -16,12 +16,15 @@ class ItemData extends DataTransferObject implements ItemDataContract
 
     public string $alias;
 
+    public int $limit;
+
     public static function fromRequest(Request $request): self
     {
         return new self([
             'id' => (int) $request->input('id'),
             'name' => trim(strip_tags($request->input('name'))),
             'alias' => trim(strip_tags($request->input('alias'))),
+            'limit' => (int) $request->input('limit'),
         ]);
     }
 }
