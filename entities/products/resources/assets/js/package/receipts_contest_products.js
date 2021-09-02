@@ -1,6 +1,4 @@
-let products = {};
-
-products.init = function() {
+export let products = {
+  init: function() {
+  }
 };
-
-module.exports = products;

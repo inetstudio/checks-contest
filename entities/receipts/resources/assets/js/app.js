@@ -1,3 +1,6 @@
+import Vue from 'vue';
+import {receipts} from './package/receipts_contest_receipts';
+
 require('./stores/receipts_contest_receipts');
 
 Vue.component(
@@ -5,5 +8,4 @@ Vue.component(
     require('./components/pages/Form.vue').default,
 );
 
-let receipts = require('./package/receipts_contest_receipts');
 receipts.init();

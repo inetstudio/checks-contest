@@ -1,3 +1,5 @@
+import Vuex from 'vuex';
+
 window.Admin.vue.stores['receipts_contest_products'] = new Vuex.Store({
   state: {
     product: {

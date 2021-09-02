@@ -1,3 +1,6 @@
+import Vue from 'vue';
+import {products} from './package/receipts_contest_products';
+
 require('./stores/receipts_contest_products');
 
 Vue.component(
@@ -13,5 +16,4 @@ Vue.component(
     require('./components/partials/ReceiptsContestProductsList/ReceiptsContestProductsListItemForm.vue').default,
 );
 
-let products = require('./package/receipts_contest_products');
 products.init();
