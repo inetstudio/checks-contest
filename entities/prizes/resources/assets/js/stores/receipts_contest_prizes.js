@@ -1,9 +1,4 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-
-Vue.use(Vuex);
-
-window.Admin.vue.stores['receipts_contest_prizes'] = new Vuex.Store({
+window.Admin.vue.stores['receipts_contest_prizes'] = new window.Vuex.Store({
   state: {
     prize: {
       model: {},
