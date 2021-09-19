@@ -74,6 +74,9 @@
 </template>
 
 <script>
+  import flatpickr from "flatpickr";
+  import hash from 'object-hash';
+
   export default {
     name: 'ReceiptsContestPrizesListItemForm',
     data() {
@@ -114,7 +117,7 @@
         handler: function(newValue, oldValue) {
           let component = this;
 
-          component.prize.hash = window.hash(newValue);
+          component.prize.hash = hash(newValue);
         },
         deep: true
       }

@@ -1,3 +1,5 @@
+import hash from 'object-hash';
+
 window.Admin.vue.stores['receipts_contest_receipts'] = new window.Vuex.Store({
   state: {
     receipt: {
@@ -13,7 +15,7 @@ window.Admin.vue.stores['receipts_contest_receipts'] = new window.Vuex.Store({
       let receiptCopy = JSON.parse(JSON.stringify(receipt));
 
       state.receipt.model = receiptCopy;
-      state.receipt.hash = window.hash(receiptCopy);
+      state.receipt.hash = hash(receiptCopy);
     },
     setReceipts(state, receipts) {
       state.receipts = receipts;

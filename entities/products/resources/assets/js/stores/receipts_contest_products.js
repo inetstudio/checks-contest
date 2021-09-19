@@ -1,3 +1,6 @@
+import hash from 'object-hash';
+import { v4 as uuidv4 } from 'uuid';
+
 window.Admin.vue.stores['receipts_contest_products'] = new window.Vuex.Store({
   state: {
     product: {
@@ -13,10 +16,10 @@ window.Admin.vue.stores['receipts_contest_products'] = new window.Vuex.Store({
       let productCopy = JSON.parse(JSON.stringify(product));
 
       state.product.model = (productCopy.hasOwnProperty('model')) ? productCopy.model : productCopy;
-      state.product.hash = window.hash(state.product.model);
+      state.product.hash = hash(state.product.model);
     },
     newProduct(state, receiptId) {
-      let productId = UUID.generate();
+      let productId = uuidv4();
 
       let product = {
         id: productId,

@@ -30,6 +30,9 @@
 </template>
 
 <script>
+  import hash from 'object-hash';
+  import Swal from 'sweetalert2';
+
   export default {
     name: 'ReceiptsContestProductsList',
     props: {
@@ -84,13 +87,13 @@
 
           component.products = _.map(JSON.parse(JSON.stringify(newValues)), function (product) {
             if (product.hasOwnProperty('model')) {
-              product.hash = window.hash(product.model);
+              product.hash = hash(product.model);
 
               return product;
             }
 
             return {
-              hash: window.hash(product),
+              hash: hash(product),
               model: product
             };
           });
@@ -115,9 +118,9 @@
       remove(payload) {
         let component = this;
 
-        swal({
+        Swal.fire({
           title: 'Вы уверены?',
-          type: 'warning',
+          icon: 'warning',
           showCancelButton: true,
           cancelButtonText: 'Отмена',
           confirmButtonColor: '#DD6B55',
@@ -140,7 +143,7 @@
         let component = this;
 
         let storeProduct = JSON.parse(JSON.stringify(window.Admin.vue.stores['receipts_contest_products'].state.product));
-        storeProduct.hash = window.hash(storeProduct.model);
+        storeProduct.hash = hash(storeProduct.model);
 
         let index = component.getProductIndex(storeProduct.model.id);
 

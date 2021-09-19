@@ -72,6 +72,8 @@
 </template>
 
 <script>
+  import hash from 'object-hash';
+
   export default {
     name: 'ReceiptsContestProductsListItemForm',
     data() {
@@ -101,7 +103,7 @@
         handler: function(newValue, oldValue) {
           let component = this;
 
-          component.product.hash = window.hash(newValue);
+          component.product.hash = hash(newValue);
         },
         deep: true
       }

@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 export let receipts = {
   init: function () {
     $(document).ready(function () {
@@ -18,7 +20,7 @@ export let receipts = {
         };
 
         if (typeof reason !== typeof undefined && reason !== false) {
-          swal.fire({
+          Swal.fire({
             title: 'Введите причину изменения статуса',
             input: 'text',
             inputAttributes: {
@@ -39,7 +41,7 @@ export let receipts = {
 
               return moderate(url, data);
             },
-            allowOutsideClick: () => ! swal.isLoading()
+            allowOutsideClick: () => ! Swal.isLoading()
           }).then((result) => {
             processModerateResponse(result);
           });
@@ -111,9 +113,9 @@ export let receipts = {
           }
         });
 
-        swal.fire({
+        Swal.fire({
           title: 'Статус изменен',
-          type: 'success'
+          icon: 'success'
         });
       } else {
         showError('При модерации произошла ошибка');
@@ -121,10 +123,10 @@ export let receipts = {
     }
 
     function showError(text) {
-      swal.fire({
+      Swal.fire({
         title: 'Ошибка',
         text: text,
-        type: 'error',
+        icon: 'error',
       });
     }
   }

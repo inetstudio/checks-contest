@@ -4,15 +4,15 @@ require('./stores/receipts_contest_products');
 
 window.Vue.component(
     'ReceiptsContestProductsList',
-    require('./components/partials/ReceiptsContestProductsList/ReceiptsContestProductsList.vue').default,
+    () => import('./components/partials/ReceiptsContestProductsList/ReceiptsContestProductsList.vue'),
 );
 window.Vue.component(
     'ReceiptsContestProductsListItem',
-    require('./components/partials/ReceiptsContestProductsList/ReceiptsContestProductsListItem.vue').default,
+    () => import('./components/partials/ReceiptsContestProductsList/ReceiptsContestProductsListItem.vue'),
 );
 window.Vue.component(
     'ReceiptsContestProductsListItemForm',
-    require('./components/partials/ReceiptsContestProductsList/ReceiptsContestProductsListItemForm.vue').default,
+    () => import('./components/partials/ReceiptsContestProductsList/ReceiptsContestProductsListItemForm.vue'),
 );
 
 products.init();
