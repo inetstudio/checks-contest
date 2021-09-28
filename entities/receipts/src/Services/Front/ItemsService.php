@@ -5,8 +5,8 @@ namespace InetStudio\ReceiptsContest\Receipts\Services\Front;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use InetStudio\ReceiptsContest\Receipts\DTO\Front\SendItemData;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
+use InetStudio\ReceiptsContest\Receipts\Contracts\DTO\Front\SendItemDataContract;
 use InetStudio\ReceiptsContest\Receipts\Services\ItemsService as BaseItemsService;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract;
 
@@ -14,7 +14,7 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
 {
     public array $stages = [];
 
-    public function send(SendItemData $data): ?ReceiptModelContract
+    public function send(SendItemDataContract $data): ?ReceiptModelContract
     {
         $item = new $this->model;
 
