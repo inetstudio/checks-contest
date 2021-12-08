@@ -5,7 +5,7 @@ namespace InetStudio\ReceiptsContest\Receipts\Models;
 use OwenIt\Auditing\Auditable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use InetStudio\Uploads\Models\Traits\HasImages;
+use InetStudio\UploadsPackage\Uploads\Models\Traits\HasMedia;
 use InetStudio\ACL\Users\Models\Traits\HasUser;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,18 +17,13 @@ use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
 class ReceiptModel extends Model implements ReceiptModelContract
 {
     use Auditable;
-    use HasImages;
+    use HasMedia;
     use SoftDeletes;
     use HasJSONColumns;
 
     const ENTITY_TYPE = 'receipts_contest_receipt';
 
     protected bool $auditTimestamps = true;
-
-    protected array $images = [
-        'config' => 'receipts_contest_receipts',
-        'model' => 'receipt',
-    ];
 
     protected $table = 'receipts_contest_receipts';
 
@@ -85,5 +80,10 @@ class ReceiptModel extends Model implements ReceiptModelContract
             'id',
             'fns_receipt_id'
         );
+    }
+
+    public function getMediaConfig(): array
+    {
+        return config('receipts_contest_receipts.media', []);
     }
 }
