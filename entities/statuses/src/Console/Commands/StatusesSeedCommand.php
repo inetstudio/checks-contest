@@ -17,12 +17,20 @@ class StatusesSeedCommand extends Command
 
     protected array $statuses = [
         [
+            'name' => 'Обработка',
+            'alias' => 'processing',
+            'description' => 'Чеки, проходящие обработку',
+            'color_class' => 'default',
+            'types' => [
+                'receipts_contest_status_default' => 'Статус по умолчанию',
+            ],
+        ],
+        [
             'name' => 'Модерация',
             'alias' => 'moderation',
             'description' => 'Чеки, ожидающие модерацию',
             'color_class' => 'warning',
             'types' => [
-                'receipts_contest_status_default' => 'Статус по умолчанию',
                 'receipts_contest_status_check' => 'Проверка',
             ],
         ],

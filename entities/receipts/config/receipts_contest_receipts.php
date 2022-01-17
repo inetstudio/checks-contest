@@ -46,4 +46,13 @@ return [
             ],
         ],
     ],
+
+    'moderation' => [
+        'start_date' => null,
+        'end_date' => null,
+        'sum' => 0,
+        'retails' => [
+            'title' => 'search',
+        ],
+    ],
 ];
