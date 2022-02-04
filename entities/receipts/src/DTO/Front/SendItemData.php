@@ -30,9 +30,12 @@ class SendItemData extends DataTransferObject implements SendItemDataContract
 
         $status = $statusesService->getItemsByType('default')->first();
 
+        $additionalData = $request->input('additional_info', []);
+        array_walk_recursive($additionalData, fn(&$value) => $value = trim(str_replace('&nbsp;', ' ', strip_tags($value))));
+
         return new self([
             'verify_hash' => md5(time().json_encode($request->all())),
-            'additional_info' => $request->input('additional_info', []),
+            'additional_info' => $additionalData,
             'user_id' => Auth::id() ?? 0,
             'status_id' => $status['id'] ?? 0,
             'image' => $request->file('receipt_image'),
