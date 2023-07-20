@@ -100,7 +100,7 @@ class AttachFnsReceiptsCommand extends Command implements AttachFnsReceiptsComma
                             [
                                 'args' => [
                                     'qr_code' => $fnsReceiptData['receipt']['qr_code'],
-                                    'data' => $fnsReceiptData['receipt']['data'],
+                                    'data' => $fnsReceiptData['receipt']['document']['receipt'],
                                 ]
                             ]
                         );

@@ -46,7 +46,7 @@ final class AttachProductsJob implements ShouldQueue
 
         $products = [];
 
-        $fnsReceiptData = $fnsReceipt->data['content'];
+        $fnsReceiptData = $fnsReceipt->data;
 
         foreach ($fnsReceiptData['items'] ?? [] as $item) {
             $products[] = new ProductData(

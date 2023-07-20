@@ -73,7 +73,7 @@ final class ModerateReceiptUserJob implements ShouldQueue
         $receiptFromRetails = false;
 
         foreach ($this->retails as $retail => $search) {
-            if (isset($fnsReceipt['data']['content']['user']) && (mb_strpos(mb_strtolower($fnsReceipt['data']['content']['user']), $search) !== false)) {
+            if (isset($fnsReceipt['data']['user']) && (mb_strpos(mb_strtolower($fnsReceipt['data']['user']), $search) !== false)) {
                 $receiptFromRetails = true;
             }
         }
