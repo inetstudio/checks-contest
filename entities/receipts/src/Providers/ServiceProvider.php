@@ -2,6 +2,7 @@
 
 namespace InetStudio\ReceiptsContest\Receipts\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
@@ -14,6 +15,15 @@ class ServiceProvider extends BaseServiceProvider
         $this->registerRoutes();
         $this->registerViews();
         $this->registerTranslations();
+
+        Relation::morphMap(
+            [
+                'receipts_contest_receipts' => 'InetStudio\ReceiptsContest\Receipts\Models\ReceiptModel',
+                'receipts_contest_prizes' => 'InetStudio\ReceiptsContest\Prizes\Models\PrizeModel',
+                'receipts_contest_products' => 'InetStudio\ReceiptsContest\Products\Models\ProductModel',
+                'receipts_contest_statuses' => 'InetStudio\ReceiptsContest\Statuses\Models\StatusModel',
+            ]
+        );
     }
 
     protected function registerConsoleCommands(): void
