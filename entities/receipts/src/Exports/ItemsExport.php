@@ -37,6 +37,7 @@ class ItemsExport implements ItemsExportContract
         $fileUrl = $item->getFirstMediaUrl('images');
 
         $status = $item->status->name;
+//        $fnsReceipt = $item->fnsReceipt;
         $prizes = ($item->prizes->count() > 0) ? implode(', ', $item->prizes->pluck('name')->toArray()) : '';
 
         $prizesDates = '';
@@ -54,19 +55,28 @@ class ItemsExport implements ItemsExportContract
             $confirmed .= ', '.(($prize->pivot['confirmed'] === 1) ? 'Да' : 'Нет');
         }
 
-        $itemData = $item->additional_info;
+//        $address = ($fnsReceipt) ? $fnsReceipt->getJSONData('data', 'content.retailPlaceAddress', '') : '';
+//        $address = (! $address && $fnsReceipt) ? $fnsReceipt->getJSONData('data', 'address', '') : $address;
+//        $address = (! $address) ? $item->getJSONData('additional_info', 'retailPlaceAddress', '') : $address;
+
+//        $placeName = $item->getJSONData('additional_info', 'retailPlaceName', '');
+
+        $userData = $item['additional_info'];
+
+        $statusReason = $item->getJSONData('receipt_data', 'statusReason', '');
 
         return [
             $item->id,
             $status,
-            $item->getJSONData('receipt_data', 'statusReason', ''),
+            $statusReason,
             $prizes,
             trim($prizesDates, ', '),
             trim($confirmed, ', '),
-            trim(($itemData['name'] ?? '').' '.($itemData['surname'] ?? '')),
-            $itemData['phone'] ?? '',
-            $itemData['email'] ?? '',
+            trim(($userData['personal']['surname'] ?? '').' '.($userData['personal']['name'] ?? '').' '.($userData['personal']['middleName'] ?? '')) ?? ($userData['personal']['name'] ?? ''),
+            $userData['personal']['phone'] ?? '',
+            $userData['personal']['email'] ?? '',
             Date::dateTimeToExcel($item->created_at),
+            Date::dateTimeToExcel($item->updated_at),
             ($fileUrl) ? url($fileUrl) : '',
         ];
     }
@@ -76,7 +86,7 @@ class ItemsExport implements ItemsExportContract
         return [
             'ID',
             'Статус',
-            'Причина отмены',
+            'Причина отклонения',
             'Призы',
             'Дата приза',
             'Победитель подтвержден',
@@ -84,6 +94,7 @@ class ItemsExport implements ItemsExportContract
             'Телефон',
             'E-mail',
             'Дата регистрации',
+            'Дата модерации',
             'Ссылка на чек',
         ];
     }
@@ -93,6 +104,7 @@ class ItemsExport implements ItemsExportContract
         return [
             'A' => NumberFormat::FORMAT_NUMBER,
             'J' => NumberFormat::FORMAT_DATE_DATETIME,
+            'K' => NumberFormat::FORMAT_DATE_DATETIME,
         ];
     }
 }

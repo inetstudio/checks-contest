@@ -31,6 +31,7 @@ class SendItemData extends DataTransferObject implements SendItemDataContract
         $status = $statusesService->getItemsByType('default')->first();
 
         $additionalData = $request->input('additional_info', []);
+        $additionalData['personal']['phone'] = str_replace(['+', '-', '(', ')', ' '], '', $additionalData['personal']['phone']);
         array_walk_recursive($additionalData, fn(&$value) => $value = trim(str_replace('&nbsp;', ' ', strip_tags($value))));
 
         return new self([

@@ -50,5 +50,8 @@ Route::group(
             ->where('field', 'phone|email')
             ->where('type', 'winner|status')
             ->name('front.receipts-contest.receipts.search');
+
+        Route::get('receipts/winners', 'ItemsControllerContract@getWinners')
+            ->name('front.receipts-contest.receipts.winners.get');
     }
 );

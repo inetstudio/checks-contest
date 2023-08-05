@@ -3,6 +3,7 @@
 namespace InetStudio\ReceiptsContest\Receipts\Services\Front;
 
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Models\ReceiptModelContract;
@@ -101,17 +102,42 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
 
     public function search(string $field, string $query, string $type): Collection
     {
+        if ($field === 'phone') {
+            $query = str_replace(['+', '-', '(', ')', ' '], '', $query);
+        }
+
         $builder = $this->model::where(
             [
-                ['additional_info->'.$field, '=', $query],
+                ['additional_info->personal->'.$field, '=', $query],
             ]
         );
 
         if ($type === 'winner') {
-            $builder->whereHas('prizes');
+            $statusesService = resolve(
+                'InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract'
+            );
+
+            $status = $statusesService->getItemsByType('final')->first();
+
+            $builder->whereHas('prizes')->where('status_id', $status->id);
         }
 
         return $builder->get();
+    }
+
+    public function getWinners(int $page = 0, int $limit = 9999): LengthAwarePaginator
+    {
+        $statusesService = resolve(
+            'InetStudio\ReceiptsContest\Statuses\Contracts\Services\Back\ItemsServiceContract'
+        );
+
+        $status = $statusesService->getItemsByType('final')->first();
+
+        return $this->model::with('prizes')
+            ->has('prizes')
+            ->where('status_id', $status->id)
+            ->orderBy('created_at')
+            ->paginate($limit, ['*'], 'page', $page);
     }
 
     protected function formatDate(string $date): string

@@ -8,6 +8,8 @@ use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Requests\Front\SearchRequ
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Front\SearchResponseContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Responses\Front\SendResponseContract;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Http\Controllers\Front\ItemsControllerContract;
+use InetStudio\ReceiptsContest\Receipts\Http\Requests\Front\GetWinnersRequest;
+use InetStudio\ReceiptsContest\Receipts\Http\Responses\Front\GetWinnersResponse;
 
 class ItemsController extends Controller implements ItemsControllerContract
 {
@@ -17,6 +19,11 @@ class ItemsController extends Controller implements ItemsControllerContract
     }
 
     public function search(SearchRequestContract $request, SearchResponseContract $response): SearchResponseContract
+    {
+        return $response;
+    }
+
+    public function getWinners(GetWinnersRequest $request, GetWinnersResponse $response): GetWinnersResponse
     {
         return $response;
     }

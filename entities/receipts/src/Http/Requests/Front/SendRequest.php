@@ -16,23 +16,24 @@ class SendRequest extends FormRequest implements SendRequestContract
     public function messages(): array
     {
         return [
-            'additional_info.name.required' => 'Поле «Имя» обязательно для заполнения',
-            'additional_info.name.max' => 'Поле «Имя» не должно превышать 255 символов',
+            'additional_info.personal.name.required' => 'Поле обязательно для заполнения',
+            'additional_info.personal.name.max' => 'Поле не должно превышать 255 символов',
 
-            'additional_info.surname.required' => 'Поле «Фамилия» обязательно для заполнения',
-            'additional_info.surname.max' => 'Поле «Фамилия» не должно превышать 255 символов',
+            'additional_info.personal.phone.required' => 'Поле обязательно для заполнения',
+            'additional_info.personal.phone.max' => 'Поле не должно превышать 255 символов',
 
-            'additional_info.email.required' => 'Поле «E-mail» обязательно для заполнения',
-            'additional_info.email.max' => 'Поле «E-mail» не должно превышать 255 символов',
-            'additional_info.email.email' => 'Поле «E-mail» содержит значение некорректного формата',
-
-            'additional_info.phone.required' => 'Поле «Телефон» обязательно для заполнения',
-            'additional_info.phone.max' => 'Поле «Телефон» не должно превышать 255 символов',
+            'additional_info.personal.email.required' => 'Поле обязательно для заполнения',
+            'additional_info.personal.email.max' => 'Поле не должно превышать 255 символов',
+            'additional_info.personal.email.email' => 'Поле содержит некорректное значение',
 
             'receipt_image.required' => 'Поле «Фотография чека» обязательно для заполнения',
             'receipt_image.image' => 'Поле «Фотография чека» должно быть изображением',
 
-            'g-recaptcha-response.required' => 'Поле «Капча» обязательно для заполнения',
+            'additional_info.agreement.rules' => 'Поле обязательно для заполнения',
+
+            'additional_info.agreement.personal_info' => 'Поле обязательно для заполнения',
+
+            'g-recaptcha-response.required' => 'Поле обязательно для заполнения',
             'g-recaptcha-response.captcha' => 'Неверный код капча',
         ];
     }
@@ -40,10 +41,11 @@ class SendRequest extends FormRequest implements SendRequestContract
     public function rules(): array
     {
         return [
-            'additional_info.name' => 'required|max:255',
-            'additional_info.surname' => 'required|max:255',
-            'additional_info.email' => 'required|max:255|email',
-            'additional_info.phone' => 'required|max:255',
+            'additional_info.personal.name' => 'required|max:255',
+            'additional_info.personal.phone' => 'required|max:255',
+            'additional_info.personal.email' => 'required|max:255|email',
+            'additional_info.agreement.rules' => 'required',
+            'additional_info.agreement.personal_info' => 'required',
             'receipt_image' => 'required|image',
             'g-recaptcha-response' => [
                 'required',

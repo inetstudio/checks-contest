@@ -94,14 +94,6 @@ class IndexService extends DataTable implements IndexServiceContract
             ['data' => 'prizes', 'name' => 'prizes.name', 'title' => 'Призы', 'orderable' => false, 'className' => 'receipt-prizes'],
             ['data' => 'receipt_image', 'name' => 'receipt_image', 'title' => 'Чек', 'orderable' => false, 'searchable' => false, 'className' => 'receipt-receipt_image'],
             ['data' => 'name', 'name' => 'name', 'title' => 'Имя', 'orderable' => false, 'searchable' => false, 'className' => 'receipt-name'],
-            [
-                'data' => 'surname',
-                'name' => 'surname',
-                'title' => 'Фамилия',
-                'orderable' => false,
-                'searchable' => false,
-                'className' => 'receipt-surname',
-            ],
             ['data' => 'email', 'name' => 'email', 'title' => 'E-mail', 'orderable' => false, 'searchable' => false, 'className' => 'receipt-email'],
             ['data' => 'phone', 'name' => 'phone', 'title' => 'Телефон', 'orderable' => false, 'searchable' => false, 'className' => 'receipt-phone'],
             ['data' => 'created_at', 'name' => 'created_at', 'title' => 'Дата создания', 'className' => 'receipt-created_at'],
@@ -130,7 +122,7 @@ class IndexService extends DataTable implements IndexServiceContract
         $translation = trans('admin::datatables');
 
         return [
-            'order' => [12, 'desc'],
+            'order' => [11, 'desc'],
             'paging' => true,
             'pagingType' => 'full_numbers',
             'searching' => true,

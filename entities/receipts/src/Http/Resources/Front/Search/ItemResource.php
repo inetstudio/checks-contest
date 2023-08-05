@@ -13,11 +13,19 @@ class ItemResource extends JsonResource implements ItemResourceContract
         /** @var Carbon $createdAt */
         $createdAt = $this['created_at'];
 
+        $statusName = $this['status']['name'];
+        $statusName = ($statusName === 'Предварительно одобрено') ? 'Модерация' : $statusName;
+
+        $statusReason = $this['receipt_data']['statusReason'] ?? '';
+
         return [
             'id' => $this['id'],
             'date' => Carbon::formatDateToRus($createdAt->format('d.m.Y')),
             'time' => $createdAt->format('H:i'),
-            'status' => $this['status']['name'],
+            'status' => [
+                'name' => $statusName,
+                'reason' => $statusReason,
+            ],
         ];
     }
 }
