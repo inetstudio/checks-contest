@@ -79,7 +79,7 @@ final class ModerateBuyDateJob implements ShouldQueue
             return;
         }
 
-        $receiptDate = Carbon::parse($fnsReceipt['data']['dateTime']);
+        $receiptDate = Carbon::parse($fnsReceipt['data']['content']['dateTime']);
 
         if ($this->contestStartDate && ! $receiptDate->greaterThanOrEqualTo($this->contestStartDate)) {
             $this->rejectItem(

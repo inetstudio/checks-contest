@@ -109,7 +109,7 @@ class ModerateCommand extends Command implements ModerateCommandContract
                 continue;
             }
 
-            $receiptDate = Carbon::parse($receipt['data']['dateTime']);
+            $receiptDate = Carbon::parse($receipt['data']['content']['dateTime']);
 
             if (! $receiptDate->greaterThanOrEqualTo($this->contestStartDate)) {
                 $this->moderateItem(

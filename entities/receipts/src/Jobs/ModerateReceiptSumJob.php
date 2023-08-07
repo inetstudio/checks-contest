@@ -70,7 +70,7 @@ final class ModerateReceiptSumJob implements ShouldQueue
             return;
         }
 
-        if ($this->sum > 0 && isset($fnsReceipt['data']['totalSum']) && ($fnsReceipt['data']['totalSum']) < $this->sum) {
+        if ($this->sum > 0 && isset($fnsReceipt['data']['content']['totalSum']) && ($fnsReceipt['data']['content']['totalSum']) < $this->sum) {
             $this->rejectItem(
                 [
                     'statusReason' => 'Общая сумма чека менее '.($this->sum / 100).' руб.',

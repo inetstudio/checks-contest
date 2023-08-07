@@ -136,9 +136,9 @@ final class AttachFnsReceiptJob implements ShouldQueue
             'InetStudio\Fns\Receipts\Contracts\DTO\ItemDataContract',
             [
                 'args' => [
-                    'qr_code' => $fnsReceiptData['qr_code'],
-                    'hash' => md5(json_encode($fnsReceiptData['receipt']['document']['receipt'])),
-                    'data' => $fnsReceiptData['receipt']['document']['receipt'],
+                    'qr_code' => $fnsReceiptData['receipt']['qr_code'],
+                    'hash' => $fnsReceiptData['receipt']['hash'],
+                    'data' => $fnsReceiptData['receipt']['data'],
                 ]
             ]
         );
