@@ -3,7 +3,7 @@
 namespace InetStudio\ReceiptsContest\Receipts\Http\Responses\Front;
 
 use Illuminate\Contracts\Support\Responsable;
-use Packages\ReceiptsContest\Receipts\Http\Resources\Front\GetWinners\ItemsCollection;
+use InetStudio\ReceiptsContest\Receipts\Http\Resources\Front\GetWinners\ItemsCollection;
 use InetStudio\ReceiptsContest\Receipts\Contracts\Services\Front\ItemsServiceContract;
 
 class GetWinnersResponse implements Responsable
