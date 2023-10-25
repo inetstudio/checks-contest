@@ -27,7 +27,8 @@ class SendRequest extends FormRequest implements SendRequestContract
             'additional_info.personal.email.email' => 'Поле содержит некорректное значение',
 
             'receipt_image.required' => 'Поле «Фотография чека» обязательно для заполнения',
-            'receipt_image.image' => 'Поле «Фотография чека» должно быть изображением',
+            'receipt_image.mimes' => 'Допустимый формат изображения - jpeg, jpg, png',
+            'receipt_image.max' => 'Максимальный размер изображения - 10 Мб',
 
             'additional_info.agreement.rules' => 'Поле обязательно для заполнения',
 
@@ -46,7 +47,7 @@ class SendRequest extends FormRequest implements SendRequestContract
             'additional_info.personal.email' => 'required|max:255|email',
             'additional_info.agreement.rules' => 'required',
             'additional_info.agreement.personal_info' => 'required',
-            'receipt_image' => 'required|image',
+            'receipt_image' => 'required|mimes:jpg,jpeg,png|max:10000',
             'g-recaptcha-response' => [
                 'required',
                 new CaptchaRule,
