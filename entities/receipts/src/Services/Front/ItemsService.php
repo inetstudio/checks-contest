@@ -119,7 +119,9 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
 
             $status = $statusesService->getItemsByType('final')->first();
 
-            $builder->whereHas('prizes')->where('status_id', $status->id);
+            $builder->whereHas('prizes', function ($prizesQuery) {
+                $prizesQuery->where('confirmed', 1);
+            })->where('status_id', $status->id);
         }
 
         return $builder->get();
@@ -134,7 +136,9 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
         $status = $statusesService->getItemsByType('final')->first();
 
         return $this->model::with('prizes')
-            ->has('prizes')
+            ->whereHas('prizes', function ($prizesQuery) {
+                $prizesQuery->where('confirmed', 1);
+            })
             ->where('status_id', $status->id)
             ->orderBy('created_at')
             ->paginate($limit, ['*'], 'page', $page);
