@@ -42,6 +42,47 @@
 
               <div class="row">
                 <div class="col-lg-12">
+                  <div class="ibox border-bottom">
+                    <div class="ibox-title">
+                      <h5>Данные с формы</h5>
+                      <div class="ibox-tools">
+                        <a class="collapse-link">
+                          <i class="fa fa-chevron-up"></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="ibox-content">
+                      <base-input-text
+                          label="Имя"
+                          name="name"
+                          v-bind:value="_.get(application, 'model.additional_info.personal.name', '')"
+                          v-on:update:value="_.set(application, 'model.additional_info.personal.name', $event)"
+                      />
+                      <base-input-text
+                          label="Телефон"
+                          name="phone"
+                          v-bind:value="_.get(application, 'model.additional_info.personal.phone', 0)"
+                          v-on:update:value="_.set(application, 'model.additional_info.personal.phone', $event)"
+                      />
+                      <base-input-text
+                          label="Почта"
+                          name="email"
+                          v-bind:value="_.get(application, 'model.additional_info.personal.email', 0)"
+                          v-on:update:value="_.set(application, 'model.additional_info.personal.email', $event)"
+                      />
+                      <base-input-text
+                          label="Карта"
+                          name="card"
+                          v-bind:value="_.get(application, 'model.additional_info.personal.card', 0)"
+                          v-on:update:value="_.set(application, 'model.additional_info.personal.card', $event)"
+                      />                      
+                    </div>
+                  </div>
+                </div>
+              </div>              
+
+              <div class="row">
+                <div class="col-lg-12">
                   <div class="ibox">
                     <div class="ibox-title">
                       <h5>Чек</h5>
