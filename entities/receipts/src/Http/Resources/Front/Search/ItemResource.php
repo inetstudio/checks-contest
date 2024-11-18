@@ -26,6 +26,13 @@ class ItemResource extends JsonResource implements ItemResourceContract
                 'name' => $statusName,
                 'reason' => $statusReason,
             ],
+            'prizes' => $this['prizes']->map(static function ($prize) {
+                return [
+                    'id' => $prize->id,
+                    'alias' => $prize->alias,
+                    'name' => $prize->name,
+                ];
+            }),            
         ];
     }
 }
