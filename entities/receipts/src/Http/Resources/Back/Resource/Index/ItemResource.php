@@ -44,6 +44,7 @@ class ItemResource extends JsonResource implements ItemResourceContract
             'name' => trim(($userData['personal']['surname'] ?? '').' '.($userData['personal']['name'] ?? '').' '.($userData['personal']['middleName'] ?? '')) ?? ($userData['personal']['name'] ?? ''),
             'email' => $userData['personal']['email'] ?? '',
             'phone' => $userData['personal']['phone'] ?? '',
+            'card' => $userData['personal']['card'] ?? '',
             'created_at' => (string) $this['created_at'],
             'updated_at' => (string) $this['updated_at'],
             'actions' => view(
