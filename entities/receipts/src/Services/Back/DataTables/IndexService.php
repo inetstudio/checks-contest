@@ -96,6 +96,7 @@ class IndexService extends DataTable implements IndexServiceContract
             ['data' => 'name', 'name' => 'name', 'title' => 'Имя', 'orderable' => false, 'searchable' => false, 'className' => 'receipt-name'],
             ['data' => 'email', 'name' => 'email', 'title' => 'E-mail', 'orderable' => false, 'searchable' => false, 'className' => 'receipt-email'],
             ['data' => 'phone', 'name' => 'phone', 'title' => 'Телефон', 'orderable' => false, 'searchable' => false, 'className' => 'receipt-phone'],
+            ['data' => 'card', 'name' => 'card', 'title' => 'Карта', 'orderable' => false, 'searchable' => false, 'className' => 'receipt-phone'],
             ['data' => 'created_at', 'name' => 'created_at', 'title' => 'Дата создания', 'className' => 'receipt-created_at'],
             ['data' => 'updated_at', 'name' => 'updated_at', 'title' => 'Дата обновления', 'className' => 'receipt-updated_at'],
             [
