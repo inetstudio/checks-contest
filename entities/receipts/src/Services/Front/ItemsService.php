@@ -110,7 +110,9 @@ class ItemsService extends BaseItemsService implements ItemsServiceContract
             [
                 ['additional_info->personal->'.$field, '=', $query],
             ]
-        );
+        )->with(['prizes' => function ($prizesQuery) {
+            $prizesQuery->where('confirmed', 1);
+        }]);
 
         if ($type === 'winner') {
             $statusesService = resolve(
