@@ -55,26 +55,26 @@
                       <base-input-text
                           label="Имя"
                           name="name"
-                          v-bind:value="_.get(application, 'model.additional_info.personal.name', '')"
-                          v-on:update:value="_.set(application, 'model.additional_info.personal.name', $event)"
+                          v-bind:value="_.get(receipt, 'model.additional_info.personal.name', '')"
+                          v-on:update:value="_.set(receipt, 'model.additional_info.personal.name', $event)"
                       />
                       <base-input-text
                           label="Телефон"
                           name="phone"
-                          v-bind:value="_.get(application, 'model.additional_info.personal.phone', 0)"
-                          v-on:update:value="_.set(application, 'model.additional_info.personal.phone', $event)"
+                          v-bind:value="_.get(receipt, 'model.additional_info.personal.phone', '')"
+                          v-on:update:value="_.set(receipt, 'model.additional_info.personal.phone', $event)"
                       />
                       <base-input-text
                           label="Почта"
                           name="email"
-                          v-bind:value="_.get(application, 'model.additional_info.personal.email', 0)"
-                          v-on:update:value="_.set(application, 'model.additional_info.personal.email', $event)"
+                          v-bind:value="_.get(receipt, 'model.additional_info.personal.email', '')"
+                          v-on:update:value="_.set(receipt, 'model.additional_info.personal.email', $event)"
                       />
                       <base-input-text
                           label="Карта"
                           name="card"
-                          v-bind:value="_.get(application, 'model.additional_info.personal.card', 0)"
-                          v-on:update:value="_.set(application, 'model.additional_info.personal.card', $event)"
+                          v-bind:value="_.get(receipt, 'model.additional_info.personal.card', '')"
+                          v-on:update:value="_.set(receipt, 'model.additional_info.personal.card', $event)"
                       />                      
                     </div>
                   </div>
