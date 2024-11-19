@@ -123,7 +123,7 @@ class IndexService extends DataTable implements IndexServiceContract
         $translation = trans('admin::datatables');
 
         return [
-            'order' => [11, 'desc'],
+            'order' => [12, 'desc'],
             'paging' => true,
             'pagingType' => 'full_numbers',
             'searching' => true,
